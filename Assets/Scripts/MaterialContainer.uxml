@@ -1,0 +1,10 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:VisualElement style="position: absolute; bottom: 0; left: 0; right: 0; flex-direction: column; width: 100%;">
+        <ui:VisualElement style="background-color: rgba(220, 220, 220, 0.85); border-top-left-radius: 16px; border-top-right-radius: 16px; padding-top: 4px; padding-bottom: 4px; padding-left: 12px; padding-right: 12px;">
+            <ui:ScrollView name="ItemBar" mode="Horizontal" horizontal-scroller-visibility="Hidden" vertical-scroller-visibility="Hidden" style="height: 48px; width: 100%; flex-direction: row;"/>
+        </ui:VisualElement>
+        <ui:VisualElement style="background-color: rgb(235, 235, 235); border-top-width: 1px; border-top-color: rgb(200, 200, 200); padding-top: 4px; padding-bottom: 4px;">
+            <ui:ScrollView name="CategoryBar" mode="Horizontal" horizontal-scroller-visibility="Hidden" vertical-scroller-visibility="Hidden" style="height: 36px; width: 100%; flex-direction: row;"/>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
