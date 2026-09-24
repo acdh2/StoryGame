@@ -64,7 +64,7 @@ public class ItemDragManipulator : PointerManipulator
             if (delta.magnitude >= DirectionThreshold)
             {
                 // Is de beweging voornamelijk horizontaal (opzij uit de toolbar)?
-                if (Mathf.Abs(delta.y) > Mathf.Abs(delta.x))
+                if (Mathf.Abs(delta.y) > DirectionThreshold) //Mathf.Abs(delta.x))
                 {
                     // Start Drag and Drop
                     isDragging = true;

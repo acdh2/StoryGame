@@ -386,6 +386,7 @@ MonoBehaviour:
   selectableObjectsLayer:
     serializedVersion: 2
     m_Bits: 128
+  projectSettings: {fileID: 11400000, guid: 57799342849644d5a9fa5185182ef096, type: 2}
 --- !u!1 &410087039
 GameObject:
   m_ObjectHideFlags: 0
@@ -734,10 +735,41 @@ MonoBehaviour:
   baseplateLayer:
     serializedVersion: 2
     m_Bits: 8
+  projectSettings: {fileID: 11400000, guid: 57799342849644d5a9fa5185182ef096, type: 2}
   categories:
   - categoryName: Basic
     categoryIcon: {fileID: 2800000, guid: bf08f4cbbf5ae4e2a80bdd32d9f15d64, type: 3}
     items:
+    - itemName: Cube
+      thumbnail: {fileID: 2800000, guid: 03ce24915079b42759fb912f0d0ba011, type: 3}
+      prefab: {fileID: 8929711720807349461, guid: 0e9c59b8c49814ae5a458af364cb3d13, type: 3}
+    - itemName: Cube
+      thumbnail: {fileID: 2800000, guid: 03ce24915079b42759fb912f0d0ba011, type: 3}
+      prefab: {fileID: 8929711720807349461, guid: 0e9c59b8c49814ae5a458af364cb3d13, type: 3}
+    - itemName: Cube
+      thumbnail: {fileID: 2800000, guid: 03ce24915079b42759fb912f0d0ba011, type: 3}
+      prefab: {fileID: 8929711720807349461, guid: 0e9c59b8c49814ae5a458af364cb3d13, type: 3}
+    - itemName: Cube
+      thumbnail: {fileID: 2800000, guid: 03ce24915079b42759fb912f0d0ba011, type: 3}
+      prefab: {fileID: 8929711720807349461, guid: 0e9c59b8c49814ae5a458af364cb3d13, type: 3}
+    - itemName: Cube
+      thumbnail: {fileID: 2800000, guid: 03ce24915079b42759fb912f0d0ba011, type: 3}
+      prefab: {fileID: 8929711720807349461, guid: 0e9c59b8c49814ae5a458af364cb3d13, type: 3}
+    - itemName: Cube
+      thumbnail: {fileID: 2800000, guid: 03ce24915079b42759fb912f0d0ba011, type: 3}
+      prefab: {fileID: 8929711720807349461, guid: 0e9c59b8c49814ae5a458af364cb3d13, type: 3}
+    - itemName: Cube
+      thumbnail: {fileID: 2800000, guid: 03ce24915079b42759fb912f0d0ba011, type: 3}
+      prefab: {fileID: 8929711720807349461, guid: 0e9c59b8c49814ae5a458af364cb3d13, type: 3}
+    - itemName: Cube
+      thumbnail: {fileID: 2800000, guid: 03ce24915079b42759fb912f0d0ba011, type: 3}
+      prefab: {fileID: 8929711720807349461, guid: 0e9c59b8c49814ae5a458af364cb3d13, type: 3}
+    - itemName: Cube
+      thumbnail: {fileID: 2800000, guid: 03ce24915079b42759fb912f0d0ba011, type: 3}
+      prefab: {fileID: 8929711720807349461, guid: 0e9c59b8c49814ae5a458af364cb3d13, type: 3}
+    - itemName: Cube
+      thumbnail: {fileID: 2800000, guid: 03ce24915079b42759fb912f0d0ba011, type: 3}
+      prefab: {fileID: 8929711720807349461, guid: 0e9c59b8c49814ae5a458af364cb3d13, type: 3}
     - itemName: Cube
       thumbnail: {fileID: 2800000, guid: 03ce24915079b42759fb912f0d0ba011, type: 3}
       prefab: {fileID: 8929711720807349461, guid: 0e9c59b8c49814ae5a458af364cb3d13, type: 3}

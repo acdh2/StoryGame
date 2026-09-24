@@ -8,6 +8,7 @@ public class ObjectSelector : MonoBehaviour
     public TransformHandleSettings _settings;
 
     [SerializeField] private LayerMask selectableObjectsLayer;
+    [SerializeField] private ProjectSettings projectSettings;
 
     private Handle _globalHandle;
     private Transform _currentTarget;
@@ -116,6 +117,11 @@ public class ObjectSelector : MonoBehaviour
     private void OnHandleStartInteraction(Handle handle)
     {
         _isDraggingHandle = true;
+        if (projectSettings != null) {
+            _globalHandle.PositionSnap = projectSettings.PositionSnap;
+            _globalHandle.RotationSnap = projectSettings.RotationSnap;
+            _globalHandle.ScaleSnap = projectSettings.ScaleSnap;
+        }
     }
 
     private void OnHandleEndInteraction(Handle handle)

@@ -25,6 +25,8 @@ public class LevelObjectPalette : MonoBehaviour
     [Header("UI Settings")]
     [SerializeField] private LayerMask baseplateLayer;
 
+    [SerializeField] private ProjectSettings projectSettings;
+
     private Vector2 itemSize = new Vector2(48, 48);
 
     [Header("Data")]
@@ -231,6 +233,15 @@ public class LevelObjectPalette : MonoBehaviour
         dragPreview.style.display = DisplayStyle.None;
     }
 
+    private Vector3 SnapPosition(Vector3 position, Vector3 snap)
+    {
+        return new Vector3(
+            snap.x > 0 ? Mathf.Round(position.x / snap.x) * snap.x : position.x,
+            snap.y > 0 ? Mathf.Round(position.y / snap.y) * snap.y : position.y,
+            snap.z > 0 ? Mathf.Round(position.z / snap.z) * snap.z : position.z
+        );
+    }    
+
     private void TrySpawnPrefab(LevelItemData item, Vector2 mouseScreenPos)
     {
         if (Camera.main == null || item.prefab == null) return;
@@ -239,7 +250,13 @@ public class LevelObjectPalette : MonoBehaviour
 
         if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, baseplateLayer))
         {
-            GameObject newObject = GameObject.Instantiate(item.prefab, hit.point, Quaternion.identity);
+            Vector3 spawnPosition = hit.point;
+            if (projectSettings != null)
+            {
+                spawnPosition = SnapPosition(spawnPosition, projectSettings.PositionSnap);
+            }
+            GameObject newObject = GameObject.Instantiate(item.prefab, spawnPosition, Quaternion.identity);
+
             objectSelector?.SelectObject(newObject);
         }
     }
