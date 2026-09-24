@@ -25,7 +25,7 @@ public static class MaterialPreviewGenerator
 
         // Positioneer camera
         sphere.transform.position = Vector3.zero;
-        cam.transform.position = new Vector3(0, 0, -2.5f);
+        cam.transform.position = new Vector3(0, 0, -1.15f);
         cam.transform.LookAt(sphere.transform);
 
         // Render naar Render Texture
