@@ -62,8 +62,14 @@ public class ObjectSelector : MonoBehaviour
         }
     }
 
-    public void SelectObject(GameObject targetObject) 
+    public void SelectObject(GameObject? targetObject) 
     {
+        if (targetObject == null)
+        {
+            ClearHandleTarget();
+            return;
+        }
+
         Transform targetTransform = targetObject.transform;
         if (_currentTarget == targetTransform) return;
         SetHandleTarget(targetTransform);

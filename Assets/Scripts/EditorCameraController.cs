@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour
+public class EditorCameraController : MonoBehaviour
 {
     [Header("Movement")]
     public float moveSpeed = 10f;

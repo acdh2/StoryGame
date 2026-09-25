@@ -60,6 +60,16 @@ public class LevelObjectPalettePopulator : AssetPostprocessor
         categoriesProp.ClearArray();
 
         string[] subDirectories = Directory.GetDirectories(ROOT_FOLDER);
+        System.Array.Sort(subDirectories, (a, b) => 
+        {
+            string dirA = Path.GetFileName(a);
+            string dirB = Path.GetFileName(b);
+
+            if (dirA.Equals("Default", System.StringComparison.OrdinalIgnoreCase)) return -1;
+            if (dirB.Equals("Default", System.StringComparison.OrdinalIgnoreCase)) return 1;
+
+            return string.Compare(dirA, dirB, System.StringComparison.OrdinalIgnoreCase);
+        });
 
         int categoryIndex = 0;
         foreach (string subDir in subDirectories)

@@ -56,6 +56,41 @@ public class ItemDragManipulator : PointerManipulator
     {
         if (!isTracking || evt.pointerId != pointerId) return;
 
+        if (!isDragging)
+        {
+            // Pak de bounds van het element waar de items in staan (bijv. de toolbar of ScrollView)
+            // Of gebruik de bounds van de target zelf als het om de individuele cel gaat
+            VisualElement toolbarContainer = target.parent; // Pas dit aan naar jouw toolbar element
+            Rect bounds = toolbarContainer.worldBound;
+
+            // Check of de muis/pointer buiten de bounds van de toolbar is getrokken
+            bool isOutsideToolbar = !bounds.Contains(evt.position);
+
+            if (isOutsideToolbar)
+            {
+                // Zodra het icoon uit de balk wordt gesleept -> Start Drag
+                isDragging = true;
+                evt.StopPropagation();
+
+                panelRoot.CapturePointer(pointerId);
+                manager.StartDragPreview(itemData, evt.position, evt.currentTarget as VisualElement);
+            }
+            else
+            {
+                // Zolang de pointer binnen de toolbar blijft, doe je niets en laat je 
+                // de eventuele ScrollView de verticale beweging afhandelen.
+            }
+            return;
+        }
+
+        evt.StopPropagation();
+        manager.UpdateDragPreview(evt.position, evt.currentTarget as VisualElement);
+    }    
+
+    private void OnPointerMove2(PointerMoveEvent evt)
+    {
+        if (!isTracking || evt.pointerId != pointerId) return;
+
         // Als de drag-and-drop nog niet gestart is, bepalen we de richting
         if (!isDragging)
         {

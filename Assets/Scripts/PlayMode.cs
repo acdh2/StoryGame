@@ -4,11 +4,13 @@ using Yarn.Unity;
 
 public class PlayMode : MonoBehaviour
 {
-    public GameObject playerPrefab;
     public GameObject editorCamera;
-    public StarterAssetsInputs starterAssetsInputs;
     public GameObject dialogueRunnerPrefab;
+    public GameObject playerPrefab;
+    public ObjectSelector objectSelector;
+
     private DialogueRunner dialogueRunner;
+    private GameObject player;
 
     private bool firstRun = true;
 
@@ -19,24 +21,93 @@ public class PlayMode : MonoBehaviour
             return;
         }
 
-        if (editorCamera != null)
-            editorCamera.SetActive(false);
-
-        if (playerPrefab != null) 
-            playerPrefab.SetActive(true);
-
-        if (starterAssetsInputs != null) 
-            starterAssetsInputs.cursorInputForLook = true;
-
+        DisableEditorCamera();
+        CreateDialogue();
+        CreatePlayer();
         StartDialogue();
     }
 
-    private void StartDialogue() 
+    private void OnDisable()
+    {
+        EnableEditorCamera();
+        EndDialogue();
+        DestroyPlayer();
+
+    }
+
+    private void DisableEditorCamera() 
+    {
+        if (editorCamera != null)
+            editorCamera.SetActive(false);
+
+        if (objectSelector != null) {
+            objectSelector.SelectObject(null);
+            objectSelector.gameObject.SetActive(false);
+        }
+    }
+
+    private void EnableEditorCamera()
+    {
+        if (editorCamera != null) {
+            editorCamera.SetActive(true);
+        }
+
+        if (objectSelector != null) {
+            objectSelector.gameObject.SetActive(true);
+        }
+    }
+
+    private void CreatePlayer()
+    {
+        if (player == null) {
+            player = GameObject.Instantiate(playerPrefab);
+
+            if (dialogueRunner != null)
+            {
+                dialogueRunner.onDialogueStart.AddListener(HandleDialogueStart);
+                dialogueRunner.onDialogueComplete.AddListener(HandleDialogueComplete);
+            }      
+        }      
+    }
+
+    private void DestroyPlayer()
+    {
+        if (player != null) {
+            Destroy(player);
+
+            if (dialogueRunner != null)
+            {
+                dialogueRunner.onDialogueStart.RemoveListener(HandleDialogueStart);
+                dialogueRunner.onDialogueComplete.RemoveListener(HandleDialogueComplete);
+            }            
+        }
+    }
+
+    private void HandleDialogueStart()
+    {
+        if (player != null) {
+            PlayerControlBlocker blocker = player.GetComponentInChildren<PlayerControlBlocker>();
+            print(blocker);
+            blocker.DisableControls();
+            print("disabled");
+        }
+        print("dialogue started");
+    }
+
+    private void HandleDialogueComplete()
+    {
+        if (player != null) {
+            PlayerControlBlocker blocker = player.GetComponentInChildren<PlayerControlBlocker>();
+            blocker.EnableControls();
+        }
+        print("dialogue ended");
+    }    
+
+    private void CreateDialogue() 
     {
         if (dialogueRunner == null) {
             GameObject dialogGameObject = GameObject.Instantiate(dialogueRunnerPrefab);
             dialogueRunner = dialogGameObject.GetComponent<DialogueRunner>();
-            dialogueRunner.StartDialogue("Start");
         }
     }
 
@@ -50,19 +121,13 @@ public class PlayMode : MonoBehaviour
         }
     }
 
-    private void OnDisable()
+    private void StartDialogue() 
     {
-        if (editorCamera != null)
-            editorCamera.SetActive(true);
-
-        if (playerPrefab != null) 
-            playerPrefab.SetActive(false);
-
-        if (starterAssetsInputs != null) 
-            starterAssetsInputs.cursorInputForLook = false;
-
-        EndDialogue();
+        if (dialogueRunner != null) {
+            dialogueRunner.StartDialogue("Start");
+        }
     }
+
 }
 
 public class YarnDebugCommands : MonoBehaviour
