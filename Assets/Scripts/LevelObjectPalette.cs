@@ -240,7 +240,16 @@ public class LevelObjectPalette : MonoBehaviour
             snap.y > 0 ? Mathf.Round(position.y / snap.y) * snap.y : position.y,
             snap.z > 0 ? Mathf.Round(position.z / snap.z) * snap.z : position.z
         );
-    }    
+    }   
+
+private static void SetLayerRecursively(GameObject obj, int layer)
+{
+    obj.layer = layer;
+    foreach (Transform child in obj.transform)
+    {
+        SetLayerRecursively(child.gameObject, layer);
+    }
+}     
 
     private void TrySpawnPrefab(LevelItemData item, Vector2 mouseScreenPos)
     {
@@ -256,6 +265,8 @@ public class LevelObjectPalette : MonoBehaviour
                 spawnPosition = SnapPosition(spawnPosition, projectSettings.PositionSnap);
             }
             GameObject newObject = GameObject.Instantiate(item.prefab, spawnPosition, Quaternion.identity);
+            SetLayerRecursively(newObject, LayerMask.NameToLayer("SelectableObjects"));
+            //newObject.layer = LayerMask.NameToLayer("SelectableObjects");
 
             objectSelector?.SelectObject(newObject);
         }

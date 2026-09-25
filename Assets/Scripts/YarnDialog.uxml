@@ -1,0 +1,7 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements">
+    <ui:VisualElement name="dialogue-root">
+        <ui:Label name="character-name-label" text="Name" />
+        <ui:Label name="dialogue-text-label" text="Dialogue line goes here..." />
+        <ui:VisualElement name="options-container" />
+    </ui:VisualElement>
+</ui:UXML>
