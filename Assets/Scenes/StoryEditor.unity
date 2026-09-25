@@ -132,7 +132,7 @@ GameObject:
   - component: {fileID: 45334830}
   - component: {fileID: 45334831}
   m_Layer: 0
-  m_Name: Screen2
+  m_Name: Materials
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -211,6 +211,92 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NavigationIcon
   icon: {fileID: 2800000, guid: 48a1dfea0f41643beb3376c56e6c78cc, type: 3}
+--- !u!1 &321704821
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 321704822}
+  - component: {fileID: 321704825}
+  - component: {fileID: 321704824}
+  - component: {fileID: 321704823}
+  m_Layer: 0
+  m_Name: PlayMode
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &321704822
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 321704821}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 330303251}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &321704823
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 321704821}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e53974471c50b430bbf2752939c87bf5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayMode
+  editorCamera: {fileID: 2000960781}
+  dialogueRunnerPrefab: {fileID: 4808235806983676474, guid: 93e4fd226fbc34ad99d06de29d0491ba, type: 3}
+  playerPrefab: {fileID: 2388659209182943489, guid: 1d5c5c9095f4d44a18063d55aa204b27, type: 3}
+  objectSelector: {fileID: 330585548}
+--- !u!114 &321704824
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 321704821}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 19102, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.dll::UnityEngine.UIElements.UIDocument
+  m_PanelSettings: {fileID: 11400000, guid: 1d5a1314eb04343f585cab7f6cf724c0, type: 2}
+  m_ParentUI: {fileID: 0}
+  sourceAsset: {fileID: 9197481963319205126, guid: 69e0c60239e6b471fbd4694c898a089d, type: 3}
+  m_SortingOrder: 0
+  m_Position: 0
+  m_WorldSpaceSizeMode: 1
+  m_WorldSpaceWidth: 1920
+  m_WorldSpaceHeight: 1080
+  m_PivotReferenceSize: 0
+  m_Pivot: 0
+  m_WorldSpaceCollider: {fileID: 0}
+--- !u!114 &321704825
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 321704821}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 66285952fa8b04d83a29a2670efbf46d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::NavigationIcon
+  icon: {fileID: 2800000, guid: 8687b8eeadead4d2f9ca2212ee320e30, type: 3}
 --- !u!1 &330303250
 GameObject:
   m_ObjectHideFlags: 0
@@ -245,6 +331,7 @@ Transform:
   - {fileID: 1556066524}
   - {fileID: 45334829}
   - {fileID: 1919127383}
+  - {fileID: 321704822}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &330585543
@@ -692,7 +779,7 @@ GameObject:
   - component: {fileID: 1556066525}
   - component: {fileID: 1556066526}
   m_Layer: 0
-  m_Name: Screen1
+  m_Name: Build
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -907,7 +994,7 @@ GameObject:
   - component: {fileID: 1650302575}
   - component: {fileID: 1650302576}
   m_Layer: 0
-  m_Name: Hide
+  m_Name: File
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -952,9 +1039,8 @@ GameObject:
   - component: {fileID: 1919127383}
   - component: {fileID: 1919127385}
   - component: {fileID: 1919127387}
-  - component: {fileID: 1919127386}
   m_Layer: 0
-  m_Name: PlayMode
+  m_Name: Story
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -987,23 +1073,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66285952fa8b04d83a29a2670efbf46d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NavigationIcon
-  icon: {fileID: 2800000, guid: 8687b8eeadead4d2f9ca2212ee320e30, type: 3}
---- !u!114 &1919127386
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1919127382}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e53974471c50b430bbf2752939c87bf5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayMode
-  playerPrefab: {fileID: 0}
-  editorCamera: {fileID: 2000960781}
-  dialogueRunnerPrefab: {fileID: 4808235806983676474, guid: 93e4fd226fbc34ad99d06de29d0491ba, type: 3}
-  objectSelector: {fileID: 330585548}
+  icon: {fileID: 2800000, guid: 03ce24915079b42759fb912f0d0ba011, type: 3}
 --- !u!114 &1919127387
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1018,7 +1088,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: UnityEngine.dll::UnityEngine.UIElements.UIDocument
   m_PanelSettings: {fileID: 11400000, guid: 1d5a1314eb04343f585cab7f6cf724c0, type: 2}
   m_ParentUI: {fileID: 0}
-  sourceAsset: {fileID: 9197481963319205126, guid: 69e0c60239e6b471fbd4694c898a089d, type: 3}
+  sourceAsset: {fileID: 9197481963319205126, guid: 226faa578249b49ba95176e1d2df1f42, type: 3}
   m_SortingOrder: 0
   m_Position: 0
   m_WorldSpaceSizeMode: 1
