@@ -6,20 +6,18 @@ using UnityEngine.UIElements;
 public class CommandListController : MonoBehaviour
 {
     [Header("UI Templates & Setup")]
-    public VisualTreeAsset itemTemplate; // Sleep hier CommandItem.uxml in
+    public VisualTreeAsset itemTemplate;
     public int initialItemCount = 24;
 
     private UIDocument uiDocument;
     private ScrollView scrollView;
     private VisualElement container;
 
-    // Drag and Drop state
     private VisualElement draggedElement = null;
     private VisualElement placeholder = null;
     private Vector2 dragStartPosition;
     private bool isDragging = false;
 
-    // Double click detection
     private float lastClickTime = 0f;
     private const float DOUBLE_CLICK_THRESHOLD = 0.3f;
 
@@ -34,59 +32,104 @@ public class CommandListController : MonoBehaviour
         if (scrollView == null) return;
 
         container = scrollView.contentContainer;
+        container.style.paddingBottom = 300;
 
-        // Maak ruimte vrij onderaan door een lege onder-padding toe te voegen aan het scrollvenster
-        container.style.paddingBottom = 300; // Maakt 'over-scroll' onderaan mogelijk
-
-        // Luister naar dubbelklik op het lege deel van het scroll-gebied
         scrollView.RegisterCallback<MouseDownEvent>(OnScrollViewMouseDown);
-
-        PopulateInitialList();
     }
 
-    private void PopulateInitialList()
+    public void ClearList()
     {
-        container.Clear();
+        if (container != null)
+        {
+            container.Clear();
+        }
+    }
+
+    public void PopulateInitialList()
+    {
+        ClearList();
         for (int i = 0; i < initialItemCount; i++)
         {
             AddItemToList();
         }
     }
 
-    private void AddItemToList()
+    public VisualElement AddItemToList(string commandType = null, string argumentText = "")
     {
         if (itemTemplate == null)
         {
             Debug.LogError("[CommandListController] Geen itemTemplate toegewezen!");
-            return;
+            return null;
         }
 
         TemplateContainer itemInstance = itemTemplate.Instantiate();
         VisualElement itemRoot = itemInstance.Q<VisualElement>("command-item-root") ?? itemInstance;
 
-        // Vul de opties in de dropdown
         DropdownField dropdown = itemRoot.Q<DropdownField>("command-dropdown");
         if (dropdown != null)
         {
             dropdown.choices = defaultOptions;
-            dropdown.value = defaultOptions[0];
+            dropdown.value = string.IsNullOrEmpty(commandType) ? defaultOptions[0] : commandType;
         }
 
-        // Voeg Drag & Drop logica toe aan het item
-        RegisterDragEvents(itemRoot);
+        TextField inputField = itemRoot.Q<TextField>("command-input");
+        if (inputField != null)
+        {
+            inputField.value = argumentText;
+            inputField.RegisterCallback<NavigationMoveEvent>(evt => evt.StopPropagation(), TrickleDown.TrickleDown);
+            inputField.RegisterCallback<NavigationSubmitEvent>(evt => evt.StopPropagation(), TrickleDown.TrickleDown);
+            inputField.RegisterCallback<NavigationCancelEvent>(evt => evt.StopPropagation(), TrickleDown.TrickleDown);
+        }
 
+        RegisterDragEvents(itemRoot);
         container.Add(itemRoot);
+
+        return itemRoot;
     }
 
-    // ==========================================
-    // DOUBLE CLICK LOGIC
-    // ==========================================
+    public List<CommandData> GetCommandDataList()
+    {
+        List<CommandData> list = new List<CommandData>();
+        if (container == null) return list;
+
+        foreach (VisualElement child in container.Children())
+        {
+            DropdownField dropdown = child.Q<DropdownField>("command-dropdown");
+            TextField inputField = child.Q<TextField>("command-input");
+
+            if (dropdown != null && inputField != null)
+            {
+                // Alleen opslaan als er daadwerkelijk een gekozen type of invoer is
+                list.Add(new CommandData
+                {
+                    CommandType = dropdown.value,
+                    Argument = inputField.value
+                });
+            }
+        }
+
+        return list;
+    }
+
+    public void LoadFromDataList(List<CommandData> dataList)
+    {
+        ClearList();
+        if (dataList == null || dataList.Count == 0)
+        {
+            PopulateInitialList();
+            return;
+        }
+
+        foreach (var data in dataList)
+        {
+            AddItemToList(data.CommandType, data.Argument);
+        }
+    }
+
     private void OnScrollViewMouseDown(MouseDownEvent evt)
     {
-        // Alleen linker muisknop
         if (evt.button != 0) return;
 
-        // Controleer of de gebruiker op de lege achtergrond klikt en niet op een item
         if (evt.target == scrollView || evt.target == container)
         {
             if (Time.time - lastClickTime < DOUBLE_CLICK_THRESHOLD)
@@ -104,12 +147,9 @@ public class CommandListController : MonoBehaviour
         {
             if (evt.button != 0) return;
 
-            // Controleer of de gebruiker specifiek op de drag-handle heeft geklikt
             if (evt.target is VisualElement targetVE)
             {
                 VisualElement dragHandle = element.Q<VisualElement>("drag-handle");
-                
-                // Als de klik NIET op de drag-handle (of een child daarvan) was, negeer de drag
                 if (dragHandle == null || (targetVE != dragHandle && !dragHandle.Contains(targetVE)))
                 {
                     return;
@@ -147,18 +187,15 @@ public class CommandListController : MonoBehaviour
 
             foreach (var child in container.Children())
             {
-                // Negeer de placeholder en het gesleepte element zelf bij het bepalen van de nieuwe plek
                 if (child == placeholder || child == draggedElement) continue;
 
                 int childIndex = container.IndexOf(child);
 
-                // Als we omhoog slepen en boven het midden van een element komen
                 if (draggedY < child.worldBound.center.y && placeholderIndex > childIndex)
                 {
                     container.Insert(childIndex, placeholder);
                     break;
                 }
-                // Als we omlaag slepen en onder het midden van een element komen
                 else if (draggedY > child.worldBound.center.y && placeholderIndex < childIndex)
                 {
                     container.Insert(childIndex, placeholder);
@@ -169,48 +206,44 @@ public class CommandListController : MonoBehaviour
             evt.StopPropagation();
         });
 
-element.RegisterCallback<MouseUpEvent>(evt =>
-{
-    if (!isDragging || draggedElement != element) return;
-
-    draggedElement.ReleaseMouse();
-    isDragging = false;
-
-    Rect containerBounds = scrollView.worldBound;
-    if (!containerBounds.Contains(evt.mousePosition))
-    {
-        // Buiten het scherm gesleept -> Verwijderen
-        container.Remove(draggedElement);
-        container.Remove(placeholder);
-    }
-    else
-    {
-        int oldIndex = container.IndexOf(draggedElement);
-        int targetIndex = container.IndexOf(placeholder);
-
-        // Als het element van een lagere naar een hogere index schuift,
-        // compenseer voor de index-verschuiving na het verwijderen
-        if (oldIndex < targetIndex)
+        element.RegisterCallback<MouseUpEvent>(evt =>
         {
-            targetIndex--;
-        }
+            if (!isDragging || draggedElement != element) return;
 
-        container.Remove(placeholder);
-        container.Remove(draggedElement);
+            draggedElement.ReleaseMouse();
+            isDragging = false;
 
-        // Reset styling naar normale layout
-        draggedElement.style.position = Position.Relative;
-        draggedElement.style.top = StyleKeyword.Null;
-        draggedElement.style.left = StyleKeyword.Null;
-        draggedElement.style.width = StyleKeyword.Null;
+            Rect containerBounds = scrollView.worldBound;
+            if (!containerBounds.Contains(evt.mousePosition))
+            {
+                container.Remove(draggedElement);
+                container.Remove(placeholder);
+            }
+            else
+            {
+                int oldIndex = container.IndexOf(draggedElement);
+                int targetIndex = container.IndexOf(placeholder);
 
-        container.Insert(targetIndex, draggedElement);
-    }
+                if (oldIndex < targetIndex)
+                {
+                    targetIndex--;
+                }
 
-    draggedElement = null;
-    placeholder = null;
-    evt.StopPropagation();
-});
+                container.Remove(placeholder);
+                container.Remove(draggedElement);
+
+                draggedElement.style.position = Position.Relative;
+                draggedElement.style.top = StyleKeyword.Null;
+                draggedElement.style.left = StyleKeyword.Null;
+                draggedElement.style.width = StyleKeyword.Null;
+
+                container.Insert(targetIndex, draggedElement);
+            }
+
+            draggedElement = null;
+            placeholder = null;
+            evt.StopPropagation();
+        });
     }
 
     private void UpdateDraggedElementPosition(Vector2 mousePosition)

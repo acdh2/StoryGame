@@ -1,67 +1,121 @@
+using System.Text;
+using System.Text.RegularExpressions;
 using UnityEngine;
-using UnityEngine.UIElements;
 
-[RequireComponent(typeof(UIDocument))]
 public class StoryEditor : MonoBehaviour
 {
-    [Header("Default Lua Code")]
+    public CommandListController commandListController;
+    private const string SAVE_KEY = "StoryEditor_SavedCommands";
+
     [TextArea(10, 20)]
-    public string defaultLuaScript = @"";
-
-    // De opgeslagen actuele Lua code (beschikbaar ook als het GameObject inactief is)
-    public string CurrentLuaCode { get; private set; }
-
-    private UIDocument uiDocument;
-    private TextField codeTextField;
-
-    private void Awake()
-    {
-        uiDocument = GetComponent<UIDocument>();
-        CurrentLuaCode = defaultLuaScript;
-    }
+    public string CurrentLuaCode;
 
     private void OnEnable()
     {
-        BindUI();
+        if (commandListController == null)
+            commandListController = GetComponent<CommandListController>();
+
+        LoadEditorState();
     }
 
     private void OnDisable()
     {
-        UnbindUI();
+        SaveEditorState();
     }
 
-    private void BindUI()
+    public void SaveEditorState()
     {
-        if (uiDocument == null || uiDocument.rootVisualElement == null) return;
+        if (commandListController == null) return;
 
-        codeTextField = uiDocument.rootVisualElement.Q<TextField>("code");
+        CommandDataList wrapper = new CommandDataList();
+        wrapper.Commands = commandListController.GetCommandDataList();
 
-        if (codeTextField != null)
-        {
-            // Vul het tekstveld met de huidige opgeslagen code
-            codeTextField.value = CurrentLuaCode;
+        string json = JsonUtility.ToJson(wrapper);
+        PlayerPrefs.SetString(SAVE_KEY, json);
+        PlayerPrefs.Save();
 
-            // Luister naar wijzigingen in het tekstveld
-            codeTextField.RegisterValueChangedCallback(OnCodeChanged);
-        }
-        else
-        {
-            Debug.LogWarning("[StoryEditor] TextField met de naam 'code' niet gevonden in het UIDocument.");
-        }
+        // Update direct het gegenereerde Lua-script
+        CurrentLuaCode = ToLuaScript();
     }
 
-    private void UnbindUI()
+    public void LoadEditorState()
     {
-        if (codeTextField != null)
+        if (commandListController == null) return;
+
+        if (PlayerPrefs.HasKey(SAVE_KEY))
         {
-            codeTextField.UnregisterValueChangedCallback(OnCodeChanged);
-            codeTextField = null;
+            string json = PlayerPrefs.GetString(SAVE_KEY);
+            CommandDataList wrapper = JsonUtility.FromJson<CommandDataList>(json);
+            if (wrapper != null)
+            {
+                commandListController.LoadFromDataList(wrapper.Commands);
+                CurrentLuaCode = ToLuaScript();
+                return;
+            }
         }
+
+        commandListController.PopulateInitialList();
+        CurrentLuaCode = ToLuaScript();
     }
 
-    private void OnCodeChanged(ChangeEvent<string> evt)
+    public string ToLuaScript()
     {
-        // Sla de gewijzigde tekst direct intern op
-        CurrentLuaCode = evt.newValue;
+        if (commandListController == null) return string.Empty;
+
+        var commandList = commandListController.GetCommandDataList();
+        StringBuilder sb = new StringBuilder();
+
+        foreach (var cmd in commandList)
+        {
+            if (string.IsNullOrEmpty(cmd.CommandType)) continue;
+
+            string arg = cmd.Argument ?? "";
+
+            // 1. Unescape ge ge-escapede karakters uit de input (bijv. \n -> echte newline)
+            try
+            {
+                arg = Regex.Unescape(arg);
+            }
+            catch
+            {
+                // Val terug op originele string als Regex.Unescape faalt op ongeldige formatting
+            }
+
+            // 2. Escape dubbele quotes zodat de Lua-string niet breekt
+            arg = arg.Replace("\"", "\\\"");
+
+            switch (cmd.CommandType.ToLower())
+            {
+                case "say":
+                    sb.AppendLine($"say(\"{arg}\")");
+                    break;
+                case "option":
+                    sb.AppendLine($"option(\"{arg}\")");
+                    break;
+                case "label":
+                    sb.AppendLine($"label(\"{arg}\")");
+                    break;
+                case "jump":
+                    sb.AppendLine($"jump(\"{arg}\")");
+                    break;
+                case "jumpif":
+                    sb.AppendLine($"check_if(\"{arg}\")");
+                    break;
+                case "set":
+                    sb.AppendLine($"set(\"{arg}\")");
+                    break;
+                case "print":
+                    sb.AppendLine($"print(\"{arg}\")");
+                    break;
+                default:
+                    if (!string.IsNullOrEmpty(cmd.CommandType))
+                    {
+                        sb.AppendLine($"{cmd.CommandType}(\"{arg}\")");
+                    }
+                    break;
+            }
+        }
+
+        return sb.ToString();
     }
 }

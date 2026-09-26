@@ -1,3 +1,0 @@
-<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <ui:TextField label="Code" placeholder-text="" name="code" multiline="true" select-all-on-mouse-up="false" select-all-on-focus="false" select-line-by-triple-click="false" emoji-fallback-support="false" value="" picking-mode="Position" style="width: 100%; height: auto; flex-direction: column; white-space: pre; -unity-text-align: upper-left; top: 63px; position: absolute; left: 0; right: -8px; bottom: 1px;"/>
-</ui:UXML>

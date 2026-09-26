@@ -7,7 +7,7 @@ using MoonSharp.Interpreter;
 public class LuaDialogueManager : MonoBehaviour
 {
     [Header("Script Input Source")]
-    public StoryEditor storyEditor; // Sleep hier de StoryEditor GameObject in
+    public StoryEditor storyEditor;
 
     [Header("UI Document Reference")]
     public UIDocument uiDocument;
@@ -22,21 +22,22 @@ public class LuaDialogueManager : MonoBehaviour
 
     // Execution State
     private bool advanceRequested = false;
-    private string selectedOptionTarget = null;
+    private int selectedOptionNextInstructionIndex = -1;
+    private bool clickedRequested = false;
+    private string lastClickedItem = "";
     private UnityEngine.Coroutine activeDialogueCoroutine = null;
 
-    // MoonSharp instance (eenmalig aangemaakt)
+    // MoonSharp instance
     private Script moonSharpScript;
 
     // Data Structures
     public class Instruction
     {
         public string Type;
-        public string Speaker;
         public string Text;
         public string Target;
         public string VarName;
-        public bool BoolValue;
+        public string ItemName;
     }
 
     private List<Instruction> instructions = new List<Instruction>();
@@ -44,15 +45,19 @@ public class LuaDialogueManager : MonoBehaviour
 
     void Awake()
     {
-        // Initieer de MoonSharp omgeving eenmalig om GC allocaties bij herstarten te minimaliseren
         moonSharpScript = new Script();
         moonSharpScript.Globals["print"] = (System.Action<string>)((text) => Debug.Log($"[Lua] {text}"));
-        moonSharpScript.Globals["say"] = (System.Action<string, string>)LuaSay;
-        moonSharpScript.Globals["option"] = (System.Action<string, string>)LuaOption;
+        moonSharpScript.Globals["say"] = (System.Action<string>)LuaSay;
+        moonSharpScript.Globals["clicked"] = (System.Action<string>)LuaClicked;
+        moonSharpScript.Globals["show"] = (System.Action<string>)LuaShow;
+        moonSharpScript.Globals["hide"] = (System.Action<string>)LuaHide;
+        moonSharpScript.Globals["option"] = (System.Action<string>)LuaOption;
         moonSharpScript.Globals["label"] = (System.Action<string>)LuaLabel;
         moonSharpScript.Globals["jump"] = (System.Action<string>)LuaJump;
-        moonSharpScript.Globals["jumpif"] = (System.Action<string, string>)LuaJumpIf;
-        moonSharpScript.Globals["set"] = (System.Action<string, bool>)LuaSet;
+        moonSharpScript.Globals["set"] = (System.Action<string>)LuaSet;
+        moonSharpScript.Globals["unset"] = (System.Action<string>)LuaUnset;
+        moonSharpScript.Globals["check_if"] = (System.Action<string>)LuaIf;
+        moonSharpScript.Globals["check_if_not"] = (System.Action<string>)LuaIfNot;
     }
 
     void OnEnable()
@@ -72,7 +77,6 @@ public class LuaDialogueManager : MonoBehaviour
     {
         StopDialogue();
 
-        // Haal de code op via de StoryEditor, of gebruik de fallback
         string codeToExecute = "";
 
         if (storyEditor != null && !string.IsNullOrEmpty(storyEditor.CurrentLuaCode))
@@ -98,7 +102,8 @@ public class LuaDialogueManager : MonoBehaviour
         }
 
         advanceRequested = false;
-        selectedOptionTarget = null;
+        selectedOptionNextInstructionIndex = -1;
+        clickedRequested = false;
         ClearOptionsUI();
 
         if (rootElement != null)
@@ -116,11 +121,16 @@ public class LuaDialogueManager : MonoBehaviour
         optionButtonTemplate = rootElement.Q<Button>("option-button-template");
         continueButton = rootElement.Q<Button>("continue-button");
 
-        continueButton.clicked += OnContinueClicked;
+        if (continueButton != null)
+        {
+            continueButton.clicked += OnContinueClicked;
+            continueButton.style.display = DisplayStyle.None;
+        }
         
-        // Verberg elementen initieel
-        continueButton.style.display = DisplayStyle.None;
-        optionButtonTemplate.style.display = DisplayStyle.None;
+        if (optionButtonTemplate != null)
+        {
+            optionButtonTemplate.style.display = DisplayStyle.None;
+        }
     }
 
     private void OnContinueClicked()
@@ -128,25 +138,51 @@ public class LuaDialogueManager : MonoBehaviour
         advanceRequested = true;
     }
 
+    public void OnWorldItemClicked(string itemName)
+    {
+        if (clickedRequested && lastClickedItem == itemName)
+        {
+            clickedRequested = false;
+        }
+    }
+
     // ==========================================
-    // FASE 1: BUILDER / PARSING VIA MOONSHARP
+    // FASE 1: PARSING VIA MOONSHARP
     // ==========================================
     private void ParseLuaScript(string scriptSource)
     {
         instructions.Clear();
         labels.Clear();
 
-        moonSharpScript.DoString(scriptSource);
+        if (!string.IsNullOrEmpty(scriptSource))
+        {
+            moonSharpScript.DoString(scriptSource);
+        }
     }
 
-    private void LuaSay(string speaker, string text)
+    private void LuaSay(string text)
     {
-        instructions.Add(new Instruction { Type = "SAY", Speaker = speaker, Text = text });
+        instructions.Add(new Instruction { Type = "SAY", Text = text });
     }
 
-    private void LuaOption(string text, string targetLabel)
+    private void LuaClicked(string itemName)
     {
-        instructions.Add(new Instruction { Type = "OPTION", Text = text, Target = targetLabel });
+        instructions.Add(new Instruction { Type = "CLICKED", ItemName = itemName });
+    }
+
+    private void LuaShow(string itemName)
+    {
+        instructions.Add(new Instruction { Type = "SHOW", ItemName = itemName });
+    }
+
+    private void LuaHide(string itemName)
+    {
+        instructions.Add(new Instruction { Type = "HIDE", ItemName = itemName });
+    }
+
+    private void LuaOption(string text)
+    {
+        instructions.Add(new Instruction { Type = "OPTION", Text = text });
     }
 
     private void LuaLabel(string name)
@@ -160,14 +196,81 @@ public class LuaDialogueManager : MonoBehaviour
         instructions.Add(new Instruction { Type = "JUMP", Target = targetLabel });
     }
 
-    private void LuaJumpIf(string varName, string targetLabel)
+    private void LuaSet(string varName)
     {
-        instructions.Add(new Instruction { Type = "JUMP_IF", VarName = varName, Target = targetLabel });
+        instructions.Add(new Instruction { Type = "SET", VarName = varName });
     }
 
-    private void LuaSet(string varName, bool value)
+    private void LuaUnset(string varName)
     {
-        instructions.Add(new Instruction { Type = "SET", VarName = varName, BoolValue = value });
+        instructions.Add(new Instruction { Type = "UNSET", VarName = varName });
+    }
+
+    private void LuaIf(string varName)
+    {
+        instructions.Add(new Instruction { Type = "IF", VarName = varName });
+    }
+
+    private void LuaIfNot(string varName)
+    {
+        instructions.Add(new Instruction { Type = "IF_NOT", VarName = varName });
+    }
+
+    // ==========================================
+    // STRUCTUUR BEREKENING (GETNEXTBLOCK)
+    // ==========================================
+
+    /// <summary>
+    /// Berekent de index direct NÁ het logische blok dat op startPc begint.
+    /// - Als startPc een OPTION is: de OPTION + de onderliggende actie (tenzij de actie een nieuwe OPTION is).
+    /// - Als startPc een IF / IF_NOT is: de IF + de onderliggende instructie/blok.
+    /// - Anders: startPc + 1 (enkele instructie).
+    /// </summary>
+    private int GetNextBlock(int startPc)
+    {
+        if (startPc >= instructions.Count) return instructions.Count;
+
+        Instruction instr = instructions[startPc];
+
+        switch (instr.Type)
+        {
+            case "OPTION":
+            {
+                int nextPc = startPc + 1;
+                // Als het direct gevolgd wordt door een OPTION, is de actie leeg.
+                if (nextPc < instructions.Count && instructions[nextPc].Type == "OPTION")
+                {
+                    return nextPc;
+                }
+                // Anders is het blok: OPTION + het blok dat erna komt
+                return GetNextBlock(nextPc);
+            }
+
+            case "IF":
+            case "IF_NOT":
+            {
+                int nextPc = startPc + 1;
+                // Blok is de IF + het blok dat erna komt
+                return GetNextBlock(nextPc);
+            }
+
+            default:
+                // Normale instructie met parameter is 1 stap groot
+                return startPc + 1;
+        }
+    }
+
+    /// <summary>
+    /// Berekent het einde van een hele keten van opeenvolgende OPTION-blokken.
+    /// </summary>
+    private int GetEndOfOptionsChain(int startPc)
+    {
+        int currentPc = startPc;
+        while (currentPc < instructions.Count && instructions[currentPc].Type == "OPTION")
+        {
+            currentPc = GetNextBlock(currentPc);
+        }
+        return currentPc;
     }
 
     // ==========================================
@@ -176,60 +279,164 @@ public class LuaDialogueManager : MonoBehaviour
     private IEnumerator RunDialogueRoutine()
     {
         int pc = 0;
-        Dictionary<string, bool> variables = new Dictionary<string, bool>();
-        List<Instruction> pendingOptions = new List<Instruction>();
+        HashSet<string> variables = new HashSet<string>();
 
         while (pc < instructions.Count)
         {
             Instruction instr = instructions[pc];
 
-            // 1. CHECK FOR PENDING OPTIONS (Flush voor elk niet-OPTION commando)
-            if (pendingOptions.Count > 0 && instr.Type != "OPTION")
+            // Als we een OPTION tegenkomen, verzamelen we de hele keten
+            if (instr.Type == "OPTION")
             {
-                selectedOptionTarget = null;
-                ShowOptionsUI(pendingOptions);
+                int optionChainStartPc = pc;
+                int endOfOptionBlockPc = GetEndOfOptionsChain(optionChainStartPc);
 
-                // Wacht tot de gebruiker een optie aanklikt
-                yield return new WaitUntil(() => selectedOptionTarget != null);
+                List<(Instruction optInstr, int targetPc)> options = new List<(Instruction, int)>();
+
+                // Scan alle opties in de keten
+                int scanPc = optionChainStartPc;
+                while (scanPc < endOfOptionBlockPc && scanPc < instructions.Count && instructions[scanPc].Type == "OPTION")
+                {
+                    options.Add((instructions[scanPc], scanPc + 1));
+                    scanPc = GetNextBlock(scanPc);
+                }
+
+                selectedOptionNextInstructionIndex = -1;
+                ShowOptionsUI(options);
+
+                yield return new WaitUntil(() => selectedOptionNextInstructionIndex != -1);
 
                 ClearOptionsUI();
-                pendingOptions.Clear();
 
-                // Spring naar het gekozen label (overschrijft huidige instructie)
-                if (labels.TryGetValue(selectedOptionTarget, out int jumpPc))
+                int chosenActionStartPc = selectedOptionNextInstructionIndex;
+                int chosenActionEndPc = GetNextBlock(chosenActionStartPc);
+
+                // Als de gekozen actie niet direct een nieuwe OPTION is, voer deze uit
+                if (chosenActionStartPc < instructions.Count && instructions[chosenActionStartPc].Type != "OPTION")
                 {
-                    pc = jumpPc;
-                    continue;
+                    pc = chosenActionStartPc;
+
+                    while (pc < chosenActionEndPc && pc < instructions.Count)
+                    {
+                        Instruction subInstr = instructions[pc];
+
+                        if (subInstr.Type == "IF")
+                        {
+                            if (variables.Contains(subInstr.VarName)) pc++;
+                            else pc = GetNextBlock(pc);
+                        }
+                        else if (subInstr.Type == "IF_NOT")
+                        {
+                            if (!variables.Contains(subInstr.VarName)) pc++;
+                            else pc = GetNextBlock(pc);
+                        }
+                        else if (subInstr.Type == "SAY")
+                        {
+                            if (dialogueTextLabel != null) dialogueTextLabel.text = subInstr.Text;
+                            if (continueButton != null) continueButton.style.display = DisplayStyle.Flex;
+
+                            advanceRequested = false;
+                            yield return new WaitUntil(() => advanceRequested);
+
+                            if (continueButton != null) continueButton.style.display = DisplayStyle.None;
+                            pc++;
+                        }
+                        else if (subInstr.Type == "CLICKED")
+                        {
+                            clickedRequested = true;
+                            lastClickedItem = subInstr.ItemName;
+                            yield return new WaitUntil(() => !clickedRequested);
+                            pc++;
+                        }
+                        else if (subInstr.Type == "JUMP")
+                        {
+                            if (labels.TryGetValue(subInstr.Target, out int targetPc))
+                            {
+                                pc = targetPc;
+                            }
+                            break;
+                        }
+                        else
+                        {
+                            ExecuteSingleInstruction(subInstr, variables);
+                            pc++;
+                        }
+                    }
                 }
-                else
+
+                // Spring altijd naar het berekende einde van het complete optieblok
+                if (pc < instructions.Count && instructions[pc].Type != "JUMP")
                 {
-                    Debug.LogError($"Label '{selectedOptionTarget}' niet gevonden!");
-                    break;
+                    pc = endOfOptionBlockPc;
                 }
+
+                continue;
             }
 
-            // 2. INSTRUCTION SWITCH
+            // INSTRUCTION SWITCH VOOR NORMALE COMMANDO'S
             switch (instr.Type)
             {
                 case "SAY":
-                    characterNameLabel.text = instr.Speaker;
-                    dialogueTextLabel.text = instr.Text;
-                    continueButton.style.display = DisplayStyle.Flex;
+                    if (dialogueTextLabel != null) dialogueTextLabel.text = instr.Text;
+                    if (continueButton != null) continueButton.style.display = DisplayStyle.Flex;
 
                     advanceRequested = false;
                     yield return new WaitUntil(() => advanceRequested);
 
-                    continueButton.style.display = DisplayStyle.None;
+                    if (continueButton != null) continueButton.style.display = DisplayStyle.None;
                     pc++;
                     break;
 
-                case "OPTION":
-                    pendingOptions.Add(instr);
+                case "CLICKED":
+                    clickedRequested = true;
+                    lastClickedItem = instr.ItemName;
+                    yield return new WaitUntil(() => !clickedRequested);
+                    pc++;
+                    break;
+
+                case "SHOW":
+                    ToggleUIElementVisibility(instr.ItemName, DisplayStyle.Flex);
+                    pc++;
+                    break;
+
+                case "HIDE":
+                    ToggleUIElementVisibility(instr.ItemName, DisplayStyle.None);
+                    pc++;
+                    break;
+
+                case "IF":
+                    if (variables.Contains(instr.VarName))
+                    {
+                        pc++;
+                    }
+                    else
+                    {
+                        pc = GetNextBlock(pc);
+                    }
+                    break;
+
+                case "IF_NOT":
+                    if (!variables.Contains(instr.VarName))
+                    {
+                        pc++;
+                    }
+                    else
+                    {
+                        pc = GetNextBlock(pc);
+                    }
+                    break;
+
+                case "SET":
+                    variables.Add(instr.VarName);
+                    pc++;
+                    break;
+
+                case "UNSET":
+                    variables.Remove(instr.VarName);
                     pc++;
                     break;
 
                 case "LABEL":
-                    // Een label fungeert als marker in de VM; ga direct door
                     pc++;
                     break;
 
@@ -240,59 +447,73 @@ public class LuaDialogueManager : MonoBehaviour
                         pc++;
                     break;
 
-                case "JUMP_IF":
-                    if (variables.TryGetValue(instr.VarName, out bool val) && val)
-                    {
-                        if (labels.TryGetValue(instr.Target, out int jumpIfPc))
-                            pc = jumpIfPc;
-                        else
-                            pc++;
-                    }
-                    else
-                    {
-                        pc++;
-                    }
-                    break;
-
-                case "SET":
-                    variables[instr.VarName] = instr.BoolValue;
-                    pc++;
-                    break;
-
                 default:
                     pc++;
                     break;
             }
         }
 
-        // Einde dialoog
         rootElement.style.display = DisplayStyle.None;
         activeDialogueCoroutine = null;
+    }
+
+    private void ExecuteSingleInstruction(Instruction instr, HashSet<string> variables)
+    {
+        switch (instr.Type)
+        {
+            case "SET":
+                variables.Add(instr.VarName);
+                break;
+            case "UNSET":
+                variables.Remove(instr.VarName);
+                break;
+            case "SHOW":
+                ToggleUIElementVisibility(instr.ItemName, DisplayStyle.Flex);
+                break;
+            case "HIDE":
+                ToggleUIElementVisibility(instr.ItemName, DisplayStyle.None);
+                break;
+        }
     }
 
     // ==========================================
     // UI HELPERS
     // ==========================================
-    private void ShowOptionsUI(List<Instruction> options)
+    private void ToggleUIElementVisibility(string elementName, DisplayStyle displayStyle)
     {
-        continueButton.style.display = DisplayStyle.None;
+        if (uiDocument == null || uiDocument.rootVisualElement == null) return;
+        VisualElement elem = uiDocument.rootVisualElement.Q<VisualElement>(elementName);
+        if (elem != null)
+        {
+            elem.style.display = displayStyle;
+        }
+    }
+
+    private void ShowOptionsUI(List<(Instruction optInstr, int targetPc)> options)
+    {
+        if (continueButton != null) continueButton.style.display = DisplayStyle.None;
 
         foreach (var opt in options)
         {
             Button btn = new Button();
-            btn.text = opt.Text;
-            btn.style.height = optionButtonTemplate.style.height;
-            btn.style.backgroundColor = optionButtonTemplate.style.backgroundColor;
-            btn.style.borderTopLeftRadius = optionButtonTemplate.style.borderTopLeftRadius;
-            btn.style.borderTopRightRadius = optionButtonTemplate.style.borderTopRightRadius;
-            btn.style.borderBottomLeftRadius = optionButtonTemplate.style.borderBottomLeftRadius;
-            btn.style.borderBottomRightRadius = optionButtonTemplate.style.borderBottomRightRadius;
-            btn.style.color = optionButtonTemplate.style.color;
+            btn.text = opt.optInstr.Text;
+            
+            if (optionButtonTemplate != null)
+            {
+                btn.style.height = optionButtonTemplate.style.height;
+                btn.style.backgroundColor = optionButtonTemplate.style.backgroundColor;
+                btn.style.borderTopLeftRadius = optionButtonTemplate.style.borderTopLeftRadius;
+                btn.style.borderTopRightRadius = optionButtonTemplate.style.borderTopRightRadius;
+                btn.style.borderBottomLeftRadius = optionButtonTemplate.style.borderBottomLeftRadius;
+                btn.style.borderBottomRightRadius = optionButtonTemplate.style.borderBottomRightRadius;
+                btn.style.color = optionButtonTemplate.style.color;
+            }
+            
             btn.style.marginTop = 2;
             btn.style.marginBottom = 4;
 
-            string target = opt.Target;
-            btn.clicked += () => { selectedOptionTarget = target; };
+            int targetInstructionIndex = opt.targetPc;
+            btn.clicked += () => { selectedOptionNextInstructionIndex = targetInstructionIndex; };
 
             optionsContainer.Add(btn);
         }
@@ -300,8 +521,12 @@ public class LuaDialogueManager : MonoBehaviour
 
     private void ClearOptionsUI()
     {
+        if (optionsContainer == null) return;
         optionsContainer.Clear();
-        optionsContainer.Add(optionButtonTemplate);
-        optionButtonTemplate.style.display = DisplayStyle.None;
+        if (optionButtonTemplate != null)
+        {
+            optionsContainer.Add(optionButtonTemplate);
+            optionButtonTemplate.style.display = DisplayStyle.None;
+        }
     }
 }
