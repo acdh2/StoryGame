@@ -62,7 +62,7 @@ public class ObjectSelector : MonoBehaviour
         }
     }
 
-    public void SelectObject(GameObject? targetObject) 
+    public void SelectObject(GameObject targetObject) 
     {
         if (targetObject == null)
         {

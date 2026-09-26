@@ -1,0 +1,9 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:VisualElement name="command-item-root" style="flex-direction: row; height: 44px; width: 100%; align-items: center; background-color: rgb(235, 235, 235); border-radius: 8px; border-width: 1px; border-color: rgb(200, 200, 200); margin-bottom: 4px; padding-left: 8px; padding-right: 8px;">
+        <!-- Drag Handle Icon -->
+        <ui:Label name="drag-handle" text="|||" style="width: 24px; text-align: center; font-size: 14px; color: rgb(120, 120, 120); cursor: move; margin-right: 4px; -unity-font-style: bold;" />
+        
+        <ui:DropdownField name="command-dropdown" style="width: 150px; margin-right: 8px;" />
+        <ui:TextField name="command-input" multiline="false" style="flex-grow: 1;" />
+    </ui:VisualElement>
+</ui:UXML>

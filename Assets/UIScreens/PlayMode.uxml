@@ -1,2 +1,12 @@
 <ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:VisualElement name="dialogue-root" style="position: absolute; bottom: 0; left: 0; right: 0; width: 100%; flex-direction: column;">
+        <ui:VisualElement style="background-color: rgba(220, 220, 220, 0.95); border-top-left-radius: 16px; border-top-right-radius: 16px; padding: 12px; border-top-width: 1px; border-top-color: rgb(200, 200, 200);">
+            <ui:Label name="character-name-label" text="Name" style="-unity-font-style: bold; color: rgb(30, 30, 30); font-size: 14px; margin-bottom: 4px;"/>
+            <ui:Label name="dialogue-text-label" text="Dialogue line goes here..." style="color: rgb(20, 20, 20); font-size: 16px; margin-bottom: 12px; white-space: normal;"/>
+            <ui:VisualElement name="options-container" style="flex-direction: column; margin-top: 4px;">
+                <ui:Button name="option-button-template" text="Option Template" style="height: 36px; background-color: rgb(235, 235, 235); border-radius: 8px; border-width: 1px; border-color: rgb(200, 200, 200); color: rgb(20, 20, 20); -unity-font-style: bold; margin-bottom: 6px; display: none;"/>
+            </ui:VisualElement>
+            <ui:Button name="continue-button" text="Ok" style="height: 36px; align-self: flex-end; width: 80px; background-color: rgb(235, 235, 235); border-radius: 8px; border-width: 1px; border-color: rgb(200, 200, 200); color: rgb(20, 20, 20); -unity-font-style: bold; margin-top: 4px; display: none;"/>
+        </ui:VisualElement>
+    </ui:VisualElement>
 </ui:UXML>

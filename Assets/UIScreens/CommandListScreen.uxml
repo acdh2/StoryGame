@@ -1,0 +1,5 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:VisualElement name="screen-root" style="flex-grow: 1; margin-top: 96px; margin-bottom: 0; margin-left: 0; margin-right: 0; background-color: rgba(220, 220, 220, 0.85); border-top-left-radius: 16px; border-top-right-radius: 16px; padding-top: 8px; padding-bottom: 8px; padding-left: 12px; padding-right: 12px;">
+        <ui:ScrollView name="list-scroll-view" mode="VerticalAndHorizontal" style="flex-grow: 1;" />
+    </ui:VisualElement>
+</ui:UXML>
