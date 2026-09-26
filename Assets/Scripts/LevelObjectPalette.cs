@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class LevelObjectPalette : MonoBehaviour
+public class LevelObjectPalette : UIControllerBase
 {
     [System.Serializable]
     public struct LevelItemData
@@ -24,7 +24,6 @@ public class LevelObjectPalette : MonoBehaviour
 
     [Header("UI Settings")]
     [SerializeField] private LayerMask baseplateLayer;
-
     [SerializeField] private ProjectSettings projectSettings;
 
     private Vector2 itemSize = new Vector2(48, 48);
@@ -38,12 +37,11 @@ public class LevelObjectPalette : MonoBehaviour
     private VisualElement dragPreview;
 
     private int currentCategoryIndex = 0;
-    private List<Button> categoryButtons = new List<Button>();
+    private readonly List<Button> categoryButtons = new List<Button>();
 
-    private void OnEnable()
+    protected override void OnUIEnabled(VisualElement root)
     {
-        var uiDocument = GetComponent<UIDocument>();
-        root = uiDocument.rootVisualElement;
+        this.root = root;
 
         categoryBar = root.Q<ScrollView>("CategoryBar");
         if (categoryBar != null)
@@ -66,8 +64,29 @@ public class LevelObjectPalette : MonoBehaviour
         }
     }
 
+    protected override void OnUIDisabled()
+    {
+        if (scrollView != null)
+        {
+            scrollView.Clear();
+            scrollView = null;
+        }
+
+        if (categoryBar != null)
+        {
+            categoryBar.Clear();
+            categoryBar = null;
+        }
+
+        categoryButtons.Clear();
+        dragPreview = null;
+        root = null;
+    }
+
     private void SetupDragPreview()
     {
+        if (root == null) return;
+        
         dragPreview = new VisualElement();
         dragPreview.style.position = Position.Absolute;
         dragPreview.style.width = itemSize.x;
@@ -140,14 +159,9 @@ public class LevelObjectPalette : MonoBehaviour
 
         for (int i = 0; i < categoryButtons.Count; i++)
         {
-            if (i == index)
-            {
-                categoryButtons[i].style.backgroundColor = new StyleColor(new Color(0.8f, 0.8f, 0.8f));
-            }
-            else
-            {
-                categoryButtons[i].style.backgroundColor = new StyleColor(Color.clear);
-            }
+            categoryButtons[i].style.backgroundColor = (i == index) 
+                ? new StyleColor(new Color(0.8f, 0.8f, 0.8f)) 
+                : new StyleColor(Color.clear);
         }
 
         PopulateItems(categories[currentCategoryIndex].items);
@@ -204,6 +218,7 @@ public class LevelObjectPalette : MonoBehaviour
 
     public void StartDragPreview(LevelItemData item, Vector2 localPos, VisualElement target)
     {
+        if (dragPreview == null) return;
         dragPreview.style.backgroundImage = new StyleBackground(item.thumbnail);
         dragPreview.style.display = DisplayStyle.Flex;
         UpdateDragPreview(localPos, target);
@@ -211,7 +226,7 @@ public class LevelObjectPalette : MonoBehaviour
 
     public void UpdateDragPreview(Vector2 localPos, VisualElement target)
     {
-        if (target == null) return;
+        if (target == null || dragPreview == null || root == null) return;
 
         Vector2 panelPos = target.ChangeCoordinatesTo(root, localPos);
 
@@ -224,13 +239,13 @@ public class LevelObjectPalette : MonoBehaviour
 
     public void EndDragAndSpawn(LevelItemData item)
     {
-        dragPreview.style.display = DisplayStyle.None;
+        if (dragPreview != null) dragPreview.style.display = DisplayStyle.None;
         TrySpawnPrefab(item, Input.mousePosition);
     }
 
     public void CancelDragPreview()
     {
-        dragPreview.style.display = DisplayStyle.None;
+        if (dragPreview != null) dragPreview.style.display = DisplayStyle.None;
     }
 
     private Vector3 SnapPosition(Vector3 position, Vector3 snap)
@@ -242,14 +257,14 @@ public class LevelObjectPalette : MonoBehaviour
         );
     }   
 
-private static void SetLayerRecursively(GameObject obj, int layer)
-{
-    obj.layer = layer;
-    foreach (Transform child in obj.transform)
+    private static void SetLayerRecursively(GameObject obj, int layer)
     {
-        SetLayerRecursively(child.gameObject, layer);
-    }
-}     
+        obj.layer = layer;
+        foreach (Transform child in obj.transform)
+        {
+            SetLayerRecursively(child.gameObject, layer);
+        }
+    }     
 
     private void TrySpawnPrefab(LevelItemData item, Vector2 mouseScreenPos)
     {
@@ -264,9 +279,8 @@ private static void SetLayerRecursively(GameObject obj, int layer)
             {
                 spawnPosition = SnapPosition(spawnPosition, projectSettings.PositionSnap);
             }
-            GameObject newObject = GameObject.Instantiate(item.prefab, spawnPosition, Quaternion.identity);
+            GameObject newObject = Instantiate(item.prefab, spawnPosition, Quaternion.identity);
             SetLayerRecursively(newObject, LayerMask.NameToLayer("SelectableObjects"));
-            //newObject.layer = LayerMask.NameToLayer("SelectableObjects");
 
             objectSelector?.SelectObject(newObject);
         }

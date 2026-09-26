@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class MaterialPalette : MonoBehaviour
+public class MaterialPalette : UIControllerBase
 {
     [System.Serializable]
     public struct MaterialCategory
@@ -26,12 +26,11 @@ public class MaterialPalette : MonoBehaviour
     private VisualElement dragPreview;
 
     private int currentCategoryIndex = 0;
-    private List<Button> categoryButtons = new List<Button>();
+    private readonly List<Button> categoryButtons = new List<Button>();
 
-    private void OnEnable()
+    protected override void OnUIEnabled(VisualElement root)
     {
-        var uiDocument = GetComponent<UIDocument>();
-        root = uiDocument.rootVisualElement;
+        this.root = root;
 
         categoryBar = root.Q<ScrollView>("CategoryBar");
         if (categoryBar != null)
@@ -54,8 +53,29 @@ public class MaterialPalette : MonoBehaviour
         }
     }
 
+    protected override void OnUIDisabled()
+    {
+        if (scrollView != null)
+        {
+            scrollView.Clear();
+            scrollView = null;
+        }
+
+        if (categoryBar != null)
+        {
+            categoryBar.Clear();
+            categoryBar = null;
+        }
+
+        categoryButtons.Clear();
+        dragPreview = null;
+        root = null;
+    }
+
     private void SetupDragPreview()
     {
+        if (root == null) return;
+
         dragPreview = new VisualElement();
         dragPreview.style.position = Position.Absolute;
         dragPreview.style.width = itemSize.x;
@@ -169,7 +189,6 @@ public class MaterialPalette : MonoBehaviour
             itemCard.style.borderLeftColor = new StyleColor(new Color(0.7f, 0.7f, 0.7f));
             itemCard.style.borderRightColor = new StyleColor(new Color(0.7f, 0.7f, 0.7f));
 
-            // Genereer de live preview thumbnail van het materiaal
             Texture2D thumbnail = MaterialPreviewGenerator.CreatePreview(mat);
 
             if (thumbnail != null)
@@ -192,6 +211,7 @@ public class MaterialPalette : MonoBehaviour
 
     public void StartDragPreview(Texture2D thumbnail, Vector2 localPos, VisualElement target)
     {
+        if (dragPreview == null) return;
         dragPreview.style.backgroundImage = new StyleBackground(thumbnail);
         dragPreview.style.display = DisplayStyle.Flex;
         UpdateDragPreview(localPos, target);
@@ -199,7 +219,7 @@ public class MaterialPalette : MonoBehaviour
 
     public void UpdateDragPreview(Vector2 localPos, VisualElement target)
     {
-        if (target == null) return;
+        if (target == null || dragPreview == null || root == null) return;
 
         Vector2 panelPos = target.ChangeCoordinatesTo(root, localPos);
 
@@ -212,13 +232,13 @@ public class MaterialPalette : MonoBehaviour
 
     public void EndDragAndApply(Material material)
     {
-        dragPreview.style.display = DisplayStyle.None;
+        if (dragPreview != null) dragPreview.style.display = DisplayStyle.None;
         TryApplyMaterial(material, Input.mousePosition);
     }
 
     public void CancelDragPreview()
     {
-        dragPreview.style.display = DisplayStyle.None;
+        if (dragPreview != null) dragPreview.style.display = DisplayStyle.None;
     }
 
     private void TryApplyMaterial(Material material, Vector2 mouseScreenPos)

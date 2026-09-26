@@ -1,27 +1,40 @@
 using UnityEngine;
 using StarterAssets;
+using UnityEngine.UIElements;
 
-public class PlayMode : MonoBehaviour
+[RequireComponent(typeof(DialogueInterpreter))]
+public class PlayMode : UIControllerBase
 {
     public GameObject editorCamera;
     public GameObject playerPrefab;
     public ObjectSelector objectSelector;
 
+    private DialogueInterpreter dialogueInterpreter;
     private GameObject player;
 
-    private void OnEnable()
+    protected override void Awake()
+    {
+        base.Awake();
+        dialogueInterpreter = GetComponent<DialogueInterpreter>();
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.P)) {
+            dialogueInterpreter.StartDialogue();
+        }
+    }
+
+    protected override void OnUIEnabled(VisualElement root)
     {
         DisableEditorCamera();
         CreatePlayer();
-        StartDialogue();
     }
 
-    private void OnDisable()
+    protected override void OnUIDisabled()
     {
         EnableEditorCamera();
-        EndDialogue();
         DestroyPlayer();
-
     }
 
     private void DisableEditorCamera() 
@@ -48,25 +61,37 @@ public class PlayMode : MonoBehaviour
 
     private void CreatePlayer()
     {
-        if (player == null) {
-            player = GameObject.Instantiate(playerPrefab);
+        if (player == null && playerPrefab != null) {
+            player = Instantiate(playerPrefab);
+            dialogueInterpreter.OnScreenShown += HandleScreenShown;
+            dialogueInterpreter.OnScreenHidden += HandleScreenHidden;
         }      
     }
 
     private void DestroyPlayer()
     {
         if (player != null) {
+            dialogueInterpreter.OnScreenShown -= HandleScreenShown;
+            dialogueInterpreter.OnScreenHidden -= HandleScreenHidden;
             Destroy(player);
         }
     }
 
-    private void StartDialogue() 
+    private void HandleScreenShown()
     {
+        if (player)
+        {
+            PlayerControlBlocker playerControlBlocker = player.GetComponentInChildren<PlayerControlBlocker>();
+            playerControlBlocker?.SetControlsActive(false);
+        }
     }
 
-    private void EndDialogue()
+    private void HandleScreenHidden()
     {
+        if (player) {
+            PlayerControlBlocker playerControlBlocker = player.GetComponentInChildren<PlayerControlBlocker>();
+            playerControlBlocker?.SetControlsActive(true);
+        }
     }
 
 }
-

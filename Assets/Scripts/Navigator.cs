@@ -2,8 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-[RequireComponent(typeof(UIDocument))]
-public class Navigator : MonoBehaviour
+public class Navigator : UIControllerBase
 {
     [Tooltip("De naam van het GameObject dat bij de start als enige actief moet zijn.")]
     public string defaultScreenName;
@@ -16,36 +15,28 @@ public class Navigator : MonoBehaviour
     private readonly List<GameObject> screens = new List<GameObject>();
     private readonly List<(Button button, System.Action action)> registeredListeners = new List<(Button, System.Action)>();
 
-    private void Awake()
-    {
-        CacheScreens();
-    }
-
     private void Start()
     {
         InitializeDefaultScreen();
     }
 
-    private void OnEnable()
+protected override void OnUIEnabled(VisualElement root)
+{
+    DisableKeyboardNavigationOnElement(root);
+
+    navigationGroupBox = root.Q<GroupBox>(groupBoxName);
+    if (navigationGroupBox == null)
     {
-        uiDocument = GetComponent<UIDocument>();
-        VisualElement root = uiDocument.rootVisualElement;
-
-        // Blokkeer navigatie-events op de Navigator UI zelf
-        DisableKeyboardNavigationOnElement(root);
-
-        navigationGroupBox = root.Q<GroupBox>(groupBoxName);
-        if (navigationGroupBox == null)
-        {
-            Debug.LogError($"[Navigator] GroupBox met naam '{groupBoxName}' niet gevonden in het UIDocument.");
-            return;
-        }
-
-        CacheScreens();
-        BuildDynamicButtons();
+        Debug.LogError($"[Navigator] GroupBox met naam '{groupBoxName}' niet gevonden in het UIDocument.");
+        return;
     }
 
-    private void OnDisable()
+    CacheScreens();
+    BuildDynamicButtons();
+    InitializeDefaultScreen();
+}
+
+    protected override void OnUIDisabled()
     {
         UnregisterListeners();
     }
@@ -63,6 +54,8 @@ public class Navigator : MonoBehaviour
                 screens.Add(child.gameObject);
             }
         }
+
+        screens.Sort((a, b) => string.Compare(a.name, b.name, System.StringComparison.OrdinalIgnoreCase));
     }
 
     private void BuildDynamicButtons()

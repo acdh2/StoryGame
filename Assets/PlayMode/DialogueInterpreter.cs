@@ -1,36 +1,35 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 using MoonSharp.Interpreter;
 
-public class LuaDialogueManager : MonoBehaviour
+[RequireComponent(typeof(UIDocument))]
+public class DialogueInterpreter : UIControllerBase
 {
+    public event Action OnDialogueStarted;
+    public event Action OnDialogueEnded;
+    public event Action OnScreenShown;
+    public event Action OnScreenHidden;
+
     [Header("Script Input Source")]
-    public StoryEditor storyEditor;
+    public StoryDataStore storyDataStore;
 
-    [Header("UI Document Reference")]
-    public UIDocument uiDocument;
-
-    // UI Elements
-    private VisualElement rootElement;
     private Label characterNameLabel;
     private Label dialogueTextLabel;
     private VisualElement optionsContainer;
     private Button optionButtonTemplate;
     private Button continueButton;
 
-    // Execution State
     private bool advanceRequested = false;
     private int selectedOptionNextInstructionIndex = -1;
     private bool clickedRequested = false;
     private string lastClickedItem = "";
     private UnityEngine.Coroutine activeDialogueCoroutine = null;
 
-    // MoonSharp instance
     private Script moonSharpScript;
 
-    // Data Structures
     public class Instruction
     {
         public string Type;
@@ -43,8 +42,9 @@ public class LuaDialogueManager : MonoBehaviour
     private List<Instruction> instructions = new List<Instruction>();
     private Dictionary<string, int> labels = new Dictionary<string, int>();
 
-    void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         moonSharpScript = new Script();
         moonSharpScript.Globals["print"] = (System.Action<string>)((text) => Debug.Log($"[Lua] {text}"));
         moonSharpScript.Globals["say"] = (System.Action<string>)LuaSay;
@@ -60,16 +60,32 @@ public class LuaDialogueManager : MonoBehaviour
         moonSharpScript.Globals["check_if_not"] = (System.Action<string>)LuaIfNot;
     }
 
-    void OnEnable()
+    protected override void OnUIEnabled(VisualElement root)
     {
-        if (uiDocument == null) uiDocument = GetComponent<UIDocument>();
-        BindUIElements();
+        BindUIElements(root);
+        StopDialogue();
     }
 
-    void Update()
+    protected override void OnUIDisabled()
     {
-        if (Input.GetKeyDown(KeyCode.P)) {
-            StartDialogue();
+        StopDialogue();
+    }
+
+    private void ShowScreen()
+    {
+        if (RootElement != null && RootElement.style.display != DisplayStyle.Flex)
+        {
+            RootElement.style.display = DisplayStyle.Flex;
+            OnScreenShown?.Invoke();
+        }
+    }
+
+    private void HideScreen()
+    {
+        if (RootElement != null && RootElement.style.display != DisplayStyle.None)
+        {
+            RootElement.style.display = DisplayStyle.None;
+            OnScreenHidden?.Invoke();
         }
     }
 
@@ -79,18 +95,17 @@ public class LuaDialogueManager : MonoBehaviour
 
         string codeToExecute = "";
 
-        if (storyEditor != null && !string.IsNullOrEmpty(storyEditor.CurrentLuaCode))
+        if (storyDataStore != null)
         {
-            codeToExecute = storyEditor.CurrentLuaCode;
+            codeToExecute = storyDataStore.ToLuaScript();
         }
 
-        if (rootElement != null)
-        {
-            rootElement.style.display = DisplayStyle.Flex;
-        }
+        ShowScreen();
 
         ParseLuaScript(codeToExecute);
         activeDialogueCoroutine = StartCoroutine(RunDialogueRoutine());
+        
+        OnDialogueStarted?.Invoke();
     }
 
     public void StopDialogue()
@@ -106,15 +121,16 @@ public class LuaDialogueManager : MonoBehaviour
         clickedRequested = false;
         ClearOptionsUI();
 
-        if (rootElement != null)
-        {
-            rootElement.style.display = DisplayStyle.None;
-        }
+        HideScreen();
+
+        OnDialogueEnded?.Invoke();
     }
 
-    private void BindUIElements()
+    private void BindUIElements(VisualElement root)
     {
-        rootElement = uiDocument.rootVisualElement.Q<VisualElement>("dialogue-root");
+        VisualElement rootElement = root.Q<VisualElement>("dialogue-root");
+        if (rootElement == null) return;
+
         characterNameLabel = rootElement.Q<Label>("character-name-label");
         dialogueTextLabel = rootElement.Q<Label>("dialogue-text-label");
         optionsContainer = rootElement.Q<VisualElement>("options-container");
@@ -146,9 +162,6 @@ public class LuaDialogueManager : MonoBehaviour
         }
     }
 
-    // ==========================================
-    // FASE 1: PARSING VIA MOONSHARP
-    // ==========================================
     private void ParseLuaScript(string scriptSource)
     {
         instructions.Clear();
@@ -160,72 +173,22 @@ public class LuaDialogueManager : MonoBehaviour
         }
     }
 
-    private void LuaSay(string text)
-    {
-        instructions.Add(new Instruction { Type = "SAY", Text = text });
-    }
-
-    private void LuaClicked(string itemName)
-    {
-        instructions.Add(new Instruction { Type = "CLICKED", ItemName = itemName });
-    }
-
-    private void LuaShow(string itemName)
-    {
-        instructions.Add(new Instruction { Type = "SHOW", ItemName = itemName });
-    }
-
-    private void LuaHide(string itemName)
-    {
-        instructions.Add(new Instruction { Type = "HIDE", ItemName = itemName });
-    }
-
-    private void LuaOption(string text)
-    {
-        instructions.Add(new Instruction { Type = "OPTION", Text = text });
-    }
-
+    private void LuaSay(string text) => instructions.Add(new Instruction { Type = "SAY", Text = text });
+    private void LuaClicked(string itemName) => instructions.Add(new Instruction { Type = "CLICKED", ItemName = itemName });
+    private void LuaShow(string itemName) => instructions.Add(new Instruction { Type = "SHOW", ItemName = itemName });
+    private void LuaHide(string itemName) => instructions.Add(new Instruction { Type = "HIDE", ItemName = itemName });
+    private void LuaOption(string text) => instructions.Add(new Instruction { Type = "OPTION", Text = text });
     private void LuaLabel(string name)
     {
         labels[name] = instructions.Count;
         instructions.Add(new Instruction { Type = "LABEL", Target = name });
     }
+    private void LuaJump(string targetLabel) => instructions.Add(new Instruction { Type = "JUMP", Target = targetLabel });
+    private void LuaSet(string varName) => instructions.Add(new Instruction { Type = "SET", VarName = varName });
+    private void LuaUnset(string varName) => instructions.Add(new Instruction { Type = "UNSET", VarName = varName });
+    private void LuaIf(string varName) => instructions.Add(new Instruction { Type = "IF", VarName = varName });
+    private void LuaIfNot(string varName) => instructions.Add(new Instruction { Type = "IF_NOT", VarName = varName });
 
-    private void LuaJump(string targetLabel)
-    {
-        instructions.Add(new Instruction { Type = "JUMP", Target = targetLabel });
-    }
-
-    private void LuaSet(string varName)
-    {
-        instructions.Add(new Instruction { Type = "SET", VarName = varName });
-    }
-
-    private void LuaUnset(string varName)
-    {
-        instructions.Add(new Instruction { Type = "UNSET", VarName = varName });
-    }
-
-    private void LuaIf(string varName)
-    {
-        instructions.Add(new Instruction { Type = "IF", VarName = varName });
-    }
-
-    private void LuaIfNot(string varName)
-    {
-        instructions.Add(new Instruction { Type = "IF_NOT", VarName = varName });
-    }
-
-    // ==========================================
-    // STRUCTUUR BEREKENING (GETNEXTBLOCK)
-    // ==========================================
-
-    /// <summary>
-    /// Berekent de index direct NÁ het logische blok dat op startPc begint.
-    /// - Als startPc een OPTION is: de OPTION + de onderliggende actie (tenzij de actie een nieuwe OPTION is).
-    /// - Als startPc een IF / IF_NOT is: de IF + de onderliggende instructie/blok.
-    /// - Anders: startPc + 1 (enkele instructie).
-    /// </summary>
     private int GetNextBlock(int startPc)
     {
         if (startPc >= instructions.Count) return instructions.Count;
@@ -237,32 +200,23 @@ public class LuaDialogueManager : MonoBehaviour
             case "OPTION":
             {
                 int nextPc = startPc + 1;
-                // Als het direct gevolgd wordt door een OPTION, is de actie leeg.
                 if (nextPc < instructions.Count && instructions[nextPc].Type == "OPTION")
                 {
                     return nextPc;
                 }
-                // Anders is het blok: OPTION + het blok dat erna komt
                 return GetNextBlock(nextPc);
             }
-
             case "IF":
             case "IF_NOT":
             {
                 int nextPc = startPc + 1;
-                // Blok is de IF + het blok dat erna komt
                 return GetNextBlock(nextPc);
             }
-
             default:
-                // Normale instructie met parameter is 1 stap groot
                 return startPc + 1;
         }
     }
 
-    /// <summary>
-    /// Berekent het einde van een hele keten van opeenvolgende OPTION-blokken.
-    /// </summary>
     private int GetEndOfOptionsChain(int startPc)
     {
         int currentPc = startPc;
@@ -273,9 +227,6 @@ public class LuaDialogueManager : MonoBehaviour
         return currentPc;
     }
 
-    // ==========================================
-    // FASE 2: EXECUTION LOOP (VM)
-    // ==========================================
     private IEnumerator RunDialogueRoutine()
     {
         int pc = 0;
@@ -285,7 +236,6 @@ public class LuaDialogueManager : MonoBehaviour
         {
             Instruction instr = instructions[pc];
 
-            // Als we een OPTION tegenkomen, verzamelen we de hele keten
             if (instr.Type == "OPTION")
             {
                 int optionChainStartPc = pc;
@@ -293,7 +243,6 @@ public class LuaDialogueManager : MonoBehaviour
 
                 List<(Instruction optInstr, int targetPc)> options = new List<(Instruction, int)>();
 
-                // Scan alle opties in de keten
                 int scanPc = optionChainStartPc;
                 while (scanPc < endOfOptionBlockPc && scanPc < instructions.Count && instructions[scanPc].Type == "OPTION")
                 {
@@ -311,7 +260,6 @@ public class LuaDialogueManager : MonoBehaviour
                 int chosenActionStartPc = selectedOptionNextInstructionIndex;
                 int chosenActionEndPc = GetNextBlock(chosenActionStartPc);
 
-                // Als de gekozen actie niet direct een nieuwe OPTION is, voer deze uit
                 if (chosenActionStartPc < instructions.Count && instructions[chosenActionStartPc].Type != "OPTION")
                 {
                     pc = chosenActionStartPc;
@@ -364,7 +312,6 @@ public class LuaDialogueManager : MonoBehaviour
                     }
                 }
 
-                // Spring altijd naar het berekende einde van het complete optieblok
                 if (pc < instructions.Count && instructions[pc].Type != "JUMP")
                 {
                     pc = endOfOptionBlockPc;
@@ -373,7 +320,6 @@ public class LuaDialogueManager : MonoBehaviour
                 continue;
             }
 
-            // INSTRUCTION SWITCH VOOR NORMALE COMMANDO'S
             switch (instr.Type)
             {
                 case "SAY":
@@ -405,25 +351,13 @@ public class LuaDialogueManager : MonoBehaviour
                     break;
 
                 case "IF":
-                    if (variables.Contains(instr.VarName))
-                    {
-                        pc++;
-                    }
-                    else
-                    {
-                        pc = GetNextBlock(pc);
-                    }
+                    if (variables.Contains(instr.VarName)) pc++;
+                    else pc = GetNextBlock(pc);
                     break;
 
                 case "IF_NOT":
-                    if (!variables.Contains(instr.VarName))
-                    {
-                        pc++;
-                    }
-                    else
-                    {
-                        pc = GetNextBlock(pc);
-                    }
+                    if (!variables.Contains(instr.VarName)) pc++;
+                    else pc = GetNextBlock(pc);
                     break;
 
                 case "SET":
@@ -453,8 +387,9 @@ public class LuaDialogueManager : MonoBehaviour
             }
         }
 
-        rootElement.style.display = DisplayStyle.None;
+        HideScreen();
         activeDialogueCoroutine = null;
+        OnDialogueEnded?.Invoke();
     }
 
     private void ExecuteSingleInstruction(Instruction instr, HashSet<string> variables)
@@ -476,13 +411,10 @@ public class LuaDialogueManager : MonoBehaviour
         }
     }
 
-    // ==========================================
-    // UI HELPERS
-    // ==========================================
     private void ToggleUIElementVisibility(string elementName, DisplayStyle displayStyle)
     {
-        if (uiDocument == null || uiDocument.rootVisualElement == null) return;
-        VisualElement elem = uiDocument.rootVisualElement.Q<VisualElement>(elementName);
+        if (RootElement == null) return;
+        VisualElement elem = RootElement.Q<VisualElement>(elementName);
         if (elem != null)
         {
             elem.style.display = displayStyle;

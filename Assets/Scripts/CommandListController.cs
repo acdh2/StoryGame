@@ -1,32 +1,34 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-[RequireComponent(typeof(UIDocument))]
-public class CommandListController : MonoBehaviour
+public class CommandListController : UIControllerBase
 {
-    [Header("UI Templates & Setup")]
-    public VisualTreeAsset itemTemplate;
-    public int initialItemCount = 24;
+    public event Action OnUIReady;
 
-    private UIDocument uiDocument;
+    public EditorCameraController editorCameraController;
+    public ObjectSelector objectSelector;
+    public StoryDataStore dataStore;
+
+    [Header("UI Templates")]
+    public VisualTreeAsset itemTemplate;
+
     private ScrollView scrollView;
     private VisualElement container;
+    private readonly List<string> defaultOptions = new List<string> { "say", "option", "label", "jump", "jumpif", "set", "print" };
 
     private VisualElement draggedElement = null;
     private VisualElement placeholder = null;
-    private Vector2 dragStartPosition;
     private bool isDragging = false;
 
     private float lastClickTime = 0f;
     private const float DOUBLE_CLICK_THRESHOLD = 0.3f;
+    private EventCallback<MouseDownEvent> scrollViewMouseDownCallback;
 
-    private readonly List<string> defaultOptions = new List<string> { "say", "option", "label", "jump", "jumpif", "set", "print" };
-
-    private void OnEnable()
+    protected override void OnUIEnabled(VisualElement root)
     {
-        uiDocument = GetComponent<UIDocument>();
-        VisualElement root = uiDocument.rootVisualElement;
+        DisableEditorCamera();
 
         scrollView = root.Q<ScrollView>("list-scroll-view");
         if (scrollView == null) return;
@@ -34,114 +36,96 @@ public class CommandListController : MonoBehaviour
         container = scrollView.contentContainer;
         container.style.paddingBottom = 300;
 
-        scrollView.RegisterCallback<MouseDownEvent>(OnScrollViewMouseDown);
-    }
-
-    public void ClearList()
-    {
-        if (container != null)
+        scrollViewMouseDownCallback = evt =>
         {
-            container.Clear();
-        }
-    }
-
-    public void PopulateInitialList()
-    {
-        ClearList();
-        for (int i = 0; i < initialItemCount; i++)
-        {
-            AddItemToList();
-        }
-    }
-
-    public VisualElement AddItemToList(string commandType = null, string argumentText = "")
-    {
-        if (itemTemplate == null)
-        {
-            Debug.LogError("[CommandListController] Geen itemTemplate toegewezen!");
-            return null;
-        }
-
-        TemplateContainer itemInstance = itemTemplate.Instantiate();
-        VisualElement itemRoot = itemInstance.Q<VisualElement>("command-item-root") ?? itemInstance;
-
-        DropdownField dropdown = itemRoot.Q<DropdownField>("command-dropdown");
-        if (dropdown != null)
-        {
-            dropdown.choices = defaultOptions;
-            dropdown.value = string.IsNullOrEmpty(commandType) ? defaultOptions[0] : commandType;
-        }
-
-        TextField inputField = itemRoot.Q<TextField>("command-input");
-        if (inputField != null)
-        {
-            inputField.value = argumentText;
-            inputField.RegisterCallback<NavigationMoveEvent>(evt => evt.StopPropagation(), TrickleDown.TrickleDown);
-            inputField.RegisterCallback<NavigationSubmitEvent>(evt => evt.StopPropagation(), TrickleDown.TrickleDown);
-            inputField.RegisterCallback<NavigationCancelEvent>(evt => evt.StopPropagation(), TrickleDown.TrickleDown);
-        }
-
-        RegisterDragEvents(itemRoot);
-        container.Add(itemRoot);
-
-        return itemRoot;
-    }
-
-    public List<CommandData> GetCommandDataList()
-    {
-        List<CommandData> list = new List<CommandData>();
-        if (container == null) return list;
-
-        foreach (VisualElement child in container.Children())
-        {
-            DropdownField dropdown = child.Q<DropdownField>("command-dropdown");
-            TextField inputField = child.Q<TextField>("command-input");
-
-            if (dropdown != null && inputField != null)
+            if (evt.button != 0) return;
+            if (evt.target == scrollView || evt.target == container)
             {
-                // Alleen opslaan als er daadwerkelijk een gekozen type of invoer is
-                list.Add(new CommandData
+                if (Time.time - lastClickTime < DOUBLE_CLICK_THRESHOLD)
                 {
-                    CommandType = dropdown.value,
-                    Argument = inputField.value
+                    dataStore?.AddCommand();
+                    evt.StopPropagation();
+                }
+                lastClickTime = Time.time;
+            }
+        };
+        scrollView.RegisterCallback(scrollViewMouseDownCallback);
+
+        if (dataStore != null)
+        {
+            dataStore.OnDataChanged += RebuildUI;
+            dataStore.Load();
+        }
+
+        OnUIReady?.Invoke();
+    }
+
+    protected override void OnUIDisabled()
+    {
+        EnableEditorCamera();
+
+        if (scrollView != null && scrollViewMouseDownCallback != null)
+        {
+            scrollView.UnregisterCallback(scrollViewMouseDownCallback);
+            scrollViewMouseDownCallback = null;
+        }
+
+        if (dataStore != null)
+        {
+            dataStore.OnDataChanged -= RebuildUI;
+            dataStore.Save();
+        }
+
+        scrollView = null;
+        container = null;
+        draggedElement = null;
+        placeholder = null;
+    }
+
+    private void RebuildUI()
+    {
+        if (container == null || dataStore == null) return;
+
+        container.Clear();
+
+        for (int i = 0; i < dataStore.Commands.Count; i++)
+        {
+            var data = dataStore.Commands[i];
+            int index = i;
+
+            TemplateContainer itemInstance = itemTemplate.Instantiate();
+            VisualElement itemRoot = itemInstance.Q<VisualElement>("command-item-root") ?? itemInstance;
+
+            DropdownField dropdown = itemRoot.Q<DropdownField>("command-dropdown");
+            if (dropdown != null)
+            {
+                dropdown.choices = defaultOptions;
+                dropdown.value = string.IsNullOrEmpty(data.CommandType) ? defaultOptions[0] : data.CommandType;
+                dropdown.RegisterValueChangedCallback(evt =>
+                {
+                    dataStore.UpdateCommand(index, evt.newValue, data.Argument);
                 });
             }
-        }
 
-        return list;
-    }
-
-    public void LoadFromDataList(List<CommandData> dataList)
-    {
-        ClearList();
-        if (dataList == null || dataList.Count == 0)
-        {
-            PopulateInitialList();
-            return;
-        }
-
-        foreach (var data in dataList)
-        {
-            AddItemToList(data.CommandType, data.Argument);
-        }
-    }
-
-    private void OnScrollViewMouseDown(MouseDownEvent evt)
-    {
-        if (evt.button != 0) return;
-
-        if (evt.target == scrollView || evt.target == container)
-        {
-            if (Time.time - lastClickTime < DOUBLE_CLICK_THRESHOLD)
+            TextField inputField = itemRoot.Q<TextField>("command-input");
+            if (inputField != null)
             {
-                AddItemToList();
-                evt.StopPropagation();
+                inputField.value = data.Argument;
+                inputField.RegisterValueChangedCallback(evt =>
+                {
+                    dataStore.UpdateCommand(index, dropdown != null ? dropdown.value : "say", evt.newValue);
+                });
+                inputField.RegisterCallback<NavigationMoveEvent>(evt => evt.StopPropagation(), TrickleDown.TrickleDown);
+                inputField.RegisterCallback<NavigationSubmitEvent>(evt => evt.StopPropagation(), TrickleDown.TrickleDown);
+                inputField.RegisterCallback<NavigationCancelEvent>(evt => evt.StopPropagation(), TrickleDown.TrickleDown);
             }
-            lastClickTime = Time.time;
+
+            RegisterDragEvents(itemRoot, index);
+            container.Add(itemRoot);
         }
     }
 
-    private void RegisterDragEvents(VisualElement element)
+    private void RegisterDragEvents(VisualElement element, int originalIndex)
     {
         element.RegisterCallback<MouseDownEvent>(evt =>
         {
@@ -150,7 +134,7 @@ public class CommandListController : MonoBehaviour
             if (evt.target is VisualElement targetVE)
             {
                 VisualElement dragHandle = element.Q<VisualElement>("drag-handle");
-                if (dragHandle == null || (targetVE != dragHandle && !dragHandle.Contains(targetVE)))
+                if (dragHandle != null && targetVE != dragHandle && !dragHandle.Contains(targetVE))
                 {
                     return;
                 }
@@ -158,7 +142,6 @@ public class CommandListController : MonoBehaviour
 
             isDragging = true;
             draggedElement = element;
-            dragStartPosition = evt.mousePosition;
 
             placeholder = new VisualElement();
             placeholder.style.height = element.resolvedStyle.height;
@@ -216,28 +199,17 @@ public class CommandListController : MonoBehaviour
             Rect containerBounds = scrollView.worldBound;
             if (!containerBounds.Contains(evt.mousePosition))
             {
-                container.Remove(draggedElement);
-                container.Remove(placeholder);
+                dataStore.RemoveCommand(originalIndex);
             }
             else
             {
-                int oldIndex = container.IndexOf(draggedElement);
                 int targetIndex = container.IndexOf(placeholder);
-
-                if (oldIndex < targetIndex)
+                if (originalIndex < targetIndex)
                 {
                     targetIndex--;
                 }
 
-                container.Remove(placeholder);
-                container.Remove(draggedElement);
-
-                draggedElement.style.position = Position.Relative;
-                draggedElement.style.top = StyleKeyword.Null;
-                draggedElement.style.left = StyleKeyword.Null;
-                draggedElement.style.width = StyleKeyword.Null;
-
-                container.Insert(targetIndex, draggedElement);
+                dataStore.MoveCommand(originalIndex, targetIndex);
             }
 
             draggedElement = null;
@@ -248,9 +220,25 @@ public class CommandListController : MonoBehaviour
 
     private void UpdateDraggedElementPosition(Vector2 mousePosition)
     {
-        if (draggedElement == null) return;
+        if (draggedElement == null || container == null) return;
         Vector2 localPos = container.WorldToLocal(mousePosition);
         draggedElement.style.left = localPos.x - (draggedElement.resolvedStyle.width / 2);
         draggedElement.style.top = localPos.y - (draggedElement.resolvedStyle.height / 2);
+    }
+
+    private void DisableEditorCamera() 
+    {
+        if (editorCameraController != null) editorCameraController.enabled = false;
+        if (objectSelector != null)
+        {
+            objectSelector.SelectObject(null);
+            objectSelector.enabled = false;
+        }
+    }
+
+    private void EnableEditorCamera()
+    {
+        if (editorCameraController != null) editorCameraController.enabled = true;
+        if (objectSelector != null) objectSelector.enabled = true;
     }
 }
