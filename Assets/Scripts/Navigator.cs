@@ -4,15 +4,15 @@ using UnityEngine.UIElements;
 
 public class Navigator : UIControllerBase
 {
-    [Tooltip("De naam van het GameObject dat bij de start als enige actief moet zijn.")]
+    [Tooltip("De naam van het GameObject dat bij de start als enige zichtbaar moet zijn.")]
     public string defaultScreenName;
 
     [Tooltip("De naam van het GroupBox element in het UIDocument waarin de knoppen worden geplaatst.")]
     public string groupBoxName = "NavigationBox";
 
-    private UIDocument uiDocument;
     private GroupBox navigationGroupBox;
     private readonly List<GameObject> screens = new List<GameObject>();
+    private readonly List<UIDocumentLifecycle> screenLifecycles = new List<UIDocumentLifecycle>();
     private readonly List<(Button button, System.Action action)> registeredListeners = new List<(Button, System.Action)>();
 
     private void Start()
@@ -20,21 +20,21 @@ public class Navigator : UIControllerBase
         InitializeDefaultScreen();
     }
 
-protected override void OnUIEnabled(VisualElement root)
-{
-    DisableKeyboardNavigationOnElement(root);
-
-    navigationGroupBox = root.Q<GroupBox>(groupBoxName);
-    if (navigationGroupBox == null)
+    protected override void OnUIEnabled(VisualElement root)
     {
-        Debug.LogError($"[Navigator] GroupBox met naam '{groupBoxName}' niet gevonden in het UIDocument.");
-        return;
-    }
+        DisableKeyboardNavigationOnElement(root);
 
-    CacheScreens();
-    BuildDynamicButtons();
-    InitializeDefaultScreen();
-}
+        navigationGroupBox = root.Q<GroupBox>(groupBoxName);
+        if (navigationGroupBox == null)
+        {
+            Debug.LogError($"[Navigator] GroupBox met naam '{groupBoxName}' niet gevonden in het UIDocument.");
+            return;
+        }
+
+        CacheScreens();
+        BuildDynamicButtons();
+        InitializeDefaultScreen();
+    }
 
     protected override void OnUIDisabled()
     {
@@ -44,6 +44,7 @@ protected override void OnUIEnabled(VisualElement root)
     private void CacheScreens()
     {
         screens.Clear();
+        screenLifecycles.Clear();
         
         Transform parentTransform = transform.parent != null ? transform.parent : transform.root;
 
@@ -52,10 +53,9 @@ protected override void OnUIEnabled(VisualElement root)
             if (child != transform) 
             {
                 screens.Add(child.gameObject);
+                screenLifecycles.Add(child.GetComponent<UIDocumentLifecycle>());
             }
         }
-
-        screens.Sort((a, b) => string.Compare(a.name, b.name, System.StringComparison.OrdinalIgnoreCase));
     }
 
     private void BuildDynamicButtons()
@@ -78,7 +78,6 @@ protected override void OnUIEnabled(VisualElement root)
                 btn.style.marginTop = 4;
                 btn.style.marginBottom = 4;
 
-                // Voorkom dat de navigatieknoppen focus pakken
                 btn.focusable = false;
 
                 if (navIcon.icon != null)
@@ -131,15 +130,17 @@ protected override void OnUIEnabled(VisualElement root)
 
     public void OpenScreen(GameObject targetScreen)
     {
-        foreach (var screen in screens)
+        for (int i = 0; i < screens.Count; i++)
         {
-            if (screen != null)
-            {
-                bool shouldBeActive = (screen == targetScreen);
-                screen.SetActive(shouldBeActive);
+            var screen = screens[i];
+            var lifecycle = screenLifecycles[i];
 
-                // Als het scherm geactiveerd wordt, pas de keyboard-instellingen toe op het UIDocument
-                if (shouldBeActive)
+            if (screen != null && lifecycle != null)
+            {
+                bool shouldBeVisible = (screen == targetScreen);
+                lifecycle.IsVisible = shouldBeVisible;
+
+                if (shouldBeVisible)
                 {
                     ApplyKeyboardSettingsToScreen(screen);
                 }
@@ -154,13 +155,10 @@ protected override void OnUIEnabled(VisualElement root)
             var root = targetUIDoc.rootVisualElement;
             if (root == null) return;
 
-            // 1. Zorg dat we alleen keyboard navigation blokkeren op elementen buiten een TextField
             DisableKeyboardNavigationOnElement(root);
 
-            // 2. Maak elementen non-focusable, MAAR sla TextField EN al zijn interne kinderen over
             root.Query<VisualElement>().ForEach(element =>
             {
-                // Check of het element zelf een TextField is, OF in een TextField zit
                 bool isInsideTextField = element is TextField || element.GetFirstAncestorOfType<TextField>() != null;
 
                 if (!isInsideTextField)

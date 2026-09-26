@@ -9,58 +9,44 @@ public class UIDocumentLifecycle : MonoBehaviour
     public event Action OnUIDisabledEvent;
 
     private UIDocument uiDocument;
-    private bool isInitialized = false;
+    private bool isVisible = true;
+
+    public bool IsVisible
+    {
+        get => isVisible;
+        set => SetVisible(value);
+    }
 
     private void Awake()
     {
         uiDocument = GetComponent<UIDocument>();
     }
 
-    private void OnEnable()
+    private void Start()
     {
         if (uiDocument == null) uiDocument = GetComponent<UIDocument>();
-        if (uiDocument != null)
-        {
-            uiDocument.rootVisualElement.RegisterCallback<AttachToPanelEvent>(OnAttachToPanel);
-            uiDocument.rootVisualElement.RegisterCallback<DetachFromPanelEvent>(OnDetachFromPanel);
-
-            if (uiDocument.rootVisualElement.panel != null && !isInitialized)
-            {
-                isInitialized = true;
-                OnUIEnabledEvent?.Invoke(uiDocument.rootVisualElement);
-            }
-        }
+        ApplyVisibility(isVisible);
     }
 
-    private void OnDisable()
+    public void SetVisible(bool visible)
     {
-        if (uiDocument != null && uiDocument.rootVisualElement != null)
-        {
-            uiDocument.rootVisualElement.UnregisterCallback<AttachToPanelEvent>(OnAttachToPanel);
-            uiDocument.rootVisualElement.UnregisterCallback<DetachFromPanelEvent>(OnDetachFromPanel);
-        }
-
-        if (isInitialized)
-        {
-            isInitialized = false;
-            OnUIDisabledEvent?.Invoke();
-        }
+        if (isVisible == visible) return;
+        isVisible = visible;
+        ApplyVisibility(isVisible);
     }
 
-    private void OnAttachToPanel(AttachToPanelEvent evt)
+    private void ApplyVisibility(bool visible)
     {
-        if (!isInitialized && uiDocument.rootVisualElement != null)
+        if (uiDocument == null || uiDocument.rootVisualElement == null) return;
+
+        if (visible)
         {
-            isInitialized = true;
+            uiDocument.rootVisualElement.style.display = DisplayStyle.Flex;
             OnUIEnabledEvent?.Invoke(uiDocument.rootVisualElement);
         }
-    }
-
-    private void OnDetachFromPanel(DetachFromPanelEvent evt)
-    {
-        if (isInitialized)
+        else
         {
-            isInitialized = false;
+            uiDocument.rootVisualElement.style.display = DisplayStyle.None;
             OnUIDisabledEvent?.Invoke();
         }
     }

@@ -3,7 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
-using MoonSharp.Interpreter;
+using Lua;
+using Lua.Standard;
 
 [RequireComponent(typeof(UIDocument))]
 public class DialogueInterpreter : UIControllerBase
@@ -28,7 +29,7 @@ public class DialogueInterpreter : UIControllerBase
     private string lastClickedItem = "";
     private UnityEngine.Coroutine activeDialogueCoroutine = null;
 
-    private Script moonSharpScript;
+    private LuaState luaState;
 
     public class Instruction
     {
@@ -45,25 +46,61 @@ public class DialogueInterpreter : UIControllerBase
     protected override void Awake()
     {
         base.Awake();
-        moonSharpScript = new Script();
-        moonSharpScript.Globals["print"] = (System.Action<string>)((text) => Debug.Log($"[Lua] {text}"));
-        moonSharpScript.Globals["say"] = (System.Action<string>)LuaSay;
-        moonSharpScript.Globals["clicked"] = (System.Action<string>)LuaClicked;
-        moonSharpScript.Globals["show"] = (System.Action<string>)LuaShow;
-        moonSharpScript.Globals["hide"] = (System.Action<string>)LuaHide;
-        moonSharpScript.Globals["option"] = (System.Action<string>)LuaOption;
-        moonSharpScript.Globals["label"] = (System.Action<string>)LuaLabel;
-        moonSharpScript.Globals["jump"] = (System.Action<string>)LuaJump;
-        moonSharpScript.Globals["set"] = (System.Action<string>)LuaSet;
-        moonSharpScript.Globals["unset"] = (System.Action<string>)LuaUnset;
-        moonSharpScript.Globals["check_if"] = (System.Action<string>)LuaIf;
-        moonSharpScript.Globals["check_if_not"] = (System.Action<string>)LuaIfNot;
+        luaState = LuaState.Create();
+        luaState.OpenStandardLibraries();
+        luaState.Environment["print"] = new LuaFunction((context, ct) => {
+            Debug.Log($"[Lua] {context.GetArgument(0)}");
+            return new(0);
+        });
+        luaState.Environment["say"] = new LuaFunction((context, ct) => {
+            LuaSay(context.GetArgument(0).ToString());
+            return new(0);
+        });
+        luaState.Environment["clicked"] = new LuaFunction((context, ct) => {
+            LuaClicked(context.GetArgument(0).ToString());
+            return new(0);
+        });
+        luaState.Environment["show"] = new LuaFunction((context, ct) => {
+            LuaShow(context.GetArgument(0).ToString());
+            return new(0);
+        });
+        luaState.Environment["hide"] = new LuaFunction((context, ct) => {
+            LuaHide(context.GetArgument(0).ToString());
+            return new(0);
+        });
+        luaState.Environment["option"] = new LuaFunction((context, ct) => {
+            LuaOption(context.GetArgument(0).ToString());
+            return new(0);
+        });
+        luaState.Environment["label"] = new LuaFunction((context, ct) => {
+            LuaLabel(context.GetArgument(0).ToString());
+            return new(0);
+        });
+        luaState.Environment["jump"] = new LuaFunction((context, ct) => {
+            LuaJump(context.GetArgument(0).ToString());
+            return new(0);
+        });
+        luaState.Environment["set"] = new LuaFunction((context, ct) => {
+            LuaSet(context.GetArgument(0).ToString());
+            return new(0);
+        });
+        luaState.Environment["unset"] = new LuaFunction((context, ct) => {
+            LuaUnset(context.GetArgument(0).ToString());
+            return new(0);
+        });
+        luaState.Environment["check_if"] = new LuaFunction((context, ct) => {
+            LuaIf(context.GetArgument(0).ToString());
+            return new(0);
+        });
+        luaState.Environment["check_if_not"] = new LuaFunction((context, ct) => {
+            LuaIfNot(context.GetArgument(0).ToString());
+            return new(0);
+        });
     }
 
     protected override void OnUIEnabled(VisualElement root)
     {
         BindUIElements(root);
-        StopDialogue();
     }
 
     protected override void OnUIDisabled()
@@ -92,19 +129,14 @@ public class DialogueInterpreter : UIControllerBase
     public void StartDialogue()
     {
         StopDialogue();
-
         string codeToExecute = "";
-
         if (storyDataStore != null)
         {
             codeToExecute = storyDataStore.ToLuaScript();
         }
-
         ShowScreen();
-
         ParseLuaScript(codeToExecute);
         activeDialogueCoroutine = StartCoroutine(RunDialogueRoutine());
-        
         OnDialogueStarted?.Invoke();
     }
 
@@ -169,7 +201,7 @@ public class DialogueInterpreter : UIControllerBase
 
         if (!string.IsNullOrEmpty(scriptSource))
         {
-            moonSharpScript.DoString(scriptSource);
+            luaState.DoStringAsync(scriptSource).GetAwaiter().GetResult();
         }
     }
 
