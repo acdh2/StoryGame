@@ -14,6 +14,7 @@ public class MaterialPalette : UIControllerBase
 
     [Header("UI Settings")]
     [SerializeField] private LayerMask targetLayerMask;
+    [SerializeField] private SceneManager sceneManager;
 
     private Vector2 itemSize = new Vector2(48, 48);
 
@@ -243,17 +244,13 @@ public class MaterialPalette : UIControllerBase
 
     private void TryApplyMaterial(Material material, Vector2 mouseScreenPos)
     {
-        if (Camera.main == null || material == null) return;
+        if (Camera.main == null || material == null || sceneManager == null) return;
 
         Ray ray = Camera.main.ScreenPointToRay(mouseScreenPos);
 
         if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, targetLayerMask))
         {
-            Renderer targetRenderer = hit.collider.GetComponent<Renderer>();
-            if (targetRenderer != null)
-            {
-                targetRenderer.sharedMaterial = material;
-            }
+            sceneManager.ApplyMaterialToTarget(hit.collider.gameObject, material);
         }
     }
 }

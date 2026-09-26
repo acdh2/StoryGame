@@ -118,10 +118,10 @@ public class StoryDataStore : MonoBehaviour
         }
 
         commands.Clear();
-        for (int i = 0; i < 24; i++)
-        {
-            commands.Add(new CommandData { CommandType = "say", Argument = "" });
-        }
+        // for (int i = 0; i < 24; i++)
+        // {
+        //     commands.Add(new CommandData { CommandType = "say", Argument = "" });
+        // }
         isLoaded = true;
         OnDataChanged?.Invoke();
     }

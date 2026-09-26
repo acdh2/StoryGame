@@ -21,10 +21,16 @@ public class LevelObjectPalette : UIControllerBase
     }
 
     [SerializeField] private ObjectSelector objectSelector;
+    [SerializeField] private SceneManager sceneManager;
 
     [Header("UI Settings")]
     [SerializeField] private LayerMask baseplateLayer;
     [SerializeField] private ProjectSettings projectSettings;
+
+    [Header("Tool Selector")]
+    [SerializeField] private List<Texture2D> toolIcons = new List<Texture2D>();
+    private int currentToolState = 0;
+    private Button toolSelectorBtn;
 
     private Vector2 itemSize = new Vector2(48, 48);
 
@@ -42,6 +48,14 @@ public class LevelObjectPalette : UIControllerBase
     protected override void OnUIEnabled(VisualElement root)
     {
         this.root = root;
+
+        toolSelectorBtn = root.Q<Button>("tool-selector");
+        if (toolSelectorBtn != null)
+        {
+            toolSelectorBtn.clicked += OnToolSelectorClicked;
+            UpdateToolButtonUI();
+            ExecuteToolAction();            
+        }        
 
         categoryBar = root.Q<ScrollView>("CategoryBar");
         if (categoryBar != null)
@@ -66,6 +80,12 @@ public class LevelObjectPalette : UIControllerBase
 
     protected override void OnUIDisabled()
     {
+        if (toolSelectorBtn != null)
+        {
+            toolSelectorBtn.clicked -= OnToolSelectorClicked;
+            toolSelectorBtn = null;
+        }
+
         if (scrollView != null)
         {
             scrollView.Clear();
@@ -255,20 +275,11 @@ public class LevelObjectPalette : UIControllerBase
             snap.y > 0 ? Mathf.Round(position.y / snap.y) * snap.y : position.y,
             snap.z > 0 ? Mathf.Round(position.z / snap.z) * snap.z : position.z
         );
-    }   
-
-    private static void SetLayerRecursively(GameObject obj, int layer)
-    {
-        obj.layer = layer;
-        foreach (Transform child in obj.transform)
-        {
-            SetLayerRecursively(child.gameObject, layer);
-        }
-    }     
+    }    
 
     private void TrySpawnPrefab(LevelItemData item, Vector2 mouseScreenPos)
     {
-        if (Camera.main == null || item.prefab == null) return;
+        if (Camera.main == null || item.prefab == null || sceneManager == null) return;
 
         Ray ray = Camera.main.ScreenPointToRay(mouseScreenPos);
 
@@ -279,10 +290,42 @@ public class LevelObjectPalette : UIControllerBase
             {
                 spawnPosition = SnapPosition(spawnPosition, projectSettings.PositionSnap);
             }
-            GameObject newObject = Instantiate(item.prefab, spawnPosition, Quaternion.identity);
-            SetLayerRecursively(newObject, LayerMask.NameToLayer("SelectableObjects"));
 
-            objectSelector?.SelectObject(newObject);
+            sceneManager.SpawnAndRegister(item, spawnPosition, objectSelector);
         }
     }
+
+    private void OnToolSelectorClicked()
+    {
+        currentToolState = (currentToolState + 1) % 3;
+        UpdateToolButtonUI();
+        ExecuteToolAction();
+    }
+
+    private void UpdateToolButtonUI()
+    {
+        if (toolSelectorBtn == null) return;
+        if (toolIcons != null && toolIcons.Count > currentToolState && toolIcons[currentToolState] != null)
+        {
+            toolSelectorBtn.style.backgroundImage = new StyleBackground(toolIcons[currentToolState]);
+        }
+    }
+
+    private void ExecuteToolAction()
+    {
+        if (objectSelector != null) {
+            switch (currentToolState)
+            {
+                case 0:
+                    objectSelector.SetHandleType(0);
+                    break;
+                case 1:
+                    objectSelector.SetHandleType(1);
+                    break;
+                case 2:
+                    objectSelector.SetHandleType(2);
+                    break;
+            }
+        }
+    }    
 }

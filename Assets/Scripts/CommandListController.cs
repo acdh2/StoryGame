@@ -13,6 +13,7 @@ public class CommandListController : UIControllerBase
 
     [Header("UI Templates")]
     public VisualTreeAsset itemTemplate;
+    public VisualTreeAsset newItemTemplate;
 
     private ScrollView scrollView;
     private VisualElement container;
@@ -21,10 +22,6 @@ public class CommandListController : UIControllerBase
     private VisualElement draggedElement = null;
     private VisualElement placeholder = null;
     private bool isDragging = false;
-
-    private float lastClickTime = 0f;
-    private const float DOUBLE_CLICK_THRESHOLD = 0.3f;
-    private EventCallback<MouseDownEvent> scrollViewMouseDownCallback;
 
     protected override void OnUIEnabled(VisualElement root)
     {
@@ -35,21 +32,6 @@ public class CommandListController : UIControllerBase
 
         container = scrollView.contentContainer;
         container.style.paddingBottom = 300;
-
-        scrollViewMouseDownCallback = evt =>
-        {
-            if (evt.button != 0) return;
-            if (evt.target == scrollView || evt.target == container)
-            {
-                if (Time.time - lastClickTime < DOUBLE_CLICK_THRESHOLD)
-                {
-                    dataStore?.AddCommand();
-                    evt.StopPropagation();
-                }
-                lastClickTime = Time.time;
-            }
-        };
-        scrollView.RegisterCallback(scrollViewMouseDownCallback);
 
         if (dataStore != null)
         {
@@ -63,12 +45,6 @@ public class CommandListController : UIControllerBase
     protected override void OnUIDisabled()
     {
         EnableEditorCamera();
-
-        if (scrollView != null && scrollViewMouseDownCallback != null)
-        {
-            scrollView.UnregisterCallback(scrollViewMouseDownCallback);
-            scrollViewMouseDownCallback = null;
-        }
 
         if (dataStore != null)
         {
@@ -122,6 +98,16 @@ public class CommandListController : UIControllerBase
 
             RegisterDragEvents(itemRoot, index);
             container.Add(itemRoot);
+        }
+
+        if (newItemTemplate != null)
+        {
+            VisualElement addItemRoot = newItemTemplate.Instantiate();
+            addItemRoot.RegisterCallback<ClickEvent>(evt =>
+            {
+                dataStore.AddCommand();
+            });
+            container.Add(addItemRoot);
         }
     }
 

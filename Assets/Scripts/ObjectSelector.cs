@@ -1,3 +1,4 @@
+using System;
 using TransformHandles;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -10,10 +11,14 @@ public class ObjectSelector : MonoBehaviour
     [SerializeField] private LayerMask selectableObjectsLayer;
     [SerializeField] private ProjectSettings projectSettings;
 
+    public event Action<GameObject> OnTransformComplete;
+
     private Handle _globalHandle;
     private Transform _currentTarget;
     private bool _isDraggingHandle;
     private LayerMask _handleLayer;
+
+    private int currentHandleType = 0;
 
     void Start()
     {
@@ -21,7 +26,6 @@ public class ObjectSelector : MonoBehaviour
         _manager.Settings = _settings;
         _manager.BlockWhenPointerOverUI = true;
 
-        // Haal de layer-mask op die de TransformHandleManager gebruikt
         _handleLayer = LayerMask.GetMask("TransformHandle");
     }
 
@@ -35,29 +39,22 @@ public class ObjectSelector : MonoBehaviour
 
     private void TrySelectObject()
     {
-        // 1. Als de gebruiker momenteel de handle sleept, doe niks
         if (_isDraggingHandle) return;
-
-        // 2. Als er op UI wordt geklikt, blokkeer selectie
         if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject()) return;
 
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-        // 3. Check of de klik op een onderdeel van de transform handle zelf is
         if (_handleLayer != 0 && Physics.Raycast(ray, Mathf.Infinity, _handleLayer))
         {
-            // Klik is op de handle -> breek af zodat de handle de input kan verwerken
             return;
         }
 
-        // 4. Raycast naar selecteerbare 3D objecten
         if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, selectableObjectsLayer))
         {
             SelectObject(hit.collider.gameObject);
         }
         else
         {
-            // Klik op lege 3D ruimte -> Verwijder target
             ClearHandleTarget();
         }
     }
@@ -73,6 +70,30 @@ public class ObjectSelector : MonoBehaviour
         Transform targetTransform = targetObject.transform;
         if (_currentTarget == targetTransform) return;
         SetHandleTarget(targetTransform);
+    }
+
+    public void SetHandleType(int handleType)
+    {
+        if (currentHandleType != handleType) {
+            currentHandleType = handleType;
+            ApplyCurrentType();
+        }
+    }
+
+    private void ApplyCurrentType() {
+        if (_globalHandle != null) {
+            switch (currentHandleType) {
+                case 1:
+                    TransformHandleManager.ChangeHandleType(_globalHandle, HandleType.Rotation);
+                    break;
+                case 2: 
+                    TransformHandleManager.ChangeHandleType(_globalHandle, HandleType.Scale);
+                    break;
+                default:
+                    TransformHandleManager.ChangeHandleType(_globalHandle, HandleType.Position);
+                    break;
+            }
+        }
     }
 
     private void SetHandleTarget(Transform newTarget)
@@ -91,8 +112,6 @@ public class ObjectSelector : MonoBehaviour
         {
             if (_currentTarget != null)
             {
-                // Eerst nieuwe toevoegen, daarna oude verwijderen om te voorkomen dat
-                // RemoveTarget de handle vernietigt omdat de lijst even leeg is
                 _manager.AddTarget(newTarget, _globalHandle);
                 _manager.RemoveTarget(_currentTarget, _globalHandle);
             }
@@ -103,6 +122,7 @@ public class ObjectSelector : MonoBehaviour
         }
 
         _currentTarget = newTarget;
+        ApplyCurrentType();
     }
 
     private void ClearHandleTarget()
@@ -133,5 +153,9 @@ public class ObjectSelector : MonoBehaviour
     private void OnHandleEndInteraction(Handle handle)
     {
         _isDraggingHandle = false;
+        if (_currentTarget != null)
+        {
+            OnTransformComplete?.Invoke(_currentTarget.gameObject);
+        }
     }
 }

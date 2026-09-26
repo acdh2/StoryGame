@@ -7,4 +7,7 @@
             <ui:ScrollView name="CategoryBar" mode="Horizontal" horizontal-scroller-visibility="Hidden" vertical-scroller-visibility="Hidden" style="height: 36px; width: 100%; flex-direction: row;"/>
         </ui:VisualElement>
     </ui:VisualElement>
+    <ui:GroupBox>
+        <ui:Button text="" name="tool-selector" style="width: 48px; height: 48px; position: absolute; margin-top: 4px; margin-bottom: 4px; background-image: url(&quot;project://database/Assets/Settings/UI%20Toolkit/UnityThemes/UnityDefaultRuntimeTheme.tss?fileID=-1304905567622442630&amp;guid=9fa4391d8dada414596343d205a31e0e&amp;type=3#arrow-down@2x&quot;); background-size: 100% 100%;"/>
+    </ui:GroupBox>
 </ui:UXML>

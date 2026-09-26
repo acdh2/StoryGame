@@ -11,6 +11,8 @@ public class PlayMode : UIControllerBase
 
     private DialogueInterpreter dialogueInterpreter;
     private GameObject player;
+    private bool isStarted = false;
+    
 
     protected override void Awake()
     {
@@ -20,7 +22,8 @@ public class PlayMode : UIControllerBase
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.P)) {
+        if (!isStarted) {
+            isStarted = true;
             dialogueInterpreter.StartDialogue();
         }
     }
@@ -29,6 +32,7 @@ public class PlayMode : UIControllerBase
     {
         DisableEditorCamera();
         CreatePlayer();
+        isStarted = false;
     }
 
     protected override void OnUIDisabled()
