@@ -3,8 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
-using Lua;
-using Lua.Standard;
 
 public class DialogueInterpreter : MonoBehaviour
 {
@@ -17,7 +15,6 @@ public class DialogueInterpreter : MonoBehaviour
     public StoryDataStore storyDataStore;
 
     private VisualElement rootElement;
-
     private Label characterNameLabel;
     private Label dialogueTextLabel;
     private VisualElement optionsContainer;
@@ -25,12 +22,10 @@ public class DialogueInterpreter : MonoBehaviour
     private Button continueButton;
 
     private bool advanceRequested = false;
-    private int selectedOptionNextInstructionIndex = -1;
-    private bool clickedRequested = false;
-    private string lastClickedItem = "";
+    private string selectedOptionText = "";
+    private bool touchedRequested = false;
+    private string lastTouchedItem = "";
     private UnityEngine.Coroutine activeDialogueCoroutine = null;
-
-    private LuaState luaState;
 
     public class Instruction
     {
@@ -42,65 +37,16 @@ public class DialogueInterpreter : MonoBehaviour
     }
 
     private List<Instruction> instructions = new List<Instruction>();
-    private Dictionary<string, int> labels = new Dictionary<string, int>();
 
-    private void Awake()
-    {
-        luaState = LuaState.Create();
-        luaState.OpenStandardLibraries();
-        luaState.Environment["print"] = new LuaFunction((context, ct) => {
-            Debug.Log($"[Lua] {context.GetArgument(0)}");
-            return new(0);
-        });
-        luaState.Environment["say"] = new LuaFunction((context, ct) => {
-            LuaSay(context.GetArgument(0).ToString());
-            return new(0);
-        });
-        luaState.Environment["clicked"] = new LuaFunction((context, ct) => {
-            LuaClicked(context.GetArgument(0).ToString());
-            return new(0);
-        });
-        luaState.Environment["show"] = new LuaFunction((context, ct) => {
-            LuaShow(context.GetArgument(0).ToString());
-            return new(0);
-        });
-        luaState.Environment["hide"] = new LuaFunction((context, ct) => {
-            LuaHide(context.GetArgument(0).ToString());
-            return new(0);
-        });
-        luaState.Environment["option"] = new LuaFunction((context, ct) => {
-            LuaOption(context.GetArgument(0).ToString());
-            return new(0);
-        });
-        luaState.Environment["label"] = new LuaFunction((context, ct) => {
-            LuaLabel(context.GetArgument(0).ToString());
-            return new(0);
-        });
-        luaState.Environment["jump"] = new LuaFunction((context, ct) => {
-            LuaJump(context.GetArgument(0).ToString());
-            return new(0);
-        });
-        luaState.Environment["set"] = new LuaFunction((context, ct) => {
-            LuaSet(context.GetArgument(0).ToString());
-            return new(0);
-        });
-        luaState.Environment["unset"] = new LuaFunction((context, ct) => {
-            LuaUnset(context.GetArgument(0).ToString());
-            return new(0);
-        });
-        luaState.Environment["if_set"] = new LuaFunction((context, ct) => {
-            LuaIf(context.GetArgument(0).ToString());
-            return new(0);
-        });
-        luaState.Environment["if_unset"] = new LuaFunction((context, ct) => {
-            LuaIfNot(context.GetArgument(0).ToString());
-            return new(0);
-        });
-    }
+    private Dictionary<string, int> labels =
+        new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
+
+    private int autoLabelCounter = 0;
 
     private void ShowScreen()
     {
-        if (rootElement != null && rootElement.style.display != DisplayStyle.Flex)
+        if (rootElement != null &&
+            rootElement.style.display != DisplayStyle.Flex)
         {
             rootElement.style.display = DisplayStyle.Flex;
             OnScreenShown?.Invoke();
@@ -109,28 +55,32 @@ public class DialogueInterpreter : MonoBehaviour
 
     private void HideScreen()
     {
-        if (rootElement != null && rootElement.style.display != DisplayStyle.None)
+        if (rootElement != null &&
+            rootElement.style.display != DisplayStyle.None)
         {
             rootElement.style.display = DisplayStyle.None;
             OnScreenHidden?.Invoke();
         }
     }
+
     public void StartDialogue(VisualElement root)
     {
         rootElement = root;
-        if (root == null) return;
+
+        if (root == null)
+            return;
 
         BindUIElements(rootElement);
 
         StopDialogue();
-        string codeToExecute = "";
-        if (storyDataStore != null)
-        {
-            codeToExecute = storyDataStore.ToLuaScript();
-        }
+
         ShowScreen();
-        ParseLuaScript(codeToExecute);
-        activeDialogueCoroutine = StartCoroutine(RunDialogueRoutine());
+
+        ParseCommands();
+
+        activeDialogueCoroutine =
+            StartCoroutine(RunDialogueRoutine());
+
         OnDialogueStarted?.Invoke();
     }
 
@@ -143,10 +93,10 @@ public class DialogueInterpreter : MonoBehaviour
         }
 
         advanceRequested = false;
-        selectedOptionNextInstructionIndex = -1;
-        clickedRequested = false;
-        ClearOptionsUI();
+        selectedOptionText = "";
+        touchedRequested = false;
 
+        ClearOptionsUI();
         HideScreen();
 
         OnDialogueEnded?.Invoke();
@@ -154,24 +104,39 @@ public class DialogueInterpreter : MonoBehaviour
 
     private void BindUIElements(VisualElement root)
     {
-        VisualElement rootElement = root.Q<VisualElement>("dialogue-root");
-        if (rootElement == null) return;
+        VisualElement dialogueRoot =
+            root.Q<VisualElement>("dialogue-root");
 
-        characterNameLabel = rootElement.Q<Label>("character-name-label");
-        dialogueTextLabel = rootElement.Q<Label>("dialogue-text-label");
-        optionsContainer = rootElement.Q<VisualElement>("options-container");
-        optionButtonTemplate = rootElement.Q<Button>("option-button-template");
-        continueButton = rootElement.Q<Button>("continue-button");
+        if (dialogueRoot == null)
+            dialogueRoot = root;
+
+        characterNameLabel =
+            dialogueRoot.Q<Label>("character-name-label");
+
+        dialogueTextLabel =
+            dialogueRoot.Q<Label>("dialogue-text-label");
+
+        optionsContainer =
+            dialogueRoot.Q<VisualElement>("options-container");
+
+        optionButtonTemplate =
+            dialogueRoot.Q<Button>("option-button-template");
+
+        continueButton =
+            dialogueRoot.Q<Button>("continue-button");
 
         if (continueButton != null)
         {
+            continueButton.clicked -= OnContinueClicked;
             continueButton.clicked += OnContinueClicked;
-            continueButton.style.display = DisplayStyle.None;
+            continueButton.style.display =
+                DisplayStyle.None;
         }
-        
+
         if (optionButtonTemplate != null)
         {
-            optionButtonTemplate.style.display = DisplayStyle.None;
+            optionButtonTemplate.style.display =
+                DisplayStyle.None;
         }
     }
 
@@ -180,311 +145,702 @@ public class DialogueInterpreter : MonoBehaviour
         advanceRequested = true;
     }
 
-    public void OnWorldItemClicked(string itemName)
+    public void OnObjectTouched(string itemName)
     {
-        if (clickedRequested && lastClickedItem == itemName)
+        if (touchedRequested &&
+            string.Equals(
+                lastTouchedItem,
+                itemName,
+                StringComparison.OrdinalIgnoreCase))
         {
-            clickedRequested = false;
+            touchedRequested = false;
         }
     }
 
-    private void ParseLuaScript(string scriptSource)
+    private void ParseCommands()
     {
         instructions.Clear();
         labels.Clear();
+        autoLabelCounter = 0;
 
-        if (!string.IsNullOrEmpty(scriptSource))
-        {
-            luaState.DoStringAsync(scriptSource).GetAwaiter().GetResult();
-        }
+        if (storyDataStore == null ||
+            storyDataStore.Commands == null)
+            return;
+
+        List<CommandData> raw =
+            new List<CommandData>(storyDataStore.Commands);
+
+        List<CommandData> preparsed =
+            PreParseCommands(raw);
+
+        CompileInstructions(preparsed);
     }
 
-    private void LuaSay(string text) => instructions.Add(new Instruction { Type = "SAY", Text = text });
-    private void LuaClicked(string itemName) => instructions.Add(new Instruction { Type = "CLICKED", ItemName = itemName });
-    private void LuaShow(string itemName) => instructions.Add(new Instruction { Type = "SHOW", ItemName = itemName });
-    private void LuaHide(string itemName) => instructions.Add(new Instruction { Type = "HIDE", ItemName = itemName });
-    private void LuaOption(string text) => instructions.Add(new Instruction { Type = "OPTION", Text = text });
-    private void LuaLabel(string name)
+    private List<CommandData> PreParseCommands(
+        List<CommandData> raw)
     {
-        labels[name] = instructions.Count;
-        instructions.Add(new Instruction { Type = "LABEL", Target = name });
-    }
-    private void LuaJump(string targetLabel) => instructions.Add(new Instruction { Type = "JUMP", Target = targetLabel });
-    private void LuaSet(string varName) => instructions.Add(new Instruction { Type = "SET", VarName = varName });
-    private void LuaUnset(string varName) => instructions.Add(new Instruction { Type = "UNSET", VarName = varName });
-    private void LuaIf(string varName) => instructions.Add(new Instruction { Type = "IF", VarName = varName });
-    private void LuaIfNot(string varName) => instructions.Add(new Instruction { Type = "IF_NOT", VarName = varName });
+        List<CommandData> result =
+            new List<CommandData>();
 
-    private int GetNextBlock(int startPc)
-    {
-        if (startPc >= instructions.Count) return instructions.Count;
+        int i = 0;
 
-        Instruction instr = instructions[startPc];
-
-        switch (instr.Type)
+        while (i < raw.Count)
         {
-            case "OPTION":
+            CommandData cmd = raw[i];
+
+            if (cmd == null)
             {
-                int nextPc = startPc + 1;
-                if (nextPc < instructions.Count && instructions[nextPc].Type == "OPTION")
+                i++;
+                continue;
+            }
+
+            string type =
+                NormalizeType(cmd.CommandType);
+
+            if (string.IsNullOrEmpty(type))
+            {
+                i++;
+                continue;
+            }
+
+            if (type == "IF_SET" ||
+                type == "IF_UNSET")
+            {
+                if (i + 1 < raw.Count)
                 {
-                    return nextPc;
+                    string nextType =
+                        NormalizeType(
+                            raw[i + 1].CommandType);
+
+                    if (nextType == "OPTION")
+                    {
+                        result.Add(cmd);
+                        result.Add(raw[i + 1]);
+
+                        i += 2;
+                        continue;
+                    }
                 }
-                return GetNextBlock(nextPc);
+
+                List<int> ifIndices =
+                    new List<int> { i };
+
+                int peek = i + 1;
+
+                while (peek < raw.Count)
+                {
+                    string nextType =
+                        NormalizeType(
+                            raw[peek].CommandType);
+
+                    if (nextType == "IF_SET" ||
+                        nextType == "IF_UNSET")
+                    {
+                        ifIndices.Add(peek);
+                        peek++;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+
+                if (ifIndices.Count > 1)
+                {
+                    string exitLabel =
+                        $"__autolabel_{autoLabelCounter++}";
+
+                    for (int idx = 0;
+                         idx < ifIndices.Count;
+                         idx++)
+                    {
+                        CommandData currentIf =
+                            raw[ifIndices[idx]];
+
+                        string currentType =
+                            NormalizeType(
+                                currentIf.CommandType);
+
+                        string invertedType =
+                            currentType == "IF_SET"
+                                ? "IF_UNSET"
+                                : "IF_SET";
+
+                        result.Add(
+                            new CommandData
+                            {
+                                CommandType = invertedType,
+                                Argument =
+                                    NormalizeArgument(
+                                        currentIf.Argument)
+                            });
+
+                        result.Add(
+                            new CommandData
+                            {
+                                CommandType = "JUMP",
+                                Argument = exitLabel
+                            });
+                    }
+
+                    i = peek;
+
+                    while (i < raw.Count)
+                    {
+                        string bodyType =
+                            NormalizeType(
+                                raw[i].CommandType);
+
+                        if (bodyType == "LABEL" ||
+                            bodyType == "JUMP" ||
+                            bodyType == "OPTION" ||
+                            bodyType == "IF_SET" ||
+                            bodyType == "IF_UNSET")
+                        {
+                            break;
+                        }
+
+                        result.Add(raw[i]);
+                        i++;
+                    }
+
+                    result.Add(
+                        new CommandData
+                        {
+                            CommandType = "LABEL",
+                            Argument = exitLabel
+                        });
+
+                    continue;
+                }
             }
-            case "IF":
-            case "IF_NOT":
+
+            result.Add(cmd);
+            i++;
+        }
+
+        return ParseOptionBlocks(result);
+    }
+
+    private List<CommandData> ParseOptionBlocks(
+        List<CommandData> source)
+    {
+        List<CommandData> result =
+            new List<CommandData>();
+
+        int i = 0;
+
+        while (i < source.Count)
+        {
+            string type =
+                NormalizeType(source[i].CommandType);
+
+            if (type != "OPTION")
             {
-                int nextPc = startPc + 1;
-                return GetNextBlock(nextPc);
+                result.Add(source[i]);
+                i++;
+                continue;
             }
-            default:
-                return startPc + 1;
+
+            List<CommandData> optionTexts =
+                new List<CommandData>();
+
+            List<CommandData> optionInstructions =
+                new List<CommandData>();
+
+            while (i < source.Count)
+            {
+                string optionType =
+                    NormalizeType(
+                        source[i].CommandType);
+
+                if (optionType != "OPTION")
+                    break;
+
+                CommandData option =
+                    source[i];
+
+                optionTexts.Add(option);
+
+                i++;
+
+                if (i >= source.Count)
+                {
+                    optionInstructions.Add(
+                        new CommandData
+                        {
+                            CommandType = "NOP"
+                        });
+
+                    break;
+                }
+
+                string nextType =
+                    NormalizeType(
+                        source[i].CommandType);
+
+                if (nextType == "OPTION")
+                {
+                    optionInstructions.Add(
+                        new CommandData
+                        {
+                            CommandType = "NOP"
+                        });
+
+                    continue;
+                }
+
+                if (nextType == "IF_SET" ||
+                    nextType == "IF_UNSET")
+                {
+                    optionInstructions.Add(
+                        new CommandData
+                        {
+                            CommandType = "NOP"
+                        });
+
+                    break;
+                }
+
+                optionInstructions.Add(
+                    source[i]);
+
+                i++;
+
+                if (i >= source.Count)
+                    break;
+
+                string afterInstruction =
+                    NormalizeType(
+                        source[i].CommandType);
+
+                if (afterInstruction != "OPTION")
+                    break;
+            }
+
+            for (int optionIndex = 0;
+                 optionIndex < optionTexts.Count;
+                 optionIndex++)
+            {
+                result.Add(
+                    new CommandData
+                    {
+                        CommandType = "SHOWOPTION",
+                        Argument =
+                            optionTexts[optionIndex].Argument
+                    });
+            }
+
+            result.Add(
+                new CommandData
+                {
+                    CommandType = "WAITFORCHOICE"
+                });
+
+            for (int optionIndex = 0;
+                 optionIndex < optionInstructions.Count;
+                 optionIndex++)
+            {
+                result.Add(
+                    new CommandData
+                    {
+                        CommandType = "IF_OPTION",
+                        Argument =
+                            optionTexts[optionIndex].Argument
+                    });
+
+                result.Add(
+                    optionInstructions[optionIndex]);
+            }
+        }
+
+        return result;
+    }
+
+    private void CompileInstructions(
+        List<CommandData> preparsed)
+    {
+        foreach (CommandData cmd in preparsed)
+        {
+            AddInstruction(cmd);
         }
     }
 
-    private int GetEndOfOptionsChain(int startPc)
+    private void AddInstruction(CommandData cmd)
     {
-        int currentPc = startPc;
-        while (currentPc < instructions.Count && instructions[currentPc].Type == "OPTION")
+        if (cmd == null ||
+            string.IsNullOrEmpty(cmd.CommandType))
+            return;
+
+        string type =
+            NormalizeType(cmd.CommandType);
+
+        string arg =
+            NormalizeArgument(cmd.Argument);
+
+        if (type == "LABEL")
         {
-            currentPc = GetNextBlock(currentPc);
+            labels[arg] = instructions.Count;
         }
-        return currentPc;
+
+        Instruction instruction =
+            new Instruction
+            {
+                Type = type,
+
+                Text =
+                    type == "SAY" ||
+                    type == "SHOWOPTION" ||
+                    type == "IF_OPTION"
+                        ? arg
+                        : null,
+
+                ItemName =
+                    type == "TOUCHED" ||
+                    type == "SHOW" ||
+                    type == "HIDE"
+                        ? arg
+                        : null,
+
+                Target =
+                    type == "LABEL" ||
+                    type == "JUMP"
+                        ? arg
+                        : null,
+
+                VarName =
+                    type == "SET" ||
+                    type == "UNSET" ||
+                    type == "IF_SET" ||
+                    type == "IF_UNSET"
+                        ? arg
+                        : null
+            };
+
+        instructions.Add(instruction);
     }
 
     private IEnumerator RunDialogueRoutine()
     {
         int pc = 0;
-        HashSet<string> variables = new HashSet<string>();
+
+        HashSet<string> variables =
+            new HashSet<string>(
+                StringComparer.OrdinalIgnoreCase);
+
+        List<string> cachedOptions =
+            new List<string>();
 
         while (pc < instructions.Count)
         {
-            Instruction instr = instructions[pc];
-
-            if (instr.Type == "OPTION")
-            {
-                int optionChainStartPc = pc;
-                int endOfOptionBlockPc = GetEndOfOptionsChain(optionChainStartPc);
-
-                List<(Instruction optInstr, int targetPc)> options = new List<(Instruction, int)>();
-
-                int scanPc = optionChainStartPc;
-                while (scanPc < endOfOptionBlockPc && scanPc < instructions.Count && instructions[scanPc].Type == "OPTION")
-                {
-                    options.Add((instructions[scanPc], scanPc + 1));
-                    scanPc = GetNextBlock(scanPc);
-                }
-
-                selectedOptionNextInstructionIndex = -1;
-                ShowOptionsUI(options);
-
-                yield return new WaitUntil(() => selectedOptionNextInstructionIndex != -1);
-
-                ClearOptionsUI();
-
-                int chosenActionStartPc = selectedOptionNextInstructionIndex;
-                int chosenActionEndPc = GetNextBlock(chosenActionStartPc);
-
-                if (chosenActionStartPc < instructions.Count && instructions[chosenActionStartPc].Type != "OPTION")
-                {
-                    pc = chosenActionStartPc;
-
-                    while (pc < chosenActionEndPc && pc < instructions.Count)
-                    {
-                        Instruction subInstr = instructions[pc];
-
-                        if (subInstr.Type == "IF")
-                        {
-                            if (variables.Contains(subInstr.VarName)) pc++;
-                            else pc = GetNextBlock(pc);
-                        }
-                        else if (subInstr.Type == "IF_NOT")
-                        {
-                            if (!variables.Contains(subInstr.VarName)) pc++;
-                            else pc = GetNextBlock(pc);
-                        }
-                        else if (subInstr.Type == "SAY")
-                        {
-                            if (dialogueTextLabel != null) dialogueTextLabel.text = subInstr.Text;
-                            if (continueButton != null) continueButton.style.display = DisplayStyle.Flex;
-
-                            advanceRequested = false;
-                            yield return new WaitUntil(() => advanceRequested);
-
-                            if (continueButton != null) continueButton.style.display = DisplayStyle.None;
-                            pc++;
-                        }
-                        else if (subInstr.Type == "CLICKED")
-                        {
-                            clickedRequested = true;
-                            lastClickedItem = subInstr.ItemName;
-                            yield return new WaitUntil(() => !clickedRequested);
-                            pc++;
-                        }
-                        else if (subInstr.Type == "JUMP")
-                        {
-                            if (labels.TryGetValue(subInstr.Target, out int targetPc))
-                            {
-                                pc = targetPc;
-                            }
-                            break;
-                        }
-                        else
-                        {
-                            ExecuteSingleInstruction(subInstr, variables);
-                            pc++;
-                        }
-                    }
-                }
-
-                if (pc < instructions.Count && instructions[pc].Type != "JUMP")
-                {
-                    pc = endOfOptionBlockPc;
-                }
-
-                continue;
-            }
+            Instruction instr =
+                instructions[pc];
 
             switch (instr.Type)
             {
                 case "SAY":
-                    if (dialogueTextLabel != null) dialogueTextLabel.text = instr.Text;
-                    if (continueButton != null) continueButton.style.display = DisplayStyle.Flex;
+
+                    if (dialogueTextLabel != null)
+                        dialogueTextLabel.text =
+                            instr.Text;
+
+                    if (continueButton != null)
+                        continueButton.style.display =
+                            DisplayStyle.Flex;
 
                     advanceRequested = false;
-                    yield return new WaitUntil(() => advanceRequested);
 
-                    if (continueButton != null) continueButton.style.display = DisplayStyle.None;
+                    yield return new WaitUntil(
+                        () => advanceRequested);
+
+                    if (continueButton != null)
+                        continueButton.style.display =
+                            DisplayStyle.None;
+
                     pc++;
                     break;
 
-                case "CLICKED":
-                    clickedRequested = true;
-                    lastClickedItem = instr.ItemName;
-                    yield return new WaitUntil(() => !clickedRequested);
+                case "SHOWOPTION":
+
+                    cachedOptions.Add(
+                        instr.Text);
+
+                    pc++;
+                    break;
+
+                case "WAITFORCHOICE":
+
+                    selectedOptionText = "";
+
+                    ShowOptionsUI(
+                        cachedOptions);
+
+                    yield return new WaitUntil(
+                        () =>
+                            !string.IsNullOrEmpty(
+                                selectedOptionText));
+
+                    ClearOptionsUI();
+
+                    cachedOptions.Clear();
+
+                    pc++;
+                    break;
+
+                case "IF_OPTION":
+
+                    if (string.Equals(
+                        instr.Text,
+                        selectedOptionText,
+                        StringComparison.OrdinalIgnoreCase))
+                    {
+                        pc++;
+                    }
+                    else
+                    {
+                        pc += 2;
+                    }
+
+                    break;
+
+                case "TOUCHED":
+
+                    touchedRequested = true;
+                    lastTouchedItem =
+                        instr.ItemName;
+
+                    yield return new WaitUntil(
+                        () => !touchedRequested);
+
                     pc++;
                     break;
 
                 case "SHOW":
-                    ToggleUIElementVisibility(instr.ItemName, DisplayStyle.Flex);
+
+                    ToggleSceneObjectVisibility(
+                        instr.ItemName,
+                        true);
+
                     pc++;
                     break;
 
                 case "HIDE":
-                    ToggleUIElementVisibility(instr.ItemName, DisplayStyle.None);
+
+                    ToggleSceneObjectVisibility(
+                        instr.ItemName,
+                        false);
+
                     pc++;
                     break;
 
-                case "IF":
-                    if (variables.Contains(instr.VarName)) pc++;
-                    else pc = GetNextBlock(pc);
+                case "IF_SET":
+
+                    if (variables.Contains(
+                        instr.VarName))
+                    {
+                        pc++;
+                    }
+                    else
+                    {
+                        pc += 2;
+                    }
+
                     break;
 
-                case "IF_NOT":
-                    if (!variables.Contains(instr.VarName)) pc++;
-                    else pc = GetNextBlock(pc);
+                case "IF_UNSET":
+
+                    if (!variables.Contains(
+                        instr.VarName))
+                    {
+                        pc++;
+                    }
+                    else
+                    {
+                        pc += 2;
+                    }
+
                     break;
 
                 case "SET":
-                    variables.Add(instr.VarName);
+
+                    variables.Add(
+                        instr.VarName);
+
                     pc++;
                     break;
 
                 case "UNSET":
-                    variables.Remove(instr.VarName);
+
+                    variables.Remove(
+                        instr.VarName);
+
                     pc++;
                     break;
 
                 case "LABEL":
+
                     pc++;
                     break;
 
                 case "JUMP":
-                    if (labels.TryGetValue(instr.Target, out int targetPc))
+
+                    if (labels.TryGetValue(
+                        instr.Target,
+                        out int targetPc))
+                    {
                         pc = targetPc;
+                    }
                     else
+                    {
+                        Debug.LogWarning(
+                            $"Dialogue jump target not found: {instr.Target}");
+
                         pc++;
+                    }
+
+                    break;
+
+                case "NOP":
+
+                    pc++;
                     break;
 
                 default:
+
                     pc++;
                     break;
             }
         }
 
         HideScreen();
+
         activeDialogueCoroutine = null;
+
         OnDialogueEnded?.Invoke();
     }
 
-    private void ExecuteSingleInstruction(Instruction instr, HashSet<string> variables)
+    private void ToggleSceneObjectVisibility(
+        string objectName,
+        bool show)
     {
-        switch (instr.Type)
+        GameObject sceneRoot =
+            GameObject.Find("SceneManager");
+
+        if (sceneRoot == null)
+            return;
+
+        Transform[] transforms =
+            sceneRoot.GetComponentsInChildren<Transform>(
+                true);
+
+        foreach (Transform child in transforms)
         {
-            case "SET":
-                variables.Add(instr.VarName);
-                break;
-            case "UNSET":
-                variables.Remove(instr.VarName);
-                break;
-            case "SHOW":
-                ToggleUIElementVisibility(instr.ItemName, DisplayStyle.Flex);
-                break;
-            case "HIDE":
-                ToggleUIElementVisibility(instr.ItemName, DisplayStyle.None);
-                break;
+            if (child == sceneRoot.transform)
+                continue;
+
+            if (child.name.Equals(
+                objectName,
+                StringComparison.OrdinalIgnoreCase))
+            {
+                child.gameObject.SetActive(show);
+            }
         }
     }
 
-    private void ToggleUIElementVisibility(string elementName, DisplayStyle displayStyle)
+    private void ShowOptionsUI(
+        List<string> options)
     {
-        if (rootElement == null) return;
-        VisualElement elem = rootElement.Q<VisualElement>(elementName);
-        if (elem != null)
-        {
-            elem.style.display = displayStyle;
-        }
-    }
+        if (continueButton != null)
+            continueButton.style.display =
+                DisplayStyle.None;
 
-    private void ShowOptionsUI(List<(Instruction optInstr, int targetPc)> options)
-    {
-        if (continueButton != null) continueButton.style.display = DisplayStyle.None;
-
-        foreach (var opt in options)
+        foreach (string optText in options)
         {
             Button btn = new Button();
-            btn.text = opt.optInstr.Text;
-            
+
+            btn.text = optText;
+
             if (optionButtonTemplate != null)
             {
-                btn.style.height = optionButtonTemplate.style.height;
-                btn.style.backgroundColor = optionButtonTemplate.style.backgroundColor;
-                btn.style.borderTopLeftRadius = optionButtonTemplate.style.borderTopLeftRadius;
-                btn.style.borderTopRightRadius = optionButtonTemplate.style.borderTopRightRadius;
-                btn.style.borderBottomLeftRadius = optionButtonTemplate.style.borderBottomLeftRadius;
-                btn.style.borderBottomRightRadius = optionButtonTemplate.style.borderBottomRightRadius;
-                btn.style.color = optionButtonTemplate.style.color;
+                btn.style.height =
+                    optionButtonTemplate.style.height;
+
+                btn.style.backgroundColor =
+                    optionButtonTemplate.style.backgroundColor;
+
+                btn.style.borderTopLeftRadius =
+                    optionButtonTemplate.style.borderTopLeftRadius;
+
+                btn.style.borderTopRightRadius =
+                    optionButtonTemplate.style.borderTopRightRadius;
+
+                btn.style.borderBottomLeftRadius =
+                    optionButtonTemplate.style.borderBottomLeftRadius;
+
+                btn.style.borderBottomRightRadius =
+                    optionButtonTemplate.style.borderBottomRightRadius;
+
+                btn.style.color =
+                    optionButtonTemplate.style.color;
             }
-            
+
             btn.style.marginTop = 2;
             btn.style.marginBottom = 4;
 
-            int targetInstructionIndex = opt.targetPc;
-            btn.clicked += () => { selectedOptionNextInstructionIndex = targetInstructionIndex; };
+            string textToSelect =
+                optText;
 
-            optionsContainer.Add(btn);
+            btn.clicked += () =>
+            {
+                selectedOptionText =
+                    textToSelect;
+            };
+
+            optionsContainer?.Add(btn);
         }
     }
 
     private void ClearOptionsUI()
     {
-        if (optionsContainer == null) return;
+        if (optionsContainer == null)
+            return;
+
         optionsContainer.Clear();
+
         if (optionButtonTemplate != null)
         {
-            optionsContainer.Add(optionButtonTemplate);
-            optionButtonTemplate.style.display = DisplayStyle.None;
+            optionsContainer.Add(
+                optionButtonTemplate);
+
+            optionButtonTemplate.style.display =
+                DisplayStyle.None;
         }
+    }
+
+    private string NormalizeType(
+        string value)
+    {
+        return (value ?? "")
+            .Trim()
+            .ToUpperInvariant();
+    }
+
+    private string NormalizeArgument(
+        string value)
+    {
+        string result =
+            (value ?? "").Trim();
+
+        if (result.Length >= 2 &&
+            result.StartsWith("\"") &&
+            result.EndsWith("\""))
+        {
+            result =
+                result.Substring(
+                    1,
+                    result.Length - 2);
+        }
+
+        return result;
     }
 }

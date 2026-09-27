@@ -30,7 +30,7 @@ public class CommandListController : UIControllerBase
         if (scrollView == null) return;
 
         container = scrollView.contentContainer;
-        container.style.paddingBottom = 300;
+        //container.style.paddingBottom = 300;
 
         if (dataStore != null)
         {
@@ -57,6 +57,21 @@ public class CommandListController : UIControllerBase
         draggedElement = null;
         placeholder = null;
     }
+
+    private Color GetColorForCommand(string commandType)
+    {
+        string type = commandType?.Trim().ToUpperInvariant() ?? "";
+        switch (type)
+        {
+            case "SAY": return new Color(0.2f, 0.4f, 0.6f);      // Blauw
+            case "OPTION": return new Color(0.2f, 0.6f, 0.4f);   // Groen
+            case "JUMP":
+            case "LABEL": return new Color(0.6f, 0.4f, 0.2f);    // Oranje
+            case "SET":
+            case "UNSET": return new Color(0.5f, 0.2f, 0.6f);    // Paars
+            default: return new Color(0.3f, 0.3f, 0.3f);         // Standaard grijs
+        }
+    }    
 
     private void RebuildUI()
     {
@@ -98,6 +113,7 @@ public class CommandListController : UIControllerBase
                 inputField.RegisterCallback<NavigationCancelEvent>(evt => evt.StopPropagation(), TrickleDown.TrickleDown);
             }
 
+            itemRoot.style.backgroundColor = GetColorForCommand(data.CommandType);
             RegisterDragEvents(itemRoot, index);
             container.Add(itemRoot);
         }
