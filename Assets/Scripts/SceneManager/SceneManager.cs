@@ -147,15 +147,14 @@ public class SceneManager : MonoBehaviour
 
     private LevelObjectPalette.LevelItemData FindItemDataByName(string itemName)
     {
-        // Reflection of public fields via serialized data isn't directly exposed unless configured, 
-        // assuming LevelObjectPalette has a method or public access, or you use a lookup dictionary.
-        // For standard Unity fields, you can expose a public method on LevelObjectPalette to find items.
-        return default;
+        if (levelObjectPalette == null) return default;
+        return levelObjectPalette.FindItemDataByName(itemName);
     }
 
     private Material FindMaterialByName(string materialName)
     {
-        return null;
+        if (materialPalette == null) return null;
+        return materialPalette.FindMaterialByName(materialName);
     }
 
     private static void SetLayerRecursively(GameObject obj, int layer)

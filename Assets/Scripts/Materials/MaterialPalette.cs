@@ -2,40 +2,24 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class LevelObjectPalette : UIControllerBase
+public class MaterialPalette : UIControllerBase
 {
     [System.Serializable]
-    public struct LevelItemData
-    {
-        public string itemName;
-        public Texture2D thumbnail;
-        public GameObject prefab;
-    }
-
-    [System.Serializable]
-    public struct LevelItemCategory
+    public struct MaterialCategory
     {
         public string categoryName;
         public Texture2D categoryIcon;
-        public List<LevelItemData> items;
+        public List<Material> materials;
     }
 
-    [SerializeField] private ObjectSelector objectSelector;
-    [SerializeField] private SceneManager sceneManager;
-
     [Header("UI Settings")]
-    [SerializeField] private LayerMask baseplateLayer;
-    [SerializeField] private ProjectSettings projectSettings;
-
-    [Header("Tool Selector")]
-    [SerializeField] private List<Texture2D> toolIcons = new List<Texture2D>();
-    private int currentToolState = 0;
-    private Button toolSelectorBtn;
+    [SerializeField] private LayerMask targetLayerMask;
+    [SerializeField] private SceneManager sceneManager;
 
     private Vector2 itemSize = new Vector2(48, 48);
 
     [Header("Data")]
-    [SerializeField] private List<LevelItemCategory> categories = new List<LevelItemCategory>();
+    [SerializeField] private List<MaterialCategory> categories = new List<MaterialCategory>();
 
     private VisualElement root;
     private ScrollView categoryBar;
@@ -48,14 +32,6 @@ public class LevelObjectPalette : UIControllerBase
     protected override void OnUIEnabled(VisualElement root)
     {
         this.root = root;
-
-        toolSelectorBtn = root.Q<Button>("tool-selector");
-        if (toolSelectorBtn != null)
-        {
-            toolSelectorBtn.clicked += OnToolSelectorClicked;
-            UpdateToolButtonUI();
-            ExecuteToolAction();            
-        }        
 
         categoryBar = root.Q<ScrollView>("CategoryBar");
         if (categoryBar != null)
@@ -80,12 +56,6 @@ public class LevelObjectPalette : UIControllerBase
 
     protected override void OnUIDisabled()
     {
-        if (toolSelectorBtn != null)
-        {
-            toolSelectorBtn.clicked -= OnToolSelectorClicked;
-            toolSelectorBtn = null;
-        }
-
         if (scrollView != null)
         {
             scrollView.Clear();
@@ -106,7 +76,7 @@ public class LevelObjectPalette : UIControllerBase
     private void SetupDragPreview()
     {
         if (root == null) return;
-        
+
         dragPreview = new VisualElement();
         dragPreview.style.position = Position.Absolute;
         dragPreview.style.width = itemSize.x;
@@ -184,18 +154,20 @@ public class LevelObjectPalette : UIControllerBase
                 : new StyleColor(Color.clear);
         }
 
-        PopulateItems(categories[currentCategoryIndex].items);
+        PopulateItems(categories[currentCategoryIndex].materials);
     }
 
-    private void PopulateItems(List<LevelItemData> items)
+    private void PopulateItems(List<Material> materials)
     {
         if (scrollView == null) return;
 
         scrollView.Clear();
-        if (items == null) return;
+        if (materials == null) return;
 
-        foreach (var item in items)
+        foreach (var mat in materials)
         {
+            if (mat == null) continue;
+
             VisualElement itemCard = new VisualElement();
 
             itemCard.style.width = itemSize.x;
@@ -218,10 +190,12 @@ public class LevelObjectPalette : UIControllerBase
             itemCard.style.borderLeftColor = new StyleColor(new Color(0.7f, 0.7f, 0.7f));
             itemCard.style.borderRightColor = new StyleColor(new Color(0.7f, 0.7f, 0.7f));
 
-            if (item.thumbnail != null)
+            Texture2D thumbnail = MaterialPreviewGenerator.CreatePreview(mat);
+
+            if (thumbnail != null)
             {
                 VisualElement icon = new VisualElement();
-                icon.style.backgroundImage = new StyleBackground(item.thumbnail);
+                icon.style.backgroundImage = new StyleBackground(thumbnail);
                 icon.style.width = Length.Percent(80);
                 icon.style.height = Length.Percent(80);
                 icon.style.alignSelf = Align.Center;
@@ -229,17 +203,17 @@ public class LevelObjectPalette : UIControllerBase
                 itemCard.Add(icon);
             }
 
-            itemCard.tooltip = item.itemName;
-            itemCard.AddManipulator(new ItemDragManipulator(item, this));
+            itemCard.tooltip = mat.name;
+            itemCard.AddManipulator(new MaterialDragManipulator(mat, thumbnail, this));
 
             scrollView.Add(itemCard);
         }
     }
 
-    public void StartDragPreview(LevelItemData item, Vector2 localPos, VisualElement target)
+    public void StartDragPreview(Texture2D thumbnail, Vector2 localPos, VisualElement target)
     {
         if (dragPreview == null) return;
-        dragPreview.style.backgroundImage = new StyleBackground(item.thumbnail);
+        dragPreview.style.backgroundImage = new StyleBackground(thumbnail);
         dragPreview.style.display = DisplayStyle.Flex;
         UpdateDragPreview(localPos, target);
     }
@@ -257,10 +231,10 @@ public class LevelObjectPalette : UIControllerBase
         dragPreview.style.top = panelPos.y - (previewHeight / 2f);
     }
 
-    public void EndDragAndSpawn(LevelItemData item)
+    public void EndDragAndApply(Material material)
     {
         if (dragPreview != null) dragPreview.style.display = DisplayStyle.None;
-        TrySpawnPrefab(item, Input.mousePosition);
+        TryApplyMaterial(material, Input.mousePosition);
     }
 
     public void CancelDragPreview()
@@ -268,64 +242,30 @@ public class LevelObjectPalette : UIControllerBase
         if (dragPreview != null) dragPreview.style.display = DisplayStyle.None;
     }
 
-    private Vector3 SnapPosition(Vector3 position, Vector3 snap)
+    private void TryApplyMaterial(Material material, Vector2 mouseScreenPos)
     {
-        return new Vector3(
-            snap.x > 0 ? Mathf.Round(position.x / snap.x) * snap.x : position.x,
-            snap.y > 0 ? Mathf.Round(position.y / snap.y) * snap.y : position.y,
-            snap.z > 0 ? Mathf.Round(position.z / snap.z) * snap.z : position.z
-        );
-    }    
-
-    private void TrySpawnPrefab(LevelItemData item, Vector2 mouseScreenPos)
-    {
-        if (Camera.main == null || item.prefab == null || sceneManager == null) return;
+        if (Camera.main == null || material == null || sceneManager == null) return;
 
         Ray ray = Camera.main.ScreenPointToRay(mouseScreenPos);
 
-        if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, baseplateLayer))
+        if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, targetLayerMask))
         {
-            Vector3 spawnPosition = hit.point;
-            if (projectSettings != null)
-            {
-                spawnPosition = SnapPosition(spawnPosition, projectSettings.PositionSnap);
-            }
-
-            sceneManager.SpawnAndRegister(item, spawnPosition, objectSelector);
+            sceneManager.ApplyMaterialToTarget(hit.collider.gameObject, material);
         }
     }
 
-    private void OnToolSelectorClicked()
+    public Material FindMaterialByName(string materialName)
     {
-        currentToolState = (currentToolState + 1) % 3;
-        UpdateToolButtonUI();
-        ExecuteToolAction();
-    }
-
-    private void UpdateToolButtonUI()
-    {
-        if (toolSelectorBtn == null) return;
-        if (toolIcons != null && toolIcons.Count > currentToolState && toolIcons[currentToolState] != null)
+        foreach (var category in categories)
         {
-            toolSelectorBtn.style.backgroundImage = new StyleBackground(toolIcons[currentToolState]);
-        }
-    }
-
-    private void ExecuteToolAction()
-    {
-        if (objectSelector != null) {
-            switch (currentToolState)
+            foreach (var mat in category.materials)
             {
-                case 0:
-                    objectSelector.SetHandleType(0);
-                    break;
-                case 1:
-                    objectSelector.SetHandleType(1);
-                    break;
-                case 2:
-                    objectSelector.SetHandleType(2);
-                    break;
+                if (mat != null && mat.name == materialName)
+                {
+                    return mat;
+                }
             }
         }
+        return null;
     }    
 }
