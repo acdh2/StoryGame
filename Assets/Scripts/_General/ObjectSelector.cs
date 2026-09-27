@@ -2,6 +2,7 @@ using System;
 using TransformHandles;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UIElements;
 
 public class ObjectSelector : MonoBehaviour
 {
@@ -37,10 +38,34 @@ public class ObjectSelector : MonoBehaviour
         }
     }
 
+private bool IsPointerOverUI()
+    {
+        Vector2 mousePos = Input.mousePosition;
+        // Converteer schermcoördinaten naar UI Toolkit schermcoördinaten (Y-as is geïnverteerd)
+        Vector2 pointerPosition = new Vector2(mousePos.x, Screen.height - mousePos.y);
+
+        UIDocument[] uiDocuments = FindObjectsByType<UIDocument>(FindObjectsSortMode.None);
+        foreach (var uiDoc in uiDocuments)
+        {
+            if (uiDoc != null && uiDoc.rootVisualElement != null)
+            {
+                if (uiDoc.rootVisualElement.style.display != DisplayStyle.None)
+                {
+                    VisualElement picked = uiDoc.rootVisualElement.panel.Pick(pointerPosition);
+                    if (picked != null && picked != uiDoc.rootVisualElement)
+                    {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
     private void TrySelectObject()
     {
         if (_isDraggingHandle) return;
-        if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject()) return;
+        if (IsPointerOverUI()) return;
 
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 

@@ -10,10 +10,11 @@ public class PlayMode : UIControllerBase
     public GameObject playerPrefab;
     public ObjectSelector objectSelector;
 
+    public GameConfiguration gameConfiguration;
+
     private DialogueInterpreter dialogueInterpreter;
     private GameObject player;
     
-
     protected override void Awake()
     {
         base.Awake();
@@ -28,7 +29,7 @@ public class PlayMode : UIControllerBase
     }
 
     private void StartStory(VisualElement root)
-    {
+    {   
         if (dialogueInterpreter != null) {
             dialogueInterpreter.StartDialogue(root);
         }        
@@ -68,12 +69,14 @@ public class PlayMode : UIControllerBase
             player = Instantiate(playerPrefab);
             dialogueInterpreter.OnScreenShown += HandleScreenShown;
             dialogueInterpreter.OnScreenHidden += HandleScreenHidden;
+            if (gameConfiguration != null) gameConfiguration.Apply();
         }      
     }
 
     private void DestroyPlayer()
     {
         if (player != null) {
+            if (gameConfiguration != null) gameConfiguration.Unapply();
             dialogueInterpreter.OnScreenShown -= HandleScreenShown;
             dialogueInterpreter.OnScreenHidden -= HandleScreenHidden;
             Destroy(player);

@@ -46,8 +46,9 @@ public class UIDocumentLifecycle : MonoBehaviour
         }
         else
         {
-            uiDocument.rootVisualElement.style.display = DisplayStyle.None;
             OnUIDisabledEvent?.Invoke();
+            uiDocument.rootVisualElement.style.display = DisplayStyle.None;
         }
     }
+
 }

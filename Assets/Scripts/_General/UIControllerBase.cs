@@ -8,6 +8,8 @@ public abstract class UIControllerBase : MonoBehaviour
     protected UIDocumentLifecycle Lifecycle { get; private set; }
     protected VisualElement RootElement { get; private set; }
 
+    protected bool isInitialised = false;
+
     protected virtual void Awake()
     {
         Lifecycle = GetComponent<UIDocumentLifecycle>();
@@ -31,13 +33,22 @@ public abstract class UIControllerBase : MonoBehaviour
     private void HandleUIEnabled(VisualElement root)
     {
         RootElement = root;
+
+        if (!isInitialised) {
+            isInitialised = true;
+            return;
+        }
+
         OnUIEnabled(root);
     }
 
     private void HandleUIDisabled()
     {
-        OnUIDisabled();
         RootElement = null;
+
+        isInitialised = true;
+
+        OnUIDisabled();
     }
 
     /// <summary>

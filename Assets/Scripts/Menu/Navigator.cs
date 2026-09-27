@@ -15,6 +15,12 @@ public class Navigator : UIControllerBase
     private readonly List<UIDocumentLifecycle> screenLifecycles = new List<UIDocumentLifecycle>();
     private readonly List<(Button button, System.Action action)> registeredListeners = new List<(Button, System.Action)>();
 
+    protected override void Awake()
+    {
+        base.Awake();
+        isInitialised = true;
+    }
+
     private void Start()
     {
         InitializeDefaultScreen();
