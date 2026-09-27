@@ -7,7 +7,6 @@ using UnityEngine.UIElements;
 public class PlayMode : UIControllerBase
 {
     public GameObject editorCamera;
-    public GameObject playerPrefab;
     public ObjectSelector objectSelector;
 
     public GameConfiguration gameConfiguration;
@@ -65,6 +64,7 @@ public class PlayMode : UIControllerBase
 
     private void CreatePlayer()
     {
+        GameObject playerPrefab = gameConfiguration.GetPlayerPrefab();
         if (player == null && playerPrefab != null) {
             player = Instantiate(playerPrefab);
             dialogueInterpreter.OnScreenShown += HandleScreenShown;

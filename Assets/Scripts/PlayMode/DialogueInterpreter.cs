@@ -88,11 +88,11 @@ public class DialogueInterpreter : MonoBehaviour
             LuaUnset(context.GetArgument(0).ToString());
             return new(0);
         });
-        luaState.Environment["check_if"] = new LuaFunction((context, ct) => {
+        luaState.Environment["if_set"] = new LuaFunction((context, ct) => {
             LuaIf(context.GetArgument(0).ToString());
             return new(0);
         });
-        luaState.Environment["check_if_not"] = new LuaFunction((context, ct) => {
+        luaState.Environment["if_unset"] = new LuaFunction((context, ct) => {
             LuaIfNot(context.GetArgument(0).ToString());
             return new(0);
         });

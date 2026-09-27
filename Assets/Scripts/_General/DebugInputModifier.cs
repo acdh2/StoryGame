@@ -18,7 +18,7 @@ public class DebugInputModifier : MonoBehaviour
             // Overschrijft de processor voor de binding naar ScaleVector2(x=1,y=1)
             lookAction.ApplyBindingOverride(new InputBinding
             {
-                overrideProcessors = "ScaleVector2(x=1,y=0.05)"
+                overrideProcessors = "ScaleVector2(x=1,y=0.15)"
             });
         }
 #endif

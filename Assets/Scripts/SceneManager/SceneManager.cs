@@ -79,6 +79,13 @@ public class SceneManager : MonoBehaviour
         newObject.name = itemData.itemName;
         SetLayerRecursively(newObject, LayerMask.NameToLayer("SelectableObjects"));
 
+        ObjectIdentifier identifier = newObject.GetComponent<ObjectIdentifier>();
+        if (identifier == null)
+        {
+            identifier = newObject.AddComponent<ObjectIdentifier>();
+        }
+        identifier.SetPrefabId(itemData.itemName);
+
         selector?.SelectObject(newObject);
 
         SaveCurrentScene();

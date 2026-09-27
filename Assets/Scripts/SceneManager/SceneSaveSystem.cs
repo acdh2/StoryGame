@@ -23,7 +23,8 @@ public class SceneSaveSystem : MonoBehaviour
     [System.Serializable]
     public class ObjectSaveData
     {
-        public string itemName;
+        public string prefabId;
+        public string customName;
         public string materialName;
         public Vector3 position;
         public Quaternion rotation;
@@ -44,9 +45,13 @@ public class SceneSaveSystem : MonoBehaviour
             Renderer renderer = child.GetComponent<Renderer>();
             string matName = renderer != null && renderer.sharedMaterial != null ? renderer.sharedMaterial.name : "";
 
+            ObjectIdentifier identifier = child.GetComponent<ObjectIdentifier>();
+            string id = identifier != null ? identifier.PrefabId : child.name;
+
             ObjectSaveData objData = new ObjectSaveData
             {
-                itemName = child.name,
+                prefabId = id,
+                customName = child.name,
                 materialName = matName,
                 position = child.position,
                 rotation = child.rotation,
@@ -80,13 +85,24 @@ public class SceneSaveSystem : MonoBehaviour
         {
             foreach (var objData in data.objects)
             {
-                LevelObjectPalette.LevelItemData itemData = FindItemDataByName(objData.itemName);
+                string lookupKey = !string.IsNullOrEmpty(objData.prefabId) ? objData.prefabId : objData.customName;
+                LevelObjectPalette.LevelItemData itemData = FindItemDataByName(lookupKey);
+                
                 if (itemData.prefab != null)
                 {
                     GameObject spawned = Instantiate(itemData.prefab, objData.position, objData.rotation);
                     spawned.transform.parent = transform;
                     spawned.transform.localScale = objData.scale;
-                    spawned.name = objData.itemName;
+                    
+                    spawned.name = !string.IsNullOrEmpty(objData.customName) ? objData.customName : itemData.itemName;
+                    
+                    ObjectIdentifier identifier = spawned.GetComponent<ObjectIdentifier>();
+                    if (identifier == null)
+                    {
+                        identifier = spawned.AddComponent<ObjectIdentifier>();
+                    }
+                    identifier.SetPrefabId(itemData.itemName);
+
                     SetLayerRecursively(spawned, LayerMask.NameToLayer("SelectableObjects"));
 
                     if (!string.IsNullOrEmpty(objData.materialName))
@@ -123,7 +139,6 @@ public class SceneSaveSystem : MonoBehaviour
         if (storyDataStore != null)
         {
             storyDataStore.SetCommands(new List<CommandData>());
-            // storyDataStore.Save();
         }
 
         OnSceneLoaded?.Invoke();

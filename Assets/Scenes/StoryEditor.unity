@@ -132,6 +132,7 @@ GameObject:
   - component: {fileID: 5086137}
   - component: {fileID: 5086136}
   - component: {fileID: 5086135}
+  - component: {fileID: 5086139}
   m_Layer: 0
   m_Name: 5.Config
   m_TagString: Untagged
@@ -167,14 +168,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameConfiguration
   musicTracks:
-  - {fileID: 8300000, guid: 65a0c19f284924dc186b268aa09a6c01, type: 3}
-  - {fileID: 8300000, guid: 9e1723c5d17f841518399ede863836da, type: 3}
-  - {fileID: 8300000, guid: 1d8ce0cb1c42f4d1b87cf11032fe34eb, type: 3}
-  - {fileID: 8300000, guid: a905b647e5478413c84b638bc021b383, type: 3}
-  - {fileID: 8300000, guid: 859d7791432974f6e8aee4f7df4d34b7, type: 3}
-  - {fileID: 8300000, guid: 063a9012f1e4c42d1b97d1175d579f5b, type: 3}
-  - {fileID: 8300000, guid: ea0b5cff7211e47c799736c1e54b0163, type: 3}
-  selectedMusicIndex: 2
+  - {fileID: 8300000, guid: 340b0b5c0592a47e69a2857e30fc309e, type: 3}
+  - {fileID: 8300000, guid: 2aa6457cc978c4f92b0f1fdf3b507b84, type: 3}
+  - {fileID: 8300000, guid: 7a8748d442aa04d22b695f0297a0aea7, type: 3}
+  - {fileID: 8300000, guid: 1d7be0f47a450426e9dd996d8c4208e1, type: 3}
+  - {fileID: 8300000, guid: cfe655aaa085c4f099d805b69bc930a3, type: 3}
+  - {fileID: 8300000, guid: d376e700b0a584c7c895411d99abb3a1, type: 3}
+  - {fileID: 8300000, guid: 72b807cf447d04ef491f9f8852f09675, type: 3}
+  playerModels:
+  - {fileID: 2388659209182943489, guid: 1d5c5c9095f4d44a18063d55aa204b27, type: 3}
+  - {fileID: 2388659209182943489, guid: ecdf00187e48c457cbb9f5863b03cef2, type: 3}
+  selectedMusicIndex: -1
+  selectedPlayerModelIndex: 0
+  fogEnabled: 0
+  fogColor: {r: 0.71, g: 0.75, b: 0.8, a: 1}
+  fogDensity: 0.25
+  timeHours: 12
 --- !u!114 &5086136
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -223,6 +232,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NavigationIcon
   icon: {fileID: 2800000, guid: bf08f4cbbf5ae4e2a80bdd32d9f15d64, type: 3}
+--- !u!114 &5086139
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5086133}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 676594d15e72a49f6a00ef4e3c83619d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GameConfigurationSettingsUI
+  gameConfiguration: {fileID: 5086135}
 --- !u!1 &45334828
 GameObject:
   m_ObjectHideFlags: 0
@@ -825,7 +847,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayMode
   editorCamera: {fileID: 2000960781}
-  playerPrefab: {fileID: 2388659209182943489, guid: 1d5c5c9095f4d44a18063d55aa204b27, type: 3}
   objectSelector: {fileID: 330585548}
   gameConfiguration: {fileID: 5086135}
 --- !u!114 &1361484488
@@ -1085,6 +1106,7 @@ GameObject:
   - component: {fileID: 1556066525}
   - component: {fileID: 1556066528}
   - component: {fileID: 1556066526}
+  - component: {fileID: 1556066529}
   m_Layer: 0
   m_Name: 2.Build
   m_TagString: Untagged
@@ -1307,6 +1329,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ccfa6454b7dfb4151a53707d80555891, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UIDocumentLifecycle
+--- !u!114 &1556066529
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1556066523}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8357e94605fb4e849d74124c93cb590, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ObjectPropertiesUIController
+  objectSelector: {fileID: 330585548}
+  editorCameraController: {fileID: 2000960783}
 --- !u!1 &1650302574
 GameObject:
   m_ObjectHideFlags: 0

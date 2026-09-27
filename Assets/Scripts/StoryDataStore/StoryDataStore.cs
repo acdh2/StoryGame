@@ -25,11 +25,15 @@ public class StoryDataStore : MonoBehaviour
     {
         { "say", arg => $"say(\"{arg}\")" },
         { "option", arg => $"option(\"{arg}\")" },
-        { "label", arg => $"label(\"{arg}\")" },
+        { "touched", arg => $"touched(\"{arg}\")" },
+        { "show", arg => $"show(\"{arg}\")" },
+        { "hide", arg => $"hide(\"{arg}\")" },
         { "jump", arg => $"jump(\"{arg}\")" },
-        { "jumpif", arg => $"check_if(\"{arg}\")" },
+        { "label", arg => $"label(\"{arg}\")" },
         { "set", arg => $"set(\"{arg}\")" },
-        { "print", arg => $"print(\"{arg}\")" }
+        { "unset", arg => $"unset(\"{arg}\")" },
+        { "if_set", arg => $"if_set(\"{arg}\")" },
+        { "if_unset", arg => $"if_unset(\"{arg}\")" },
     };
 
     public IEnumerable<string> AvailableCommandTypes => commandRegistry.Keys;

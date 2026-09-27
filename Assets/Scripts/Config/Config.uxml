@@ -1,7 +1,32 @@
 <ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <ui:GroupBox style="position: absolute; bottom: 0; left: 0; right: 0; flex-direction: row; justify-content: center; align-items: center; background-color: rgba(220, 220, 220, 0.85); border-top-left-radius: 12px; border-top-right-radius: 12px; border-bottom-left-radius: 12px; border-bottom-right-radius: 12px; padding: 6px; align-self: center;">
-        <ui:Button text="New" name="btn-new" style="height: 40px; min-width: 80px; margin-left: 4px; margin-right: 4px; border-top-left-radius: 6px; border-top-right-radius: 6px; border-bottom-left-radius: 6px; border-bottom-right-radius: 6px; font-size: 12px; -unity-font-style: bold; background-color: rgb(240, 240, 240); border-top-width: 1px; border-bottom-width: 1px; border-left-width: 1px; border-right-width: 1px; border-top-color: rgb(200, 200, 200); border-bottom-color: rgb(200, 200, 200); border-left-color: rgb(200, 200, 200); border-right-color: rgb(200, 200, 200);"/>
-        <ui:Button text="Load" name="btn-load" style="height: 40px; min-width: 80px; margin-left: 4px; margin-right: 4px; border-top-left-radius: 6px; border-top-right-radius: 6px; border-bottom-left-radius: 6px; border-bottom-right-radius: 6px; font-size: 12px; -unity-font-style: bold; background-color: rgb(240, 240, 240); border-top-width: 1px; border-bottom-width: 1px; border-left-width: 1px; border-right-width: 1px; border-top-color: rgb(200, 200, 200); border-bottom-color: rgb(200, 200, 200); border-left-color: rgb(200, 200, 200); border-right-color: rgb(200, 200, 200);"/>
-        <ui:Button text="Save" name="btn-save" style="height: 40px; min-width: 80px; margin-left: 4px; margin-right: 4px; border-top-left-radius: 6px; border-top-right-radius: 6px; border-bottom-left-radius: 6px; border-bottom-right-radius: 6px; font-size: 12px; -unity-font-style: bold; background-color: rgb(240, 240, 240); border-top-width: 1px; border-bottom-width: 1px; border-left-width: 1px; border-right-width: 1px; border-top-color: rgb(200, 200, 200); border-bottom-color: rgb(200, 200, 200); border-left-color: rgb(200, 200, 200); border-right-color: rgb(200, 200, 200);"/>
-    </ui:GroupBox>
+    <ui:VisualElement style="position: absolute; bottom: 0; left: 0; right: 0; top: 0; align-items: center; justify-content: flex-end; padding-bottom: 10px;">
+        <ui:GroupBox style="width: 340px; background-color: rgba(220, 220, 220, 0.85); border-top-left-radius: 12px; border-top-right-radius: 12px; border-bottom-left-radius: 12px; border-bottom-right-radius: 12px; padding: 12px;">
+            <ui:Toggle name="toggle-fog" label="Fog Enabled" style="margin-bottom: 2px;" />            
+            <ui:VisualElement style="flex-direction: row; flex-wrap: wrap; justify-content: flex-start; margin-bottom: 4px;">
+                <ui:Button name="color-black" style="width: 28px; height: 28px; background-color: rgb(0, 0, 0); border-radius: 4px; margin: 2px;" />
+                <ui:Button name="color-darkgray" style="width: 28px; height: 28px; background-color: rgb(128, 128, 128); border-radius: 4px; margin: 2px;" />
+                <ui:Button name="color-darkred" style="width: 28px; height: 28px; background-color: rgb(128, 0, 0); border-radius: 4px; margin: 2px;" />
+                <ui:Button name="color-red" style="width: 28px; height: 28px; background-color: rgb(255, 0, 0); border-radius: 4px; margin: 2px;" />
+                <ui:Button name="color-orange" style="width: 28px; height: 28px; background-color: rgb(255, 128, 0); border-radius: 4px; margin: 2px;" />
+                <ui:Button name="color-brown" style="width: 28px; height: 28px; background-color: rgb(128, 64, 0); border-radius: 4px; margin: 2px;" />
+                <ui:Button name="color-yellow" style="width: 28px; height: 28px; background-color: rgb(255, 255, 0); border-radius: 4px; margin: 2px;" />
+                <ui:Button name="color-olive" style="width: 28px; height: 28px; background-color: rgb(128, 128, 0); border-radius: 4px; margin: 2px;" />
+                <ui:Button name="color-darkgreen" style="width: 28px; height: 28px; background-color: rgb(0, 128, 0); border-radius: 4px; margin: 2px;" />
+                <ui:Button name="color-green" style="width: 28px; height: 28px; background-color: rgb(0, 255, 0); border-radius: 4px; margin: 2px;" />
+                <ui:Button name="color-darkcyan" style="width: 28px; height: 28px; background-color: rgb(0, 128, 128); border-radius: 4px; margin: 2px;" />
+                <ui:Button name="color-cyan" style="width: 28px; height: 28px; background-color: rgb(0, 255, 255); border-radius: 4px; margin: 2px;" />
+                <ui:Button name="color-darkblue" style="width: 28px; height: 28px; background-color: rgb(0, 0, 128); border-radius: 4px; margin: 2px;" />
+                <ui:Button name="color-blue" style="width: 28px; height: 28px; background-color: rgb(0, 0, 255); border-radius: 4px; margin: 2px;" />
+                <ui:Button name="color-purple" style="width: 28px; height: 28px; background-color: rgb(128, 0, 128); border-radius: 4px; margin: 2px;" />
+                <ui:Button name="color-magenta" style="width: 28px; height: 28px; background-color: rgb(255, 0, 255); border-radius: 4px; margin: 2px;" />
+                <ui:Button name="color-white" style="width: 28px; height: 28px; background-color: rgb(255, 255, 255); border-radius: 4px; margin: 2px;" />
+                <ui:Button name="color-lightgray" style="width: 28px; height: 28px; background-color: rgb(192, 192, 192); border-radius: 4px; margin: 2px;" />
+            </ui:VisualElement>
+
+            <ui:Slider name="slider-fog-density" label="Fog Density" low-value="0.0" high-value="1.0" value="0.25" show-value-field="true" style="margin-bottom: 4px;" />
+            <ui:Slider name="slider-time" label="Time (Hours)" low-value="0.0" high-value="24.0" value="6.0" show-value-field="true" style="margin-bottom: 4px;" />
+            <ui:DropdownField name="dropdown-music" label="Music Track" style="margin-bottom: 4px;" />
+            <ui:DropdownField name="dropdown-player" label="Player Model" />
+        </ui:GroupBox>
+    </ui:VisualElement>
 </ui:UXML>

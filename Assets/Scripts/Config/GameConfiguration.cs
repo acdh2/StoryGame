@@ -6,11 +6,17 @@ public class GameConfiguration : MonoBehaviour
     private bool isApplied = false;
     private Quaternion previousRotation = Quaternion.Euler(90, 45, 0);
 
-    [SerializeField]
-    private List<AudioClip> musicTracks = new List<AudioClip>();
+    public List<AudioClip> musicTracks = new List<AudioClip>();
+    public List<GameObject> playerModels = new List<GameObject>();
 
-    [SerializeField]
-    private int selectedMusicIndex = 0;
+    //Properties start here
+    public int selectedMusicIndex = 0; //bij -1 is er geen muziek
+    public int selectedPlayerModelIndex = 0; //moet van 0 t/m count-1
+    public bool fogEnabled = true;
+    public Color fogColor = new Color(0.71f, 0.75f, 0.80f);
+    public float fogDensity = 0.25f;
+    public float timeHours = 6.0f;
+    //Properties end here
 
     private AudioSource audioSource;
 
@@ -29,23 +35,23 @@ public class GameConfiguration : MonoBehaviour
         if (isApplied) return;
         isApplied = true;
 
-        RenderSettings.fog = true;
-        RenderSettings.fogMode = FogMode.ExponentialSquared;
-        Color fogColor = new Color(0.71f, 0.75f, 0.80f);
-        RenderSettings.fogColor = fogColor;
-        RenderSettings.fogDensity = 0.25f;
+        if (fogEnabled) {
+            RenderSettings.fog = true;
+            RenderSettings.fogMode = FogMode.ExponentialSquared;
+            RenderSettings.fogColor = fogColor;
+            RenderSettings.fogDensity = fogDensity;
 
-        Camera cam = Camera.main;
-        if (cam != null)
-        {
-            cam.clearFlags = CameraClearFlags.SolidColor;
-            cam.backgroundColor = fogColor;
+            Camera cam = Camera.main;
+            if (cam != null)
+            {
+                cam.clearFlags = CameraClearFlags.SolidColor;
+                cam.backgroundColor = fogColor;
+            }
         }
 
         Light dirLight = RenderSettings.sun;
         if (dirLight != null)
         {
-            float timeHours = 6.0f;
             float rotationAngle = (timeHours / 24.0f) * 360.0f - 90.0f;
             previousRotation = dirLight.transform.rotation;
             dirLight.transform.rotation = Quaternion.Euler(rotationAngle, 45.0f, 0.0f);
@@ -83,5 +89,12 @@ public class GameConfiguration : MonoBehaviour
         }
 
         isApplied = false;
+    }
+
+    public GameObject GetPlayerPrefab()
+    {
+        if (selectedPlayerModelIndex < 0) selectedPlayerModelIndex = 0;
+        if (selectedPlayerModelIndex >= playerModels.Count) selectedPlayerModelIndex = playerModels.Count - 1;
+        return playerModels[selectedPlayerModelIndex];
     }
 }
