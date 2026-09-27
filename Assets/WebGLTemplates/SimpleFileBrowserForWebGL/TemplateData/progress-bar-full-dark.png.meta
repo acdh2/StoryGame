@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: cbe91fc9a8e6b504aa461b80dd175e20
+DefaultImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 234993
+  packageName: Simple File Browser for WebGL
+  packageVersion: 1.1
+  assetPath: Assets/SimpleFileBrowserForWebGL/WebGLTemplates/SimpleFileBrowserForWebGL/TemplateData/progress-bar-full-dark.png
+  uploadId: 705567

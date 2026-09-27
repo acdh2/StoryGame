@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 89e825190600b4349b69a6de9eb566b6
+DefaultImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 234993
+  packageName: Simple File Browser for WebGL
+  packageVersion: 1.1
+  assetPath: Assets/SimpleFileBrowserForWebGL/WebGLTemplates/SimpleFileBrowserForWebGL/TemplateData/style.css
+  uploadId: 705567

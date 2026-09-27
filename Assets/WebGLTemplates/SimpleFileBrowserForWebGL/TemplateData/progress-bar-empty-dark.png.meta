@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 5999724a98b75424abd22aa4d0629c3f
+DefaultImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 234993
+  packageName: Simple File Browser for WebGL
+  packageVersion: 1.1
+  assetPath: Assets/SimpleFileBrowserForWebGL/WebGLTemplates/SimpleFileBrowserForWebGL/TemplateData/progress-bar-empty-dark.png
+  uploadId: 705567

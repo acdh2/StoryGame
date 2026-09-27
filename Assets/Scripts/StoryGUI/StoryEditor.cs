@@ -20,7 +20,7 @@ public class StoryEditor : MonoBehaviour
         if (dataStore != null)
         {
             dataStore.OnDataChanged -= UpdateLuaPreview;
-            dataStore.Save();
+            //dataStore.Save();
         }
     }
 
@@ -32,13 +32,13 @@ public class StoryEditor : MonoBehaviour
         }
     }
 
-    public void SaveState()
-    {
-        dataStore?.Save();
-    }
+    // public void SaveState()
+    // {
+    //     //dataStore?.Save();
+    // }
 
-    public void LoadState()
-    {
-        dataStore?.Load();
-    }
+    // public void LoadState()
+    // {
+    //     //dataStore?.Load();
+    // }
 }

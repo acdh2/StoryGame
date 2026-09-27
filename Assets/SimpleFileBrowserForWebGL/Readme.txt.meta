@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: a12eb970b638b8b41a724084ac801cce
+TextScriptImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 234993
+  packageName: Simple File Browser for WebGL
+  packageVersion: 1.1
+  assetPath: Assets/SimpleFileBrowserForWebGL/Readme.txt
+  uploadId: 705567

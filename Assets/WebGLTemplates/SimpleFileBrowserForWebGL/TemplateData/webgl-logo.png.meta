@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: a018f83a4367159419a6a3c93dc2e0f6
+DefaultImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 234993
+  packageName: Simple File Browser for WebGL
+  packageVersion: 1.1
+  assetPath: Assets/SimpleFileBrowserForWebGL/WebGLTemplates/SimpleFileBrowserForWebGL/TemplateData/webgl-logo.png
+  uploadId: 705567

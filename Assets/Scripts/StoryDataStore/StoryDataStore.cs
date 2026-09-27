@@ -17,51 +17,64 @@ public class StoryDataStore : MonoBehaviour
     [SerializeField]
     private List<CommandData> commands = new List<CommandData>();
 
-    private bool isLoaded = false;
+    // private bool isLoaded = false;
 
     public event Action OnDataChanged;
+
+    private static readonly Dictionary<string, Func<string, string>> commandRegistry = new Dictionary<string, Func<string, string>>(StringComparer.OrdinalIgnoreCase)
+    {
+        { "say", arg => $"say(\"{arg}\")" },
+        { "option", arg => $"option(\"{arg}\")" },
+        { "label", arg => $"label(\"{arg}\")" },
+        { "jump", arg => $"jump(\"{arg}\")" },
+        { "jumpif", arg => $"check_if(\"{arg}\")" },
+        { "set", arg => $"set(\"{arg}\")" },
+        { "print", arg => $"print(\"{arg}\")" }
+    };
+
+    public IEnumerable<string> AvailableCommandTypes => commandRegistry.Keys;
 
     public IReadOnlyList<CommandData> Commands
     {
         get
         {
-            EnsureLoaded();
+            // EnsureLoaded();
             return commands.AsReadOnly();
         }
     }
 
-    private void EnsureLoaded()
-    {
-        if (!isLoaded)
-        {
-            Load();
-        }
-    }
+    // private void EnsureLoaded()
+    // {
+    //     if (!isLoaded)
+    //     {
+    //         Load();
+    //     }
+    // }
 
     public void SetCommands(List<CommandData> newCommands)
     {
         commands = newCommands ?? new List<CommandData>();
-        isLoaded = true;
+        // isLoaded = true;
         OnDataChanged?.Invoke();
     }
 
     public void AddCommand(string commandType = "say", string argument = "")
     {
-        EnsureLoaded();
+        // EnsureLoaded();
         commands.Add(new CommandData { CommandType = commandType, Argument = argument });
         OnDataChanged?.Invoke();
     }
 
     public void InsertCommand(int index, string commandType = "say", string argument = "")
     {
-        EnsureLoaded();
+        // EnsureLoaded();
         commands.Insert(index, new CommandData { CommandType = commandType, Argument = argument });
         OnDataChanged?.Invoke();
     }
 
     public void RemoveCommand(int index)
     {
-        EnsureLoaded();
+        // EnsureLoaded();
         if (index >= 0 && index < commands.Count)
         {
             commands.RemoveAt(index);
@@ -71,8 +84,8 @@ public class StoryDataStore : MonoBehaviour
 
     public void MoveCommand(int oldIndex, int newIndex)
     {
-        EnsureLoaded();
-        if (oldIndex < 0 || oldIndex >= commands.Count || newIndex < 0 || newIndex > commands.Count) return;
+        // EnsureLoaded();
+        // if (oldIndex < 0 || oldIndex >= commands.Count || newIndex < 0 || newIndex > commands.Count) return;
 
         var item = commands[oldIndex];
         commands.RemoveAt(oldIndex);
@@ -85,7 +98,7 @@ public class StoryDataStore : MonoBehaviour
 
     public void UpdateCommand(int index, string commandType, string argument)
     {
-        EnsureLoaded();
+        // EnsureLoaded();
         if (index >= 0 && index < commands.Count)
         {
             commands[index].CommandType = commandType;
@@ -93,42 +106,52 @@ public class StoryDataStore : MonoBehaviour
         }
     }
 
-    public void Save()
+    public string SerializeToJson()
     {
-        EnsureLoaded();
+        // EnsureLoaded();
         CommandDataListWrapper wrapper = new CommandDataListWrapper { Commands = commands };
-        string json = JsonUtility.ToJson(wrapper);
-        PlayerPrefs.SetString(SAVE_KEY, json);
-        PlayerPrefs.Save();
+        return JsonUtility.ToJson(wrapper, true);
     }
 
-    public void Load()
+    public void DeserializeFromJson(string json)
     {
-        if (PlayerPrefs.HasKey(SAVE_KEY))
+        if (string.IsNullOrEmpty(json)) return;
+        CommandDataListWrapper wrapper = JsonUtility.FromJson<CommandDataListWrapper>(json);
+        if (wrapper != null && wrapper.Commands != null)
         {
-            string json = PlayerPrefs.GetString(SAVE_KEY);
-            CommandDataListWrapper wrapper = JsonUtility.FromJson<CommandDataListWrapper>(json);
-            if (wrapper != null && wrapper.Commands.Count > 0)
-            {
-                commands = wrapper.Commands;
-                isLoaded = true;
-                OnDataChanged?.Invoke();
-                return;
-            }
-        }
+            commands = wrapper.Commands;
 
-        commands.Clear();
-        // for (int i = 0; i < 24; i++)
-        // {
-        //     commands.Add(new CommandData { CommandType = "say", Argument = "" });
-        // }
-        isLoaded = true;
-        OnDataChanged?.Invoke();
+            // isLoaded = true;
+            OnDataChanged?.Invoke();
+        }
     }
+
+    // public void Save()
+    // {
+    //     string json = SerializeToJson();
+    //     PlayerPrefs.SetString(SAVE_KEY, json);
+    //     PlayerPrefs.Save();
+    // }
+
+    // public void Load()
+    // {
+    //     commands.Clear();
+
+    //     if (PlayerPrefs.HasKey(SAVE_KEY))
+    //     {
+    //         string json = PlayerPrefs.GetString(SAVE_KEY);
+    //         DeserializeFromJson(json);
+    //         if (commands.Count > 0) return;
+    //     }
+
+    //     isLoaded = true;
+    //     //Save();
+    //     OnDataChanged?.Invoke();
+    // }
 
     public string ToLuaScript()
     {
-        EnsureLoaded();
+        // EnsureLoaded();
         StringBuilder sb = new StringBuilder();
 
         foreach (var cmd in commands)
@@ -139,32 +162,13 @@ public class StoryDataStore : MonoBehaviour
             try { arg = Regex.Unescape(arg); } catch { }
             arg = arg.Replace("\"", "\\\"");
 
-            switch (cmd.CommandType.ToLower())
+            if (commandRegistry.TryGetValue(cmd.CommandType, out var generator))
             {
-                case "say":
-                    sb.AppendLine($"say(\"{arg}\")");
-                    break;
-                case "option":
-                    sb.AppendLine($"option(\"{arg}\")");
-                    break;
-                case "label":
-                    sb.AppendLine($"label(\"{arg}\")");
-                    break;
-                case "jump":
-                    sb.AppendLine($"jump(\"{arg}\")");
-                    break;
-                case "jumpif":
-                    sb.AppendLine($"check_if(\"{arg}\")");
-                    break;
-                case "set":
-                    sb.AppendLine($"set(\"{arg}\")");
-                    break;
-                case "print":
-                    sb.AppendLine($"print(\"{arg}\")");
-                    break;
-                default:
-                    sb.AppendLine($"{cmd.CommandType}(\"{arg}\")");
-                    break;
+                sb.AppendLine(generator(arg));
+            }
+            else
+            {
+                sb.AppendLine($"{cmd.CommandType}(\"{arg}\")");
             }
         }
 

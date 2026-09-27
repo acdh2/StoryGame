@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: b0ca1cce6fb664d4fb9ac5405b4024f2
+DefaultImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 234993
+  packageName: Simple File Browser for WebGL
+  packageVersion: 1.1
+  assetPath: Assets/SimpleFileBrowserForWebGL/WebGLTemplates/SimpleFileBrowserForWebGL/TemplateData/unity-logo-dark.png
+  uploadId: 705567

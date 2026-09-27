@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 7d2040440f71826479940acb28d0210d
+DefaultImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 234993
+  packageName: Simple File Browser for WebGL
+  packageVersion: 1.1
+  assetPath: Assets/SimpleFileBrowserForWebGL/WebGLTemplates/SimpleFileBrowserForWebGL/TemplateData/progress-bar-empty-light.png
+  uploadId: 705567

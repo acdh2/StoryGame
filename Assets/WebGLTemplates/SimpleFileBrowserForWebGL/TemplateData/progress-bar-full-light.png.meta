@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 2d4bb0d7053ed1347983c2cc933f660d
+DefaultImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 234993
+  packageName: Simple File Browser for WebGL
+  packageVersion: 1.1
+  assetPath: Assets/SimpleFileBrowserForWebGL/WebGLTemplates/SimpleFileBrowserForWebGL/TemplateData/progress-bar-full-light.png
+  uploadId: 705567

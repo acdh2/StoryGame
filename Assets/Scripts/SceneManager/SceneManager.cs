@@ -1,33 +1,34 @@
-using System.Collections.Generic;
-using System.IO;
 using UnityEngine;
 
+[RequireComponent(typeof(SceneSaveSystem))]
 public class SceneManager : MonoBehaviour
 {
     [SerializeField] private LayerMask selectableLayer;
     [SerializeField] private ObjectSelector objectSelector;
-    [SerializeField] private LevelObjectPalette levelObjectPalette;
-    [SerializeField] private MaterialPalette materialPalette;
+    [SerializeField] private string saveFileName = "scene.json";
+    private SceneSaveSystem saveSystem;
 
-    [System.Serializable]
-    public class SaveData
+    private void Awake()
     {
-        public List<ObjectSaveData> objects = new List<ObjectSaveData>();
-    }
-
-    [System.Serializable]
-    public class ObjectSaveData
-    {
-        public string itemName;
-        public string materialName;
-        public Vector3 position;
-        public Quaternion rotation;
-        public Vector3 scale;
+        saveSystem = GetComponent<SceneSaveSystem>();
     }
 
     private void Start()
     {
-        LoadScene();
+#if !UNITY_WEBGL || UNITY_EDITOR
+        if (saveSystem != null)
+        {
+            saveSystem.LoadSceneFromFile(saveFileName);
+        }
+#endif
+    }
+    
+
+    private void OnApplicationQuit()
+    {
+#if !UNITY_WEBGL || UNITY_EDITOR
+        SaveCurrentScene();
+#endif
     }
 
     private void OnEnable()
@@ -35,6 +36,11 @@ public class SceneManager : MonoBehaviour
         if (objectSelector != null)
         {
             objectSelector.OnTransformComplete += HandleTransformComplete;
+        }
+
+        if (saveSystem != null)
+        {
+            saveSystem.OnSceneLoaded += HandleSceneLoaded;
         }
     }
 
@@ -44,12 +50,24 @@ public class SceneManager : MonoBehaviour
         {
             objectSelector.OnTransformComplete -= HandleTransformComplete;
         }
+
+        if (saveSystem != null)
+        {
+            saveSystem.OnSceneLoaded -= HandleSceneLoaded;
+        }
     }
 
     private void HandleTransformComplete(GameObject targetObject)
     {
         Debug.Log($"Transformatie voltooid voor: {targetObject.name}");
-        SaveScene();
+        SaveCurrentScene();
+    }
+
+    private void HandleSceneLoaded()
+    {
+#if !UNITY_WEBGL || UNITY_EDITOR
+        SaveCurrentScene();
+#endif
     }
 
     public GameObject SpawnAndRegister(LevelObjectPalette.LevelItemData itemData, Vector3 spawnPosition, ObjectSelector selector)
@@ -63,7 +81,7 @@ public class SceneManager : MonoBehaviour
 
         selector?.SelectObject(newObject);
 
-        SaveScene();
+        SaveCurrentScene();
         return newObject;
     }
 
@@ -75,86 +93,24 @@ public class SceneManager : MonoBehaviour
         if (targetRenderer != null)
         {
             targetRenderer.sharedMaterial = material;
-            SaveScene();
+            SaveCurrentScene();
         }
     }
 
-    public void SaveScene(string fileName = "scene.json")
+    public void SaveCurrentScene()
     {
-        SaveData data = new SaveData();
-
-        foreach (Transform child in transform)
+        if (saveSystem != null)
         {
-            Renderer renderer = child.GetComponent<Renderer>();
-            string matName = renderer != null && renderer.sharedMaterial != null ? renderer.sharedMaterial.name : "";
-
-            ObjectSaveData objData = new ObjectSaveData
-            {
-                itemName = child.name,
-                materialName = matName,
-                position = child.position,
-                rotation = child.rotation,
-                scale = child.localScale
-            };
-
-            data.objects.Add(objData);
+            saveSystem.SaveSceneToFile(saveFileName);
         }
-
-        string json = JsonUtility.ToJson(data, true);
-        string path = Path.Combine(Application.persistentDataPath, fileName);
-        File.WriteAllText(path, json);
     }
 
-    public void LoadScene(string fileName = "scene.json")
+    public void LoadCurrentScene()
     {
-        string path = Path.Combine(Application.persistentDataPath, fileName);
-        if (!File.Exists(path)) return;
-
-        foreach (Transform child in transform)
+        if (saveSystem != null)
         {
-            Destroy(child.gameObject);
+            saveSystem.LoadSceneFromFile(saveFileName);
         }
-
-        string json = File.ReadAllText(path);
-        SaveData data = JsonUtility.FromJson<SaveData>(json);
-
-        foreach (var objData in data.objects)
-        {
-            LevelObjectPalette.LevelItemData itemData = FindItemDataByName(objData.itemName);
-            if (itemData.prefab != null)
-            {
-                GameObject spawned = Instantiate(itemData.prefab, objData.position, objData.rotation);
-                spawned.transform.parent = transform;
-                spawned.transform.localScale = objData.scale;
-                spawned.name = objData.itemName;
-                SetLayerRecursively(spawned, LayerMask.NameToLayer("SelectableObjects"));
-
-                if (!string.IsNullOrEmpty(objData.materialName))
-                {
-                    Material mat = FindMaterialByName(objData.materialName);
-                    if (mat != null)
-                    {
-                        Renderer targetRenderer = spawned.GetComponent<Renderer>();
-                        if (targetRenderer != null)
-                        {
-                            targetRenderer.sharedMaterial = mat;
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    private LevelObjectPalette.LevelItemData FindItemDataByName(string itemName)
-    {
-        if (levelObjectPalette == null) return default;
-        return levelObjectPalette.FindItemDataByName(itemName);
-    }
-
-    private Material FindMaterialByName(string materialName)
-    {
-        if (materialPalette == null) return null;
-        return materialPalette.FindMaterialByName(materialName);
     }
 
     private static void SetLayerRecursively(GameObject obj, int layer)

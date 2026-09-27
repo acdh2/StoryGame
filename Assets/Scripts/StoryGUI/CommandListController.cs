@@ -17,14 +17,13 @@ public class CommandListController : UIControllerBase
 
     private ScrollView scrollView;
     private VisualElement container;
-    private readonly List<string> defaultOptions = new List<string> { "say", "option", "label", "jump", "jumpif", "set", "print" };
 
     private VisualElement draggedElement = null;
     private VisualElement placeholder = null;
     private bool isDragging = false;
 
     protected override void OnUIEnabled(VisualElement root)
-    {
+    {        
         DisableEditorCamera();
 
         scrollView = root.Q<ScrollView>("list-scroll-view");
@@ -36,7 +35,8 @@ public class CommandListController : UIControllerBase
         if (dataStore != null)
         {
             dataStore.OnDataChanged += RebuildUI;
-            dataStore.Load();
+            //dataStore.Load();\
+            RebuildUI();
         }
 
         OnUIReady?.Invoke();
@@ -49,7 +49,7 @@ public class CommandListController : UIControllerBase
         if (dataStore != null)
         {
             dataStore.OnDataChanged -= RebuildUI;
-            dataStore.Save();
+            // dataStore.Save();
         }
 
         scrollView = null;
@@ -64,6 +64,8 @@ public class CommandListController : UIControllerBase
 
         container.Clear();
 
+        List<string> options = dataStore != null ? new List<string>(dataStore.AvailableCommandTypes) : new List<string> { "say" };
+
         for (int i = 0; i < dataStore.Commands.Count; i++)
         {
             var data = dataStore.Commands[i];
@@ -75,8 +77,8 @@ public class CommandListController : UIControllerBase
             DropdownField dropdown = itemRoot.Q<DropdownField>("command-dropdown");
             if (dropdown != null)
             {
-                dropdown.choices = defaultOptions;
-                dropdown.value = string.IsNullOrEmpty(data.CommandType) ? defaultOptions[0] : data.CommandType;
+                dropdown.choices = options;
+                dropdown.value = string.IsNullOrEmpty(data.CommandType) ? options[0] : data.CommandType;
                 dropdown.RegisterValueChangedCallback(evt =>
                 {
                     dataStore.UpdateCommand(index, evt.newValue, data.Argument);
@@ -89,7 +91,7 @@ public class CommandListController : UIControllerBase
                 inputField.value = data.Argument;
                 inputField.RegisterValueChangedCallback(evt =>
                 {
-                    dataStore.UpdateCommand(index, dropdown != null ? dropdown.value : "say", evt.newValue);
+                    dataStore.UpdateCommand(index, dropdown != null ? dropdown.value : options[0], evt.newValue);
                 });
                 inputField.RegisterCallback<NavigationMoveEvent>(evt => evt.StopPropagation(), TrickleDown.TrickleDown);
                 inputField.RegisterCallback<NavigationSubmitEvent>(evt => evt.StopPropagation(), TrickleDown.TrickleDown);

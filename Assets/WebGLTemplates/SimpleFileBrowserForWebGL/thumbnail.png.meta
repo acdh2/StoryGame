@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 846a7e7e3af30ad46961f3bed04ffc9d
+DefaultImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 234993
+  packageName: Simple File Browser for WebGL
+  packageVersion: 1.1
+  assetPath: Assets/SimpleFileBrowserForWebGL/WebGLTemplates/SimpleFileBrowserForWebGL/thumbnail.png
+  uploadId: 705567

@@ -11,7 +11,7 @@ public class PlayMode : UIControllerBase
 
     private DialogueInterpreter dialogueInterpreter;
     private GameObject player;
-    private bool isStarted = false;
+    private bool isStarted = true;
     
 
     protected override void Awake()
