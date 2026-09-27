@@ -602,8 +602,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 997034303}
-  - component: {fileID: 997034304}
+  - component: {fileID: 997034306}
   - component: {fileID: 997034305}
+  - component: {fileID: 997034304}
   m_Layer: 0
   m_Name: SceneManager
   m_TagString: Untagged
@@ -657,6 +658,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SceneSaveSystem
   levelObjectPalette: {fileID: 1556066526}
   materialPalette: {fileID: 45334831}
+--- !u!114 &997034306
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 997034302}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb8064b9d8166428da513794c7e7eb9f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StoryDataStore
+  commands: []
 --- !u!1 &1361484485
 GameObject:
   m_ObjectHideFlags: 0
@@ -720,7 +734,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 304b3bcbfcd0341c58edb2011c399983, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LuaDialogueManager
-  storyDataStore: {fileID: 1711891783}
+  storyDataStore: {fileID: 997034306}
 --- !u!114 &1361484489
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -901,7 +915,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CommandListController
   editorCameraController: {fileID: 2000960783}
   objectSelector: {fileID: 330585548}
-  dataStore: {fileID: 1711891783}
+  dataStore: {fileID: 997034306}
   itemTemplate: {fileID: 9197481963319205126, guid: 3c158910d6d49441a9cb1393d3f566d7, type: 3}
   newItemTemplate: {fileID: 9197481963319205126, guid: 6976b71330ac64bbab0027ee94612840, type: 3}
 --- !u!114 &1484268769
@@ -1284,51 +1298,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::FileManager
   saveSystem: {fileID: 997034305}
   sceneRoot: {fileID: 997034303}
---- !u!1 &1711891782
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1711891784}
-  - component: {fileID: 1711891783}
-  m_Layer: 0
-  m_Name: StoryDataStore
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1711891783
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1711891782}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fb8064b9d8166428da513794c7e7eb9f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::StoryDataStore
-  commands: []
---- !u!4 &1711891784
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1711891782}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2000960781
 GameObject:
   m_ObjectHideFlags: 0
@@ -1499,4 +1468,3 @@ SceneRoots:
   - {fileID: 2043554620}
   - {fileID: 330303251}
   - {fileID: 997034303}
-  - {fileID: 1711891784}

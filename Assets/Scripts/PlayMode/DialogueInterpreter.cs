@@ -6,8 +6,7 @@ using UnityEngine.UIElements;
 using Lua;
 using Lua.Standard;
 
-[RequireComponent(typeof(UIDocument))]
-public class DialogueInterpreter : UIControllerBase
+public class DialogueInterpreter : MonoBehaviour
 {
     public event Action OnDialogueStarted;
     public event Action OnDialogueEnded;
@@ -16,6 +15,8 @@ public class DialogueInterpreter : UIControllerBase
 
     [Header("Script Input Source")]
     public StoryDataStore storyDataStore;
+
+    private VisualElement rootElement;
 
     private Label characterNameLabel;
     private Label dialogueTextLabel;
@@ -43,9 +44,8 @@ public class DialogueInterpreter : UIControllerBase
     private List<Instruction> instructions = new List<Instruction>();
     private Dictionary<string, int> labels = new Dictionary<string, int>();
 
-    protected override void Awake()
+    private void Awake()
     {
-        base.Awake();
         luaState = LuaState.Create();
         luaState.OpenStandardLibraries();
         luaState.Environment["print"] = new LuaFunction((context, ct) => {
@@ -98,36 +98,30 @@ public class DialogueInterpreter : UIControllerBase
         });
     }
 
-    protected override void OnUIEnabled(VisualElement root)
-    {
-        BindUIElements(root);
-    }
-
-    protected override void OnUIDisabled()
-    {
-        StopDialogue();
-    }
-
     private void ShowScreen()
     {
-        if (RootElement != null && RootElement.style.display != DisplayStyle.Flex)
+        if (rootElement != null && rootElement.style.display != DisplayStyle.Flex)
         {
-            RootElement.style.display = DisplayStyle.Flex;
+            rootElement.style.display = DisplayStyle.Flex;
             OnScreenShown?.Invoke();
         }
     }
 
     private void HideScreen()
     {
-        if (RootElement != null && RootElement.style.display != DisplayStyle.None)
+        if (rootElement != null && rootElement.style.display != DisplayStyle.None)
         {
-            RootElement.style.display = DisplayStyle.None;
+            rootElement.style.display = DisplayStyle.None;
             OnScreenHidden?.Invoke();
         }
     }
-
-    public void StartDialogue()
+    public void StartDialogue(VisualElement root)
     {
+        rootElement = root;
+        if (root == null) return;
+
+        BindUIElements(rootElement);
+
         StopDialogue();
         string codeToExecute = "";
         if (storyDataStore != null)
@@ -445,8 +439,8 @@ public class DialogueInterpreter : UIControllerBase
 
     private void ToggleUIElementVisibility(string elementName, DisplayStyle displayStyle)
     {
-        if (RootElement == null) return;
-        VisualElement elem = RootElement.Q<VisualElement>(elementName);
+        if (rootElement == null) return;
+        VisualElement elem = rootElement.Q<VisualElement>(elementName);
         if (elem != null)
         {
             elem.style.display = displayStyle;

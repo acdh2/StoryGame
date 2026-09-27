@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using StarterAssets;
 using UnityEngine.UIElements;
@@ -11,7 +12,6 @@ public class PlayMode : UIControllerBase
 
     private DialogueInterpreter dialogueInterpreter;
     private GameObject player;
-    private bool isStarted = true;
     
 
     protected override void Awake()
@@ -20,19 +20,18 @@ public class PlayMode : UIControllerBase
         dialogueInterpreter = GetComponent<DialogueInterpreter>();
     }
 
-    private void Update()
-    {
-        if (!isStarted) {
-            isStarted = true;
-            dialogueInterpreter.StartDialogue();
-        }
-    }
-
     protected override void OnUIEnabled(VisualElement root)
     {
         DisableEditorCamera();
         CreatePlayer();
-        isStarted = false;
+        StartStory(root);
+    }
+
+    private void StartStory(VisualElement root)
+    {
+        if (dialogueInterpreter != null) {
+            dialogueInterpreter.StartDialogue(root);
+        }        
     }
 
     protected override void OnUIDisabled()
@@ -83,7 +82,7 @@ public class PlayMode : UIControllerBase
 
     private void HandleScreenShown()
     {
-        if (player)
+        if (player != null)
         {
             PlayerControlBlocker playerControlBlocker = player.GetComponentInChildren<PlayerControlBlocker>();
             playerControlBlocker?.SetControlsActive(false);
