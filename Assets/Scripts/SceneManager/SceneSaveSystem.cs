@@ -8,6 +8,7 @@ public class SceneSaveSystem : MonoBehaviour
 {
     [SerializeField] private LevelObjectPalette levelObjectPalette;
     [SerializeField] private MaterialPalette materialPalette;
+    [SerializeField] private GameConfiguration gameConfiguration;
 
     private StoryDataStore storyDataStore;
 
@@ -18,6 +19,7 @@ public class SceneSaveSystem : MonoBehaviour
     {
         public List<ObjectSaveData> objects = new List<ObjectSaveData>();
         public string storyJson;
+        public string configJson;
     }
 
     [System.Serializable]
@@ -64,6 +66,11 @@ public class SceneSaveSystem : MonoBehaviour
         if (storyDataStore != null)
         {
             data.storyJson = storyDataStore.SerializeToJson();
+        }
+
+        if (gameConfiguration != null)
+        {
+            data.configJson = gameConfiguration.ExportToJson();
         }
 
         return JsonUtility.ToJson(data, true);
@@ -124,6 +131,11 @@ public class SceneSaveSystem : MonoBehaviour
         if (storyDataStore != null && !string.IsNullOrEmpty(data.storyJson))
         {
             storyDataStore.DeserializeFromJson(data.storyJson);
+        }
+
+        if (gameConfiguration != null && !string.IsNullOrEmpty(data.configJson))
+        {
+            gameConfiguration.ImportFromJson(data.configJson);
         }
 
         OnSceneLoaded?.Invoke();

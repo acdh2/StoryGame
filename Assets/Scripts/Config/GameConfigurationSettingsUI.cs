@@ -80,7 +80,7 @@ public class GameConfigurationSettingsUI : UIControllerBase
         musicDropdown = root.Q<DropdownField>("dropdown-music");
         if (musicDropdown != null && gameConfiguration.musicTracks != null)
         {
-            List<string> musicOptions = new List<string> { "Geen muziek" };
+            List<string> musicOptions = new List<string> { "No music" };
             musicOptions.AddRange(gameConfiguration.musicTracks.Select(t => t != null ? t.name : "Onbekend"));
             musicDropdown.choices = musicOptions;
 

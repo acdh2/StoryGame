@@ -609,8 +609,12 @@ public class DialogueInterpreter : MonoBehaviour
                     lastTouchedItem =
                         instr.ItemName;
 
+                    HideScreen();
+
                     yield return new WaitUntil(
                         () => !touchedRequested);
+
+                    ShowScreen();
 
                     pc++;
                     break;

@@ -785,6 +785,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SceneSaveSystem
   levelObjectPalette: {fileID: 1556066526}
   materialPalette: {fileID: 45334831}
+  gameConfiguration: {fileID: 5086135}
 --- !u!114 &997034306
 MonoBehaviour:
   m_ObjectHideFlags: 0

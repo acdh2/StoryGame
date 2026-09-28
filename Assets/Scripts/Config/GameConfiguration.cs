@@ -20,6 +20,20 @@ public class GameConfiguration : MonoBehaviour
 
     private AudioSource audioSource;
 
+    [System.Serializable]
+    private class SaveData
+    {
+        public int selectedMusicIndex;
+        public int selectedPlayerModelIndex;
+        public bool fogEnabled;
+        public float fogColorR;
+        public float fogColorG;
+        public float fogColorB;
+        public float fogColorA;
+        public float fogDensity;
+        public float timeHours;
+    }
+
     private void Awake()
     {
         audioSource = GetComponent<AudioSource>();
@@ -96,5 +110,37 @@ public class GameConfiguration : MonoBehaviour
         if (selectedPlayerModelIndex < 0) selectedPlayerModelIndex = 0;
         if (selectedPlayerModelIndex >= playerModels.Count) selectedPlayerModelIndex = playerModels.Count - 1;
         return playerModels[selectedPlayerModelIndex];
+    }
+
+    public string ExportToJson()
+    {
+        SaveData data = new SaveData
+        {
+            selectedMusicIndex = selectedMusicIndex,
+            selectedPlayerModelIndex = selectedPlayerModelIndex,
+            fogEnabled = fogEnabled,
+            fogColorR = fogColor.r,
+            fogColorG = fogColor.g,
+            fogColorB = fogColor.b,
+            fogColorA = fogColor.a,
+            fogDensity = fogDensity,
+            timeHours = timeHours
+        };
+
+        return JsonUtility.ToJson(data, true);
+    }
+
+    public void ImportFromJson(string json)
+    {
+        SaveData data = JsonUtility.FromJson<SaveData>(json);
+        if (data != null)
+        {
+            selectedMusicIndex = data.selectedMusicIndex;
+            selectedPlayerModelIndex = data.selectedPlayerModelIndex;
+            fogEnabled = data.fogEnabled;
+            fogColor = new Color(data.fogColorR, data.fogColorG, data.fogColorB, data.fogColorA);
+            fogDensity = data.fogDensity;
+            timeHours = data.timeHours;
+        }
     }
 }

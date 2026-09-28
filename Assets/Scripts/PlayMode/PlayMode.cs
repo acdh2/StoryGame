@@ -70,7 +70,17 @@ public class PlayMode : UIControllerBase
             dialogueInterpreter.OnScreenShown += HandleScreenShown;
             dialogueInterpreter.OnScreenHidden += HandleScreenHidden;
             if (gameConfiguration != null) gameConfiguration.Apply();
+            AddCollisionDetector(player);
         }      
+    }
+
+    private void AddCollisionDetector(GameObject player)
+    {
+        CharacterController characterController = player.GetComponentInChildren<CharacterController>();
+        if (characterController != null) {
+            var playerCollisionDetector = characterController.gameObject.AddComponent<PlayerCollisionDetector>();
+            playerCollisionDetector.dialogueInterpreter = dialogueInterpreter;
+        }
     }
 
     private void DestroyPlayer()
