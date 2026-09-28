@@ -1,3 +1,4 @@
 <ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <ui:VisualElement name="NavigationBox" style="flex-grow: 0; flex-direction: row; align-self: center; margin-top: 6px; width: auto;"/>
+    <ui:Button text="" name="close" style="width: 48px; height: 48px; position: absolute; top: auto; right: 0; margin-top: 4px; margin-bottom: 4px; background-image: url(&quot;project://database/Assets/Icons/t_close.png?fileID=2800000&amp;guid=901df979c8bf14d9ea2baa9277523db4&amp;type=3#t_close&quot;); background-size: 90% 90%; background-position-x: center; left: auto; background-color: rgba(188, 188, 188, 0); -unity-slice-scale: 1px; border-left-width: 0; border-top-width: 0; border-right-width: 0; border-bottom-width: 0; right: 0; display: flex;"/>
 </ui:UXML>

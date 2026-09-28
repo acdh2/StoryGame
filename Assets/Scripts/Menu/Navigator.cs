@@ -11,6 +11,7 @@ public class Navigator : UIControllerBase
     public string groupBoxName = "NavigationBox";
 
     private VisualElement navigationGroupBox;
+    private Button closeButton;
     private readonly List<GameObject> screens = new List<GameObject>();
     private readonly List<UIDocumentLifecycle> screenLifecycles = new List<UIDocumentLifecycle>();
     private readonly List<(Button button, System.Action action)> registeredListeners = new List<(Button, System.Action)>();
@@ -36,6 +37,14 @@ public class Navigator : UIControllerBase
             Debug.LogError($"[Navigator] GroupBox met naam '{groupBoxName}' niet gevonden in het UIDocument.");
             return;
         }
+
+        closeButton = root.Q<Button>("close");
+        closeButton.style.display = DisplayStyle.None;
+        closeButton.clicked += () => {
+            OpenScreen(screens[0]);
+            navigationGroupBox.style.display = DisplayStyle.Flex;
+            closeButton.style.display = DisplayStyle.None;
+        };
 
         CacheScreens();
         BuildDynamicButtons();
@@ -69,8 +78,10 @@ public class Navigator : UIControllerBase
         UnregisterListeners();
         navigationGroupBox.Clear();
 
-        foreach (var screen in screens)
+        for (int i = 0; i < screens.Count; i++)
         {
+            var screen = screens[i];
+            bool isLast = (i == screens.Count - 1);
             if (screen == null) continue;
 
             if (screen.TryGetComponent<NavigationIcon>(out var navIcon))
@@ -99,8 +110,17 @@ public class Navigator : UIControllerBase
                 }
 
                 btn.tooltip = screen.name;
+                System.Action onClickAction;
 
-                System.Action onClickAction = () => OpenScreen(screen);
+                if (isLast) {
+                    onClickAction = () => {
+                        navigationGroupBox.style.display = DisplayStyle.None;
+                        closeButton.style.display = DisplayStyle.Flex;
+                        OpenScreen(screen);
+                    };
+                } else {
+                    onClickAction = () => OpenScreen(screen);
+                }
                 btn.clicked += onClickAction;
                 registeredListeners.Add((btn, onClickAction));
 
