@@ -37,30 +37,29 @@ public class ObjectSelector : MonoBehaviour
             TrySelectObject();
         }
     }
-
 private bool IsPointerOverUI()
-    {
-        Vector2 mousePos = Input.mousePosition;
-        // Converteer schermcoördinaten naar UI Toolkit schermcoördinaten (Y-as is geïnverteerd)
-        Vector2 pointerPosition = new Vector2(mousePos.x, Screen.height - mousePos.y);
+{
+    Vector2 mousePos = Input.mousePosition;
+    Vector2 pointerPosition = new Vector2(mousePos.x, Screen.height - mousePos.y);
 
-        UIDocument[] uiDocuments = FindObjectsByType<UIDocument>(FindObjectsSortMode.None);
-        foreach (var uiDoc in uiDocuments)
+    UIDocument[] uiDocuments = FindObjectsByType<UIDocument>(FindObjectsSortMode.None);
+    foreach (var uiDoc in uiDocuments)
+    {
+        if (uiDoc != null && uiDoc.rootVisualElement != null)
         {
-            if (uiDoc != null && uiDoc.rootVisualElement != null)
+            if (uiDoc.rootVisualElement.style.display != DisplayStyle.None)
             {
-                if (uiDoc.rootVisualElement.style.display != DisplayStyle.None)
+                Vector2 panelPosition = RuntimePanelUtils.ScreenToPanel(uiDoc.rootVisualElement.panel, pointerPosition);
+                VisualElement picked = uiDoc.rootVisualElement.panel.Pick(panelPosition);
+                if (picked != null && picked != uiDoc.rootVisualElement)
                 {
-                    VisualElement picked = uiDoc.rootVisualElement.panel.Pick(pointerPosition);
-                    if (picked != null && picked != uiDoc.rootVisualElement)
-                    {
-                        return true;
-                    }
+                    return true;
                 }
             }
         }
-        return false;
     }
+    return false;
+}
 
     private void TrySelectObject()
     {

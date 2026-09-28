@@ -8,7 +8,6 @@ public class MaterialPalette : UIControllerBase
     public struct MaterialCategory
     {
         public string categoryName;
-        public Texture2D categoryIcon;
         public List<Material> materials;
     }
 
@@ -19,6 +18,8 @@ public class MaterialPalette : UIControllerBase
     private Vector2 itemSize = new Vector2(48, 48);
 
     [Header("Data")]
+    [SerializeField]private Texture2D defaultIcon;
+
     [SerializeField] private List<MaterialCategory> categories = new List<MaterialCategory>();
 
     private VisualElement root;
@@ -120,10 +121,10 @@ public class MaterialPalette : UIControllerBase
             categoryBtn.style.borderBottomLeftRadius = 6;
             categoryBtn.style.borderBottomRightRadius = 6;
 
-            if (category.categoryIcon != null)
+            if (defaultIcon != null)
             {
                 VisualElement icon = new VisualElement();
-                icon.style.backgroundImage = new StyleBackground(category.categoryIcon);
+                icon.style.backgroundImage = new StyleBackground(defaultIcon);
                 icon.style.width = 20;
                 icon.style.height = 20;
                 icon.style.marginRight = 8;

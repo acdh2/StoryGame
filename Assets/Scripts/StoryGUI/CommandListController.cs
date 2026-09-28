@@ -65,13 +65,33 @@ public class CommandListController : UIControllerBase
         {
             case "SAY": return new Color(0.2f, 0.4f, 0.6f);      // Blauw
             case "OPTION": return new Color(0.2f, 0.6f, 0.4f);   // Groen
+            case "TOUCHED": return new Color(0.6f, 0.6f, 0.2f);  // Geel
+            case "SHOW":
+            case "HIDE": return new Color(0.2f, 0.5f, 0.5f);     // Cyaan/Turquoise
             case "JUMP":
             case "LABEL": return new Color(0.6f, 0.4f, 0.2f);    // Oranje
             case "SET":
             case "UNSET": return new Color(0.5f, 0.2f, 0.6f);    // Paars
+            case "IF_SET":
+            case "IF_UNSET": return new Color(0.6f, 0.2f, 0.4f); // Roze/Magenta
             default: return new Color(0.3f, 0.3f, 0.3f);         // Standaard grijs
         }
-    }    
+    }
+
+    // private Color GetColorForCommand(string commandType)
+    // {
+    //     string type = commandType?.Trim().ToUpperInvariant() ?? "";
+    //     switch (type)
+    //     {
+    //         case "SAY": return new Color(0.2f, 0.4f, 0.6f);      // Blauw
+    //         case "OPTION": return new Color(0.2f, 0.6f, 0.4f);   // Groen
+    //         case "JUMP":
+    //         case "LABEL": return new Color(0.6f, 0.4f, 0.2f);    // Oranje
+    //         case "SET":
+    //         case "UNSET": return new Color(0.5f, 0.2f, 0.6f);    // Paars
+    //         default: return new Color(0.3f, 0.3f, 0.3f);         // Standaard grijs
+    //     }
+    // }    
 
     private void RebuildUI()
     {
@@ -97,7 +117,8 @@ public class CommandListController : UIControllerBase
                 dropdown.RegisterValueChangedCallback(evt =>
                 {
                     dataStore.UpdateCommand(index, evt.newValue, data.Argument);
-                });
+                    itemRoot.style.backgroundColor = GetColorForCommand(evt.newValue);
+                });    
             }
 
             TextField inputField = itemRoot.Q<TextField>("command-input");

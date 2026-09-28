@@ -15,6 +15,13 @@ public class FileManager : UIControllerBase
     private Button loadBtn;
     private Button saveBtn;
 
+    protected override void Awake()
+    {
+        base.Awake();
+        isInitialised = true;
+    }
+
+
     protected override void OnUIEnabled(VisualElement root)
     {
         newBtn = root.Q<Button>("btn-new");

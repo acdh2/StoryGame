@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65e944aeb4caf4773a0eda9d83991ec5, type: 3}
   m_Name: ProjectSettings
   m_EditorClassIdentifier: Assembly-CSharp::ProjectSettings
-  positionSnap: {x: 0.5, y: 0.5, z: 0.5}
-  rotationSnap: 15
+  positionSnap: {x: 0.25, y: 0.25, z: 0.25}
+  rotationSnap: 5
   scaleSnap: {x: 0.1, y: 0.1, z: 0.1}

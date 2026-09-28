@@ -84,7 +84,6 @@ public class LevelObjectPalettePopulator : AssetPostprocessor
             SerializedProperty categoryElem = categoriesProp.GetArrayElementAtIndex(categoryIndex);
 
             categoryElem.FindPropertyRelative("categoryName").stringValue = categoryName;
-            categoryElem.FindPropertyRelative("categoryIcon").objectReferenceValue = categoryIcon;
 
             SerializedProperty itemsProp = categoryElem.FindPropertyRelative("items");
             itemsProp.ClearArray();

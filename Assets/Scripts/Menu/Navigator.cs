@@ -10,7 +10,7 @@ public class Navigator : UIControllerBase
     [Tooltip("De naam van het GroupBox element in het UIDocument waarin de knoppen worden geplaatst.")]
     public string groupBoxName = "NavigationBox";
 
-    private GroupBox navigationGroupBox;
+    private VisualElement navigationGroupBox;
     private readonly List<GameObject> screens = new List<GameObject>();
     private readonly List<UIDocumentLifecycle> screenLifecycles = new List<UIDocumentLifecycle>();
     private readonly List<(Button button, System.Action action)> registeredListeners = new List<(Button, System.Action)>();
@@ -30,7 +30,7 @@ public class Navigator : UIControllerBase
     {
         DisableKeyboardNavigationOnElement(root);
 
-        navigationGroupBox = root.Q<GroupBox>(groupBoxName);
+        navigationGroupBox = root.Q<VisualElement>(groupBoxName);
         if (navigationGroupBox == null)
         {
             Debug.LogError($"[Navigator] GroupBox met naam '{groupBoxName}' niet gevonden in het UIDocument.");
@@ -77,12 +77,19 @@ public class Navigator : UIControllerBase
             {
                 Button btn = new Button();
                 
+                btn.style.backgroundColor = Color.clear;
+                btn.style.borderTopColor = Color.clear;
+                btn.style.borderBottomColor = Color.clear;
+                btn.style.borderLeftColor = Color.clear;
+                btn.style.borderRightColor = Color.clear;
+                
                 btn.style.width = 48;
-                btn.style.height = 48;
+                btn.style.height = 54;
                 btn.style.marginLeft = 4;
                 btn.style.marginRight = 4;
                 btn.style.marginTop = 4;
                 btn.style.marginBottom = 4;
+                
 
                 btn.focusable = false;
 

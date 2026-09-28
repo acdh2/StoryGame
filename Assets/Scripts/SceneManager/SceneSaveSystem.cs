@@ -9,6 +9,9 @@ public class SceneSaveSystem : MonoBehaviour
     [SerializeField] private LevelObjectPalette levelObjectPalette;
     [SerializeField] private MaterialPalette materialPalette;
     [SerializeField] private GameConfiguration gameConfiguration;
+    [SerializeField] private GameObject floorObject;
+
+    private Material defaultFloorMaterial;
 
     private StoryDataStore storyDataStore;
 
@@ -18,6 +21,7 @@ public class SceneSaveSystem : MonoBehaviour
     public class SaveData
     {
         public List<ObjectSaveData> objects = new List<ObjectSaveData>();
+        public string floorMaterialName;
         public string storyJson;
         public string configJson;
     }
@@ -36,11 +40,26 @@ public class SceneSaveSystem : MonoBehaviour
     private void Awake()
     {
         storyDataStore = GetComponent<StoryDataStore>();
+
+        if (floorObject != null)
+        {
+            Renderer floorRenderer = floorObject.GetComponent<Renderer>();
+            if (floorRenderer != null)
+            {
+                defaultFloorMaterial = floorRenderer.sharedMaterial;
+            }
+        }
     }
 
     public string SerializeScene()
     {
         SaveData data = new SaveData();
+
+        if (floorObject != null)
+        {
+            Renderer floorRenderer = floorObject.GetComponent<Renderer>();
+            data.floorMaterialName = floorRenderer != null && floorRenderer.sharedMaterial != null ? floorRenderer.sharedMaterial.name : "";
+        }
 
         foreach (Transform child in transform)
         {
@@ -87,6 +106,19 @@ public class SceneSaveSystem : MonoBehaviour
 
         SaveData data = JsonUtility.FromJson<SaveData>(json);
         if (data == null) return;
+
+        if (floorObject != null && !string.IsNullOrEmpty(data.floorMaterialName))
+        {
+            Material mat = FindMaterialByName(data.floorMaterialName);
+            if (mat != null)
+            {
+                Renderer floorRenderer = floorObject.GetComponent<Renderer>();
+                if (floorRenderer != null)
+                {
+                    floorRenderer.sharedMaterial = mat;
+                }
+            }
+        }
 
         if (data.objects != null)
         {
@@ -146,6 +178,15 @@ public class SceneSaveSystem : MonoBehaviour
         foreach (Transform child in transform)
         {
             Destroy(child.gameObject);
+        }
+
+        if (floorObject != null && defaultFloorMaterial != null)
+        {
+            Renderer floorRenderer = floorObject.GetComponent<Renderer>();
+            if (floorRenderer != null)
+            {
+                floorRenderer.sharedMaterial = defaultFloorMaterial;
+            }
         }
 
         if (storyDataStore != null)

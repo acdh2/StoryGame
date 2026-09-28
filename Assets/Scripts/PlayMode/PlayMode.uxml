@@ -4,7 +4,7 @@
             <ui:Label name="character-name-label" text="Name" style="-unity-font-style: bold; color: rgb(30, 30, 30); font-size: 14px; margin-bottom: 4px;"/>
             <ui:Label name="dialogue-text-label" text="Dialogue line goes here..." style="color: rgb(20, 20, 20); font-size: 16px; margin-bottom: 12px; white-space: normal;"/>
             <ui:VisualElement name="options-container" style="flex-direction: column; margin-top: 4px;">
-                <ui:Button name="option-button-template" text="Option Template" style="height: 36px; background-color: rgb(235, 235, 235); border-radius: 8px; border-width: 1px; border-color: rgb(200, 200, 200); color: rgb(20, 20, 20); -unity-font-style: bold; margin-bottom: 6px; display: none;"/>
+                <ui:Button name="option-button-template" text="Option Template" style="height: 40px; min-width: 80px; margin-left: 4px; margin-right: 4px; border-top-left-radius: 6px; border-top-right-radius: 6px; border-bottom-left-radius: 6px; border-bottom-right-radius: 6px; font-size: 12px; -unity-font-style: bold; border-top-width: 1px; border-bottom-width: 1px; border-left-width: 1px; border-right-width: 1px; border-top-color: rgb(200, 200, 200); border-bottom-color: rgb(200, 200, 200); border-left-color: rgb(200, 200, 200); border-right-color: rgb(200, 200, 200); display: none;"/>
             </ui:VisualElement>
             <ui:Button name="continue-button" text="Ok" style="height: 36px; align-self: flex-end; width: 80px; background-color: rgb(235, 235, 235); border-radius: 8px; border-width: 1px; border-color: rgb(200, 200, 200); color: rgb(20, 20, 20); -unity-font-style: bold; margin-top: 4px; display: none;"/>
         </ui:VisualElement>

@@ -12,7 +12,6 @@ public class PlayerCollisionDetector : MonoBehaviour
             ObjectIdentifier objectIdentifier = target.GetComponentInParent<ObjectIdentifier>();
             if (objectIdentifier != null)
             {
-                print(String.Format("A collision was found! name={0}", target.name));
                 if (dialogueInterpreter != null)
                 {
                     dialogueInterpreter.OnObjectTouched(target.name);

@@ -5,7 +5,7 @@ public class SceneManager : MonoBehaviour
 {
     [SerializeField] private LayerMask selectableLayer;
     [SerializeField] private ObjectSelector objectSelector;
-    [SerializeField] private string saveFileName = "scene.json";
+    [SerializeField] private string saveFileName = "current.json";
     private SceneSaveSystem saveSystem;
 
     private void Awake()
@@ -27,7 +27,11 @@ public class SceneManager : MonoBehaviour
     private void OnApplicationQuit()
     {
 #if !UNITY_WEBGL || UNITY_EDITOR
-        SaveCurrentScene();
+        //SaveCurrentScene();
+        if (saveSystem != null)
+        {
+            saveSystem.SaveSceneToFile(saveFileName);
+        }
 #endif
     }
 
@@ -65,9 +69,7 @@ public class SceneManager : MonoBehaviour
 
     private void HandleSceneLoaded()
     {
-#if !UNITY_WEBGL || UNITY_EDITOR
         SaveCurrentScene();
-#endif
     }
 
     public GameObject SpawnAndRegister(LevelObjectPalette.LevelItemData itemData, Vector3 spawnPosition, ObjectSelector selector)
