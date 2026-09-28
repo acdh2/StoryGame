@@ -177,7 +177,12 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 72b807cf447d04ef491f9f8852f09675, type: 3}
   playerModels:
   - {fileID: 2388659209182943489, guid: 1d5c5c9095f4d44a18063d55aa204b27, type: 3}
-  - {fileID: 2388659209182943489, guid: ecdf00187e48c457cbb9f5863b03cef2, type: 3}
+  - {fileID: 2388659209182943489, guid: dfb4ae36ef3d94ca6a6a1c3f0ee37d1e, type: 3}
+  - {fileID: 2388659209182943489, guid: d6b86d3f989b84bebb511dd14a80dbee, type: 3}
+  - {fileID: 2388659209182943489, guid: 1dbc4fdb6e0cf4d2ba8d3f4809c11880, type: 3}
+  - {fileID: 2388659209182943489, guid: 977820d65ad7f4c588289a228974fbac, type: 3}
+  - {fileID: 2388659209182943489, guid: d041b40f57eb142acad2b165f4eb533b, type: 3}
+  - {fileID: 2388659209182943489, guid: 101b099c520f446ea9eb6d29ea88fabd, type: 3}
   selectedMusicIndex: -1
   selectedPlayerModelIndex: 0
   fogEnabled: 0
@@ -2080,7 +2085,25 @@ MonoBehaviour:
       thumbnail: {fileID: 2800000, guid: 65a12d461117540d4817d07585801931, type: 3}
       prefab: {fileID: 919132149155446097, guid: 913cfaf790d1f403dac48f1f3e65c6c5, type: 3}
   - categoryName: Characters
-    items: []
+    items:
+    - itemName: Barbarian
+      thumbnail: {fileID: 2800000, guid: 77045147079fe4da2a3ec91d42e39960, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 0fcf8770248e5461fa6cbb9a495fedb1, type: 3}
+    - itemName: Knight
+      thumbnail: {fileID: 2800000, guid: b59eae1cebb7a4c38b5142921f598bed, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 1144e8122a1394e1a9a84653405da36c, type: 3}
+    - itemName: Mage
+      thumbnail: {fileID: 2800000, guid: 4656ff757a368436c84f0f3e907b92a2, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 3a6339a076b084077a278eb18870b31f, type: 3}
+    - itemName: Ranger
+      thumbnail: {fileID: 2800000, guid: f6f8934389df140fd9451820bbdc412c, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 4064850f3ba2248e6b5abb4cfbad41cc, type: 3}
+    - itemName: Rogue
+      thumbnail: {fileID: 2800000, guid: 78744f236058d453196ed783c9083128, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 7d11d684b771b40eea6d89ec9276d39b, type: 3}
+    - itemName: Rogue_Hooded
+      thumbnail: {fileID: 2800000, guid: d1023183c89834180a3b833ae0fc9e79, type: 3}
+      prefab: {fileID: 919132149155446097, guid: b7ff6ca6839cd4240bd482aff7605757, type: 3}
   - categoryName: Food
     items:
     - itemName: advocado-half
