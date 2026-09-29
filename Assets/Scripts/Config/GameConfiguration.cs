@@ -34,6 +34,8 @@ public class GameConfiguration : MonoBehaviour
         public float timeHours;
     }
 
+    private SaveData defaultSettings;
+
     private void Awake()
     {
         audioSource = GetComponent<AudioSource>();
@@ -42,7 +44,33 @@ public class GameConfiguration : MonoBehaviour
             audioSource = gameObject.AddComponent<AudioSource>();
         }
         audioSource.loop = true;
+
+        defaultSettings = new SaveData
+        {
+            selectedMusicIndex = selectedMusicIndex,
+            selectedPlayerModelIndex = selectedPlayerModelIndex,
+            fogEnabled = fogEnabled,
+            fogColorR = fogColor.r,
+            fogColorG = fogColor.g,
+            fogColorB = fogColor.b,
+            fogColorA = fogColor.a,
+            fogDensity = fogDensity,
+            timeHours = timeHours
+        };
+
     }
+
+    public void Reset()
+    {
+        if (defaultSettings == null) return;
+
+        selectedMusicIndex = defaultSettings.selectedMusicIndex;
+        selectedPlayerModelIndex = defaultSettings.selectedPlayerModelIndex;
+        fogEnabled = defaultSettings.fogEnabled;
+        fogColor = new Color(defaultSettings.fogColorR, defaultSettings.fogColorG, defaultSettings.fogColorB, defaultSettings.fogColorA);
+        fogDensity = defaultSettings.fogDensity;
+        timeHours = defaultSettings.timeHours;
+    }    
 
     public void Apply()
     {

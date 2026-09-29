@@ -194,6 +194,11 @@ public class SceneSaveSystem : MonoBehaviour
             storyDataStore.SetCommands(new List<CommandData>());
         }
 
+        if (gameConfiguration != null)
+        {
+            gameConfiguration.Reset();
+        }
+
         OnSceneLoaded?.Invoke();
     }
 
