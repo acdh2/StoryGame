@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class EditorCameraController : MonoBehaviour
 {
+    [SerializeField] private ObjectSelector objectSelector = null;
+
     [Header("Movement")]
     public float moveSpeed = 10f;
 
@@ -16,9 +18,25 @@ public class EditorCameraController : MonoBehaviour
 
     public void ResetView()
     {
+        if (objectSelector != null)
+        {
+            GameObject selectedObject = objectSelector.SelectedObject;
+            if (selectedObject)
+            {
+                Renderer renderer = selectedObject.GetComponentInChildren<Renderer>();
+                Vector3 targetCenter = renderer != null ? renderer.bounds.center : selectedObject.transform.position;
+                float objectSize = renderer != null ? renderer.bounds.size.z : 2f;
+                
+                float distance = Mathf.Max(objectSize * 2f, 3f);
+                
+                transform.position = targetCenter - Vector3.forward * distance;
+                transform.LookAt(targetCenter);
+                return;
+            }
+        }
+        
         transform.SetPositionAndRotation(originalPosition, originalRotation);
     }
-
     void Awake()
     {
         transform.GetPositionAndRotation(out originalPosition, out originalRotation);
