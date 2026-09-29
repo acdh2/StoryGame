@@ -21,6 +21,8 @@ public class ObjectSelector : MonoBehaviour
 
     private int currentHandleType = 0;
 
+    public GameObject SelectedObject => _currentTarget != null ? _currentTarget.gameObject : null;
+
     void Start()
     {
         _manager = TransformHandleManager.Instance;
@@ -37,29 +39,30 @@ public class ObjectSelector : MonoBehaviour
             TrySelectObject();
         }
     }
-private bool IsPointerOverUI()
-{
-    Vector2 mousePos = Input.mousePosition;
-    Vector2 pointerPosition = new Vector2(mousePos.x, Screen.height - mousePos.y);
 
-    UIDocument[] uiDocuments = FindObjectsByType<UIDocument>(FindObjectsSortMode.None);
-    foreach (var uiDoc in uiDocuments)
+    private bool IsPointerOverUI()
     {
-        if (uiDoc != null && uiDoc.rootVisualElement != null)
+        Vector2 mousePos = Input.mousePosition;
+        Vector2 pointerPosition = new Vector2(mousePos.x, Screen.height - mousePos.y);
+
+        UIDocument[] uiDocuments = FindObjectsByType<UIDocument>(FindObjectsSortMode.None);
+        foreach (var uiDoc in uiDocuments)
         {
-            if (uiDoc.rootVisualElement.style.display != DisplayStyle.None)
+            if (uiDoc != null && uiDoc.rootVisualElement != null)
             {
-                Vector2 panelPosition = RuntimePanelUtils.ScreenToPanel(uiDoc.rootVisualElement.panel, pointerPosition);
-                VisualElement picked = uiDoc.rootVisualElement.panel.Pick(panelPosition);
-                if (picked != null && picked != uiDoc.rootVisualElement)
+                if (uiDoc.rootVisualElement.style.display != DisplayStyle.None)
                 {
-                    return true;
+                    Vector2 panelPosition = RuntimePanelUtils.ScreenToPanel(uiDoc.rootVisualElement.panel, pointerPosition);
+                    VisualElement picked = uiDoc.rootVisualElement.panel.Pick(panelPosition);
+                    if (picked != null && picked != uiDoc.rootVisualElement)
+                    {
+                        return true;
+                    }
                 }
             }
         }
+        return false;
     }
-    return false;
-}
 
     private void TrySelectObject()
     {

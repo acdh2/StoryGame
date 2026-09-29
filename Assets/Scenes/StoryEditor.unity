@@ -2711,8 +2711,8 @@ MonoBehaviour:
       prefab: {fileID: 919132149155446097, guid: 28072f9515a4443a1a68d633a8281583, type: 3}
   - categoryName: KayKit
     items:
-    - itemName: Barrel
-      thumbnail: {fileID: 2800000, guid: bbf312466b61a4c50b0f8df0651f929a, type: 3}
+    - itemName: BarrelBlue
+      thumbnail: {fileID: 2800000, guid: 87884d60931d14da29e251c0ccdc2234, type: 3}
       prefab: {fileID: 919132149155446097, guid: a2485088b8b00409a93e71bf68681196, type: 3}
     - itemName: Coin
       thumbnail: {fileID: 2800000, guid: 9cce91bab4427426dbf96074b2b82007, type: 3}
@@ -2747,6 +2747,80 @@ MonoBehaviour:
     - itemName: Target
       thumbnail: {fileID: 2800000, guid: 07d8cd8444f624b4d8ebde23f8862195, type: 3}
       prefab: {fileID: 919132149155446097, guid: d6a353731cd114e1bad7426fa439c742, type: 3}
+  - categoryName: Nature
+    items:
+    - itemName: Branch_01
+      thumbnail: {fileID: 2800000, guid: fb4aa2edd5b024fa1b753ae5494d27d3, type: 3}
+      prefab: {fileID: 1493958779012120596, guid: b9de24523a11d714db3851b5f0f9d527, type: 3}
+    - itemName: Bush_01
+      thumbnail: {fileID: 2800000, guid: b04c440da7e264c9fb3cb7aac36d440d, type: 3}
+      prefab: {fileID: 4263922822445002727, guid: 3cdafb3c2f54d434894928d72d282874, type: 3}
+    - itemName: Bush_02
+      thumbnail: {fileID: 2800000, guid: 74ff7904a99eb414098fa247243bc46d, type: 3}
+      prefab: {fileID: 6239969156481229051, guid: b71b0f8d2f881c743a85228f3030d1cb, type: 3}
+    - itemName: Bush_03
+      thumbnail: {fileID: 2800000, guid: e0dc7cd7a030b48feb6cb178bb8320b1, type: 3}
+      prefab: {fileID: 38335279662140195, guid: 34d3f526198dae440bb2ce6005d86055, type: 3}
+    - itemName: Flowers_01
+      thumbnail: {fileID: 2800000, guid: e87e246b8d28c423fa51738a495f9d84, type: 3}
+      prefab: {fileID: 5186735023776687486, guid: ac8efb728f1fb9b4092c4df591c827ca, type: 3}
+    - itemName: Flowers_02
+      thumbnail: {fileID: 2800000, guid: 156629aced0e5484ca61f49f6df8dbff, type: 3}
+      prefab: {fileID: 3899520030806763256, guid: 299e7a1cb6456cf4fa6079cf5978df9b, type: 3}
+    - itemName: Grass_01
+      thumbnail: {fileID: 2800000, guid: 4fa10658636ff423288624fcfb48176b, type: 3}
+      prefab: {fileID: 8903058273634794869, guid: f1fc5bb90ac285e4486771552d63bcb8, type: 3}
+    - itemName: Grass_02
+      thumbnail: {fileID: 2800000, guid: 8ad0b4196fa87468bbbfe873fa9f83af, type: 3}
+      prefab: {fileID: 3356751432538110193, guid: ffbddc4ef9676cc419e81e06aaa836d8, type: 3}
+    - itemName: Ground_01
+      thumbnail: {fileID: 2800000, guid: cae61e10eb69a4e3a824f21b334db9c8, type: 3}
+      prefab: {fileID: 1686021177304871604, guid: ebee340de387f334f9ac44e044abd8fb, type: 3}
+    - itemName: Ground_02
+      thumbnail: {fileID: 2800000, guid: 7f8de6fd776b84167ad609bb3efb5105, type: 3}
+      prefab: {fileID: 1279437348525479949, guid: e2e682b966e3f644392ffbfab511e0e2, type: 3}
+    - itemName: Ground_03
+      thumbnail: {fileID: 2800000, guid: 47422f2b6e3ee441f9729d0f2f34235e, type: 3}
+      prefab: {fileID: 8957304962413023527, guid: 3f9b178ccd3b86f4ebbfc1f5a2815e56, type: 3}
+    - itemName: Mushroom_01
+      thumbnail: {fileID: 2800000, guid: e29414c3221874fa5b14c4c7d682b3a1, type: 3}
+      prefab: {fileID: 4385080170328260021, guid: ff62b58c5a9ea164fa8ddf8038e10cd1, type: 3}
+    - itemName: Mushroom_02
+      thumbnail: {fileID: 2800000, guid: ed03180394fc94d38bb58e6e43dd7633, type: 3}
+      prefab: {fileID: 5440707293445505367, guid: 494f6d43e170e9145bc7865d243ee00b, type: 3}
+    - itemName: Rock_01
+      thumbnail: {fileID: 2800000, guid: 7a338b4ab82084af4b07a601ce827152, type: 3}
+      prefab: {fileID: 7405846476849542632, guid: c6308cb7062fac34e8e50600086b12a1, type: 3}
+    - itemName: Rock_02
+      thumbnail: {fileID: 2800000, guid: 35b345ae8c9d34ea89303430d4b1b391, type: 3}
+      prefab: {fileID: 5202732821079448320, guid: cebfacc247a640945a2c30b442202fca, type: 3}
+    - itemName: Rock_03
+      thumbnail: {fileID: 2800000, guid: 5af967f12bf7d46b4aa84c72d9a9bc5b, type: 3}
+      prefab: {fileID: 4680757731160225450, guid: 0fde05fa0f3321942a21896ff4f0856f, type: 3}
+    - itemName: Rock_04
+      thumbnail: {fileID: 2800000, guid: 75b789bef4faa46b58f8a32783ec759d, type: 3}
+      prefab: {fileID: 8783306491908617939, guid: f02116c209ecd9e488fc4d2cd8996133, type: 3}
+    - itemName: Rock_05
+      thumbnail: {fileID: 2800000, guid: 23dc0927190e94539a12250cd8954a56, type: 3}
+      prefab: {fileID: 1576488453971893466, guid: a778b631c6253a04899cb31bad047c81, type: 3}
+    - itemName: Stump_01
+      thumbnail: {fileID: 2800000, guid: 23515bbacc68e41ac9196182b3a7f6c1, type: 3}
+      prefab: {fileID: 108507113624723981, guid: eebb56c82efbd8d4bb0eb6bd925a0e9d, type: 3}
+    - itemName: Tree_01
+      thumbnail: {fileID: 2800000, guid: aa279167c06264a99857f7fff4da6f50, type: 3}
+      prefab: {fileID: 2222111361404534124, guid: 88f2fd29f58b9734683512546acec310, type: 3}
+    - itemName: Tree_02
+      thumbnail: {fileID: 2800000, guid: 0c878cc8653bc4361b1f998282e3edf3, type: 3}
+      prefab: {fileID: 4661435515762455780, guid: e289bf5debb17f6459818c207d781953, type: 3}
+    - itemName: Tree_03
+      thumbnail: {fileID: 2800000, guid: 39f54e7de073e438db5c4c760fb023c2, type: 3}
+      prefab: {fileID: 6941765000743290380, guid: c60edd51c065ceb46b345849a03bc106, type: 3}
+    - itemName: Tree_04
+      thumbnail: {fileID: 2800000, guid: d72d1ab6f2008482d9aab213547ad30d, type: 3}
+      prefab: {fileID: 2807449429036958551, guid: f0c16f0ea935ea64297ca1d4d55d9746, type: 3}
+    - itemName: Tree_05
+      thumbnail: {fileID: 2800000, guid: adca8303f1a5c4828a607a5c4b380dba, type: 3}
+      prefab: {fileID: 9069115365609291303, guid: 60f79905accf3b24fa0114b941f1aac0, type: 3}
   - categoryName: Survival
     items:
     - itemName: barrel-open
@@ -3535,6 +3609,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8357e94605fb4e849d74124c93cb590, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ObjectPropertiesUIController
+  sceneManager: {fileID: 997034304}
   objectSelector: {fileID: 330585548}
   editorCameraController: {fileID: 2000960783}
 --- !u!1 &1650302574

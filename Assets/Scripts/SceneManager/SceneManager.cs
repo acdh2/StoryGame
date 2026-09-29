@@ -63,7 +63,6 @@ public class SceneManager : MonoBehaviour
 
     private void HandleTransformComplete(GameObject targetObject)
     {
-        Debug.Log($"Transformatie voltooid voor: {targetObject.name}");
         SaveCurrentScene();
     }
 
@@ -104,6 +103,27 @@ public class SceneManager : MonoBehaviour
             targetRenderer.sharedMaterial = material;
             SaveCurrentScene();
         }
+    }
+
+    public void RenameObject(GameObject targetObject, string newName)
+    {
+        if (targetObject == null || string.IsNullOrEmpty(newName)) return;
+
+        targetObject.name = newName;
+        SaveCurrentScene();
+    }
+
+    public void DeleteObject(GameObject targetObject)
+    {
+        if (targetObject == null) return;
+
+        if (objectSelector != null && objectSelector.SelectedObject == targetObject)
+        {
+            objectSelector.SelectObject(null);
+        }
+
+        Destroy(targetObject);
+        SaveCurrentScene();
     }
 
     public void SaveCurrentScene()

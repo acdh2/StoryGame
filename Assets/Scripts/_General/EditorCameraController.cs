@@ -11,6 +11,19 @@ public class EditorCameraController : MonoBehaviour
     private Transform cameraTransform;
     private float verticalRotation = 0f;
 
+    private Vector3 originalPosition = Vector3.zero;
+    private Quaternion originalRotation = Quaternion.identity;
+
+    public void ResetView()
+    {
+        transform.SetPositionAndRotation(originalPosition, originalRotation);
+    }
+
+    void Awake()
+    {
+        transform.GetPositionAndRotation(out originalPosition, out originalRotation);
+    }
+
     void Start()
     {
         // Zoek de child camera op
