@@ -5,6 +5,7 @@ public class SceneManager : MonoBehaviour
 {
     [SerializeField] private LayerMask selectableLayer;
     [SerializeField] private ObjectSelector objectSelector;
+    [SerializeField] private GameConfiguration gameConfiguration;
     [SerializeField] private StoryDataStore storyDataStore;
     [SerializeField] private string saveFileName = "current.json";
     [SerializeField] private int maxUndoSteps = 50;
@@ -12,7 +13,6 @@ public class SceneManager : MonoBehaviour
     private SceneSaveSystem saveSystem;
     private readonly Stack<string> undoStack = new Stack<string>();
     private readonly Stack<string> redoStack = new Stack<string>();
-    private bool isPerformingUndoRedo = false;
 
     public bool CanUndo => undoStack.Count > 1;
     public bool CanRedo => redoStack.Count > 0;
@@ -32,6 +32,7 @@ public class SceneManager : MonoBehaviour
         if (saveSystem != null)
         {
             saveSystem.LoadSceneFromFile(saveFileName);
+            RecordState();
         }
 #endif
     }
@@ -50,17 +51,16 @@ public class SceneManager : MonoBehaviour
     {
         if (objectSelector != null)
         {
-            objectSelector.OnTransformComplete += HandleTransformComplete;
+            objectSelector.OnTransformComplete += InvalidateScene;
         }
-
-        if (saveSystem != null)
+        if (gameConfiguration != null)
         {
-            saveSystem.OnSceneLoaded += HandleSceneLoaded;
+            gameConfiguration.OnSettingChanged += InvalidateScene;
         }
 
         if (storyDataStore != null)
         {
-            storyDataStore.OnDataChanged += HandleDataChanged;
+            storyDataStore.OnDataChanged += InvalidateScene;
         }
     }
 
@@ -68,39 +68,24 @@ public class SceneManager : MonoBehaviour
     {
         if (objectSelector != null)
         {
-            objectSelector.OnTransformComplete -= HandleTransformComplete;
+            objectSelector.OnTransformComplete -= InvalidateScene;
         }
 
-        if (saveSystem != null)
+        if (gameConfiguration != null)
         {
-            saveSystem.OnSceneLoaded -= HandleSceneLoaded;
+            gameConfiguration.OnSettingChanged -= InvalidateScene;
         }
 
         if (storyDataStore != null)
         {
-            storyDataStore.OnDataChanged -= HandleDataChanged;
+            storyDataStore.OnDataChanged -= InvalidateScene;
         }
     }
 
-    private void HandleTransformComplete(GameObject targetObject)
+    private void InvalidateScene()
     {
-        SaveCurrentScene();
-    }
-
-    private void HandleSceneLoaded()
-    {
-        if (!isPerformingUndoRedo)
-        {
-            RecordState();
-        }
-    }
-
-    private void HandleDataChanged()
-    {
-        if (!isPerformingUndoRedo)
-        {
-            SaveCurrentScene();
-        }
+        RecordState();
+        SaveSceneInternal();
     }
 
     public void RecordState()
@@ -143,7 +128,8 @@ public class SceneManager : MonoBehaviour
 
         objectSelector?.SelectObject(newObject);
 
-        SaveCurrentScene();
+        RecordState();
+        SaveSceneInternal();
         return newObject;
     }
 
@@ -155,7 +141,8 @@ public class SceneManager : MonoBehaviour
         if (targetRenderer != null)
         {
             targetRenderer.sharedMaterial = material;
-            SaveCurrentScene();
+            RecordState();            
+            SaveSceneInternal();
         }
     }
 
@@ -165,7 +152,8 @@ public class SceneManager : MonoBehaviour
         if (targetObject.CompareTag("SpawnPoint")) return;
 
         targetObject.name = newName.ToLowerInvariant();
-        SaveCurrentScene();
+        RecordState();
+        SaveSceneInternal();
     }
 
     public void DeleteObject(GameObject targetObject)
@@ -178,25 +166,15 @@ public class SceneManager : MonoBehaviour
         }
 
         Destroy(targetObject);
-        SaveCurrentScene();
+        RecordState();
+        SaveSceneInternal();
     }
 
-    public void SaveCurrentScene()
+    private void SaveSceneInternal() 
     {
-        if (isPerformingUndoRedo) return;
-        RecordState();
-
         if (saveSystem != null)
         {
             saveSystem.SaveSceneToFile(saveFileName);
-        }
-    }
-
-    public void LoadCurrentScene()
-    {
-        if (saveSystem != null)
-        {
-            saveSystem.LoadSceneFromFile(saveFileName);
         }
     }
 
@@ -222,9 +200,7 @@ public class SceneManager : MonoBehaviour
         redoStack.Push(currentState);
 
         string previousState = undoStack.Peek();
-        isPerformingUndoRedo = true;
         saveSystem.LoadSceneFromJson(previousState);
-        isPerformingUndoRedo = false;
 
         saveSystem.SaveSceneToFile(saveFileName);
     }
@@ -241,9 +217,7 @@ public class SceneManager : MonoBehaviour
         string nextState = redoStack.Pop();
         undoStack.Push(nextState);
 
-        isPerformingUndoRedo = true;
         saveSystem.LoadSceneFromJson(nextState);
-        isPerformingUndoRedo = false;
 
         saveSystem.SaveSceneToFile(saveFileName);
     }

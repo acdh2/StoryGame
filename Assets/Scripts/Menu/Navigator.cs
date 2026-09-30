@@ -7,54 +7,30 @@ public class Navigator : UIControllerBase
     [Tooltip("De naam van het GameObject dat bij de start als enige zichtbaar moet zijn.")]
     public string defaultScreenName;
 
-    [Tooltip("De naam van het GroupBox element in het UIDocument waarin de knoppen worden geplaatst.")]
-    public string groupBoxName = "NavigationBox";
-
-    private VisualElement navigationGroupBox;
-    private Button closeButton;
     private readonly List<GameObject> screens = new List<GameObject>();
     private readonly List<UIDocumentLifecycle> screenLifecycles = new List<UIDocumentLifecycle>();
     private readonly List<(Button button, System.Action action)> registeredListeners = new List<(Button, System.Action)>();
-
-    private VisualElement undoRedoBox;
-
-    protected override void Awake()
-    {
-        base.Awake();
-        isInitialised = true;
-    }
 
     private void Start()
     {
         InitializeDefaultScreen();
     }
 
-    void ReturnToFile()
-    {
-        OpenScreen(screens[0]);
-        navigationGroupBox.style.display = DisplayStyle.Flex;
-        closeButton.style.display = DisplayStyle.None;        
-    }
-
     protected override void OnUIEnabled(VisualElement root)
     {
         DisableKeyboardNavigationOnElement(root);
-
-        navigationGroupBox = root.Q<VisualElement>(groupBoxName);
-        if (navigationGroupBox == null)
+        CacheScreens();
+        
+        var closeButton = root.Q<Button>("close");
+        if (closeButton != null)
         {
-            Debug.LogError($"[Navigator] GroupBox met naam '{groupBoxName}' niet gevonden in het UIDocument.");
-            return;
+            closeButton.style.display = DisplayStyle.None;
+            System.Action closeAction = () => SetScreenVisibility(root, screens[0]);
+            closeButton.clicked += closeAction;
+            registeredListeners.Add((closeButton, closeAction));
         }
 
-        undoRedoBox = root.Q<VisualElement>("undo-redo-box");
-
-        closeButton = root.Q<Button>("close");
-        closeButton.style.display = DisplayStyle.None;
-        closeButton.clicked += () => ReturnToFile();
-
-        CacheScreens();
-        BuildDynamicButtons();
+        BuildDynamicButtons(root);
         InitializeDefaultScreen();
     }
 
@@ -80,64 +56,45 @@ public class Navigator : UIControllerBase
         }
     }
 
-    private void BuildDynamicButtons()
+    private void BuildDynamicButtons(VisualElement root)
     {
-        UnregisterListeners();
+        var navigationGroupBox = root.Q<VisualElement>("NavigationBox");
+        if (navigationGroupBox == null) return;
+
         navigationGroupBox.Clear();
 
         for (int i = 0; i < screens.Count; i++)
         {
             var screen = screens[i];
-            bool isFirst = (i == 0);
-            bool isLast = (i == screens.Count - 1);
             if (screen == null) continue;
 
             if (screen.TryGetComponent<NavigationIcon>(out var navIcon))
             {
                 Button btn = new Button();
-                
-                btn.style.backgroundColor = Color.clear;
-                btn.style.borderTopColor = Color.clear;
-                btn.style.borderBottomColor = Color.clear;
-                btn.style.borderLeftColor = Color.clear;
-                btn.style.borderRightColor = Color.clear;
-                
                 btn.style.width = 48;
                 btn.style.height = 54;
                 btn.style.marginLeft = 4;
                 btn.style.marginRight = 4;
                 btn.style.marginTop = 4;
                 btn.style.marginBottom = 4;
-                
-
                 btn.focusable = false;
 
                 if (navIcon.icon != null)
                 {
                     btn.style.backgroundImage = new StyleBackground(navIcon.icon);
+                    btn.style.backgroundColor = Color.clear;
+                    btn.style.borderTopWidth = 0;
+                    btn.style.borderBottomWidth = 0;
+                    btn.style.borderLeftWidth = 0;
+                    btn.style.borderRightWidth = 0;                    
                 }
 
                 btn.tooltip = screen.name;
-                System.Action onClickAction;
 
-                if (isLast) {
-                    onClickAction = () => {
-                        navigationGroupBox.style.display = DisplayStyle.None;
-                        closeButton.style.display = DisplayStyle.Flex;
-                        undoRedoBox.style.display = DisplayStyle.None;
-                        OpenScreen(screen);
-                    };
-                } else if (isFirst) {
-                    onClickAction = () => {
-                        undoRedoBox.style.display = DisplayStyle.None;
-                        OpenScreen(screen);
-                    };
-                } else {
-                    onClickAction = () => {
-                        undoRedoBox.style.display = DisplayStyle.Flex;
-                        OpenScreen(screen);
-                    };
-                }
+                System.Action onClickAction = () => {
+                    SetScreenVisibility(root, screen);
+                };
+
                 btn.clicked += onClickAction;
                 registeredListeners.Add((btn, onClickAction));
 
@@ -146,40 +103,22 @@ public class Navigator : UIControllerBase
         }
     }
 
-    private void InitializeDefaultScreen()
+    private void SetScreenVisibility(VisualElement root, GameObject targetScreen)
     {
-        if (screens.Count == 0) return;
+        bool isLastScreen = (targetScreen == screens[screens.Count - 1]);
 
-        GameObject defaultScreen = screens.Find(s => s != null && s.name == defaultScreenName);
+        var navGroupBox = root.Q<VisualElement>("NavigationBox");
+        var closeBtn = root.Q<Button>("close");
+        var undoRedoBox = root.Q<VisualElement>("undo-redo-box");
+        var leftSide = root.Q<VisualElement>("LeftSide");
+        var rightSide = root.Q<VisualElement>("RightSide");
 
-        if (defaultScreen != null)
-        {
-            OpenScreen(defaultScreen);
-        }
-        else
-        {
-            if (!string.IsNullOrEmpty(defaultScreenName))
-            {
-                Debug.LogWarning($"[Navigator] Default scherm '{defaultScreenName}' niet gevonden. Eerste scherm wordt geladen.");
-            }
-            OpenScreen(screens[0]);
-        }
-    }
+        if (navGroupBox != null) navGroupBox.style.display = isLastScreen ? DisplayStyle.None : DisplayStyle.Flex;
+        if (closeBtn != null) closeBtn.style.display = isLastScreen ? DisplayStyle.Flex : DisplayStyle.None;
+        if (undoRedoBox != null) undoRedoBox.style.display = isLastScreen ? DisplayStyle.None : DisplayStyle.Flex;
+        if (leftSide != null) leftSide.style.display = isLastScreen ? DisplayStyle.None : DisplayStyle.Flex;
+        if (rightSide != null) rightSide.style.display = isLastScreen ? DisplayStyle.None : DisplayStyle.Flex;
 
-    private void UnregisterListeners()
-    {
-        foreach (var (button, action) in registeredListeners)
-        {
-            if (button != null && action != null)
-            {
-                button.clicked -= action;
-            }
-        }
-        registeredListeners.Clear();
-    }
-
-    public void OpenScreen(GameObject targetScreen)
-    {
         for (int i = 0; i < screens.Count; i++)
         {
             var screen = screens[i];
@@ -196,6 +135,34 @@ public class Navigator : UIControllerBase
                 }
             }
         }
+    }
+
+    private void InitializeDefaultScreen()
+    {
+        if (screens.Count == 0) return;
+
+        GameObject defaultScreen = screens.Find(s => s != null && s.name == defaultScreenName);
+        if (defaultScreen == null)
+        {
+            defaultScreen = screens[0];
+        }
+
+        if (TryGetComponent<UIDocument>(out var uiDoc) && uiDoc.rootVisualElement != null)
+        {
+            SetScreenVisibility(uiDoc.rootVisualElement, defaultScreen);
+        }
+    }
+
+    private void UnregisterListeners()
+    {
+        foreach (var (button, action) in registeredListeners)
+        {
+            if (button != null && action != null)
+            {
+                button.clicked -= action;
+            }
+        }
+        registeredListeners.Clear();
     }
 
     private void ApplyKeyboardSettingsToScreen(GameObject screen)

@@ -12,7 +12,7 @@ public class ObjectSelector : MonoBehaviour
     [SerializeField] private LayerMask selectableObjectsLayer;
     [SerializeField] private ProjectSettings projectSettings;
 
-    public event Action<GameObject> OnTransformComplete;
+    public event Action OnTransformComplete;
 
     private Handle _globalHandle;
     private Transform _currentTarget;
@@ -20,7 +20,7 @@ public class ObjectSelector : MonoBehaviour
     private LayerMask _handleLayer;
 
     private int currentHandleType = 0;
-    private bool isEnabled = false;
+    private bool isEnabled = true;
 
     public GameObject SelectedObject => _currentTarget != null ? _currentTarget.gameObject : null;
 
@@ -50,7 +50,12 @@ public class ObjectSelector : MonoBehaviour
 
     void Update() 
     {
-        if (isEnabled) {
+        if (isEnabled) 
+        {
+            if (_currentTarget == null && _globalHandle != null)
+            {
+                ForceClearHandleTarget();
+            }
             if (Input.GetMouseButtonDown(0)) 
             {
                 TrySelectObject();
@@ -174,15 +179,20 @@ public class ObjectSelector : MonoBehaviour
     {
         if (_currentTarget != null && _globalHandle != null)
         {
-            _globalHandle.OnInteractionStartEvent -= OnHandleStartInteraction;
-            _globalHandle.OnInteractionEndEvent   -= OnHandleEndInteraction;
-
-            _manager.RemoveTarget(_currentTarget, _globalHandle);
-            
-            _globalHandle = null;
-            _currentTarget = null;
-            _isDraggingHandle = false;
+            ForceClearHandleTarget();
         }
+    }
+
+    private void ForceClearHandleTarget() 
+    {
+        _globalHandle.OnInteractionStartEvent -= OnHandleStartInteraction;
+        _globalHandle.OnInteractionEndEvent   -= OnHandleEndInteraction;
+
+        _manager.RemoveTarget(_currentTarget, _globalHandle);
+        
+        _globalHandle = null;
+        _currentTarget = null;
+        _isDraggingHandle = false;
     }
 
     private void OnHandleStartInteraction(Handle handle)
@@ -200,7 +210,7 @@ public class ObjectSelector : MonoBehaviour
         _isDraggingHandle = false;
         if (_currentTarget != null)
         {
-            OnTransformComplete?.Invoke(_currentTarget.gameObject);
+            OnTransformComplete?.Invoke();
         }
     }
 }

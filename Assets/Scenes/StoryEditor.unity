@@ -183,12 +183,6 @@ MonoBehaviour:
   - {fileID: 2388659209182943489, guid: 977820d65ad7f4c588289a228974fbac, type: 3}
   - {fileID: 2388659209182943489, guid: d041b40f57eb142acad2b165f4eb533b, type: 3}
   - {fileID: 2388659209182943489, guid: 101b099c520f446ea9eb6d29ea88fabd, type: 3}
-  selectedMusicIndex: -1
-  selectedPlayerModelIndex: 0
-  fogEnabled: 0
-  fogColor: {r: 0.71, g: 0.75, b: 0.8, a: 1}
-  fogDensity: 0.25
-  timeHours: 12
 --- !u!114 &5086136
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -249,6 +243,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 676594d15e72a49f6a00ef4e3c83619d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameConfigurationSettingsUI
+  runAtStartUp: 0
   gameConfiguration: {fileID: 5086135}
 --- !u!1 &45334828
 GameObject:
@@ -320,6 +315,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0853c43dc6c1f4614a072e945517e076, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MaterialPalette
+  runAtStartUp: 0
   targetLayerMask:
     serializedVersion: 2
     m_Bits: 136
@@ -892,6 +888,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   objectSelector: {fileID: 330585548}
+  gameConfiguration: {fileID: 5086135}
   storyDataStore: {fileID: 997034306}
   saveFileName: defaultScene.json
   maxUndoSteps: 50
@@ -972,6 +969,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e53974471c50b430bbf2752939c87bf5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayMode
+  runAtStartUp: 0
   editorCamera: {fileID: 2000960781}
   gameConfiguration: {fileID: 5086135}
 --- !u!114 &1361484488
@@ -1048,6 +1046,8 @@ GameObject:
   - component: {fileID: 1373448618}
   - component: {fileID: 1373448617}
   - component: {fileID: 1373448619}
+  - component: {fileID: 1373448621}
+  - component: {fileID: 1373448620}
   m_Layer: 0
   m_Name: Menu
   m_TagString: Untagged
@@ -1105,8 +1105,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c238db9d7c9049719b30a7368fa8cad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Navigator
+  runAtStartUp: 1
   defaultScreenName: 
-  groupBoxName: NavigationBox
 --- !u!114 &1373448618
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1131,7 +1131,42 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b21b3ec3fee8742f496a6625066686d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UndoRedoController
+  runAtStartUp: 1
   sceneManager: {fileID: 997034304}
+--- !u!114 &1373448620
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1373448613}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 584372faea39840b7830127170940da1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ToolSelectionController
+  runAtStartUp: 1
+  objectSelector: {fileID: 330585548}
+  toolIcons:
+  - {fileID: 2800000, guid: 46c94b0f52bd740cfad5814487017108, type: 3}
+  - {fileID: 2800000, guid: 799663d1913ff48a09fc2c6356b15efc, type: 3}
+  - {fileID: 2800000, guid: d1b023d0e67c04e0eafaf19951727f42, type: 3}
+--- !u!114 &1373448621
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1373448613}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8357e94605fb4e849d74124c93cb590, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ObjectPropertiesUIController
+  runAtStartUp: 1
+  sceneManager: {fileID: 997034304}
+  objectSelector: {fileID: 330585548}
+  editorCameraController: {fileID: 2000960783}
 --- !u!1 &1484268766
 GameObject:
   m_ObjectHideFlags: 0
@@ -1179,6 +1214,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1292ed8a76b0a46b78e2b254e8fdc17d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CommandListController
+  runAtStartUp: 0
   editorCameraController: {fileID: 2000960783}
   dataStore: {fileID: 997034306}
   sceneManager: {fileID: 997034304}
@@ -1245,7 +1281,6 @@ GameObject:
   - component: {fileID: 1556066525}
   - component: {fileID: 1556066528}
   - component: {fileID: 1556066526}
-  - component: {fileID: 1556066529}
   m_Layer: 0
   m_Name: 2.Build
   m_TagString: Untagged
@@ -1303,16 +1338,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bfae58146bb3148e09ed5b511b80cdca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LevelObjectPalette
-  objectSelector: {fileID: 330585548}
+  runAtStartUp: 0
   sceneManager: {fileID: 997034304}
   baseplateLayer:
     serializedVersion: 2
     m_Bits: 136
   projectSettings: {fileID: 11400000, guid: 57799342849644d5a9fa5185182ef096, type: 2}
-  toolIcons:
-  - {fileID: 2800000, guid: 46c94b0f52bd740cfad5814487017108, type: 3}
-  - {fileID: 2800000, guid: 799663d1913ff48a09fc2c6356b15efc, type: 3}
-  - {fileID: 2800000, guid: d1b023d0e67c04e0eafaf19951727f42, type: 3}
   defaultIcon: {fileID: 2800000, guid: 283ae602afdc1440ea36d21a97d21752, type: 3}
   categories:
   - categoryName: Default
@@ -5221,21 +5252,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ccfa6454b7dfb4151a53707d80555891, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UIDocumentLifecycle
---- !u!114 &1556066529
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1556066523}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f8357e94605fb4e849d74124c93cb590, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ObjectPropertiesUIController
-  sceneManager: {fileID: 997034304}
-  objectSelector: {fileID: 330585548}
-  editorCameraController: {fileID: 2000960783}
 --- !u!1 &1650302574
 GameObject:
   m_ObjectHideFlags: 0
@@ -5331,6 +5347,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78e7af4ba8b41439fa2a5f941a23963a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FileManager
+  runAtStartUp: 1
   saveSystem: {fileID: 997034305}
   sceneRoot: {fileID: 997034303}
 --- !u!1 &2000960781

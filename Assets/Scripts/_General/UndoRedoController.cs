@@ -8,12 +8,6 @@ public class UndoRedoController : UIControllerBase
     private Button undoButton;
     private Button redoButton;
 
-    protected override void Awake()
-    {
-        base.Awake();
-        isInitialised = true;
-    }
-
     protected override void OnUIEnabled(VisualElement root)
     {
         undoButton = root.Q<Button>("undo");

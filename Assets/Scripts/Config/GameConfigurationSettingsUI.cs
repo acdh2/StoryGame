@@ -3,6 +3,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UIElements;
 
+[RequireComponent(typeof(GameConfiguration))]
 public class GameConfigurationSettingsUI : UIControllerBase
 {
     [SerializeField] private GameConfiguration gameConfiguration;
@@ -19,62 +20,51 @@ public class GameConfigurationSettingsUI : UIControllerBase
     {
         if (gameConfiguration == null)
         {
-            gameConfiguration = FindFirstObjectByType<GameConfiguration>();
+            gameConfiguration = GetComponent<GameConfiguration>();
         }
 
-        if (gameConfiguration == null) return;
+        if (gameConfiguration != null) {
+            gameConfiguration.OnInvalidateSettings += ApplyConfigurationToUI;
+        }
 
         fogToggle = root.Q<Toggle>("toggle-fog");
         if (fogToggle != null)
         {
-            fogToggle.value = gameConfiguration.fogEnabled;
             fogToggle.RegisterValueChangedCallback(evt => gameConfiguration.fogEnabled = evt.newValue);
         }
 
         colorButtons = root.Query<Button>().Where(b => b.name != null && b.name.StartsWith("color-")).ToList();
 
+        root.RegisterCallback<GeometryChangedEvent>(_ => RefreshColorButtons());
+
         foreach (var btn in colorButtons)
         {
-            Color btnColor = btn.resolvedStyle.backgroundColor;
-
-            if (ColorsApproximatelyEqual(gameConfiguration.fogColor, btnColor))
-            {
-                HighlightSelectedColorButton(btn);
-            }
-
             btn.clicked += () =>
             {
+                Color btnColor = btn.resolvedStyle.backgroundColor;
                 gameConfiguration.fogColor = btnColor;
-                foreach (var b in colorButtons)
-                {
-                    b.style.borderTopWidth = 0;
-                    b.style.borderBottomWidth = 0;
-                    b.style.borderLeftWidth = 0;
-                    b.style.borderRightWidth = 0;
-                }
-                HighlightSelectedColorButton(btn);
+                UpdateColorSelection(btnColor);
             };
         }
 
         fogDensitySlider = root.Q<Slider>("slider-fog-density");
         if (fogDensitySlider != null)
         {
-            fogDensitySlider.value = Mathf.Sqrt(gameConfiguration.fogDensity);
-            fogDensitySlider.RegisterValueChangedCallback(evt => gameConfiguration.fogDensity = evt.newValue * evt.newValue);
+            var dragContainer = fogDensitySlider.Q("unity-drag-container");
+            dragContainer.RegisterCallback<PointerUpEvent>(evt =>
+            {
+                gameConfiguration.fogDensity = fogDensitySlider.value * fogDensitySlider.value;
+            });
         }
-
-        // fogDensitySlider = root.Q<Slider>("slider-fog-density");
-        // if (fogDensitySlider != null)
-        // {
-        //     fogDensitySlider.value = gameConfiguration.fogDensity;
-        //     fogDensitySlider.RegisterValueChangedCallback(evt => gameConfiguration.fogDensity = evt.newValue);
-        // }
 
         timeHoursSlider = root.Q<Slider>("slider-time");
         if (timeHoursSlider != null)
         {
-            timeHoursSlider.value = gameConfiguration.timeHours;
-            timeHoursSlider.RegisterValueChangedCallback(evt => gameConfiguration.timeHours = evt.newValue);
+            var dragContainer = timeHoursSlider.Q("unity-drag-container");
+            dragContainer.RegisterCallback<PointerUpEvent>(evt =>
+            {
+                gameConfiguration.timeHours = timeHoursSlider.value;
+            });
         }
 
         musicDropdown = root.Q<DropdownField>("dropdown-music");
@@ -83,9 +73,6 @@ public class GameConfigurationSettingsUI : UIControllerBase
             List<string> musicOptions = new List<string> { "No music" };
             musicOptions.AddRange(gameConfiguration.musicTracks.Select(t => t != null ? t.name : "Onbekend"));
             musicDropdown.choices = musicOptions;
-
-            int targetIndex = gameConfiguration.selectedMusicIndex + 1;
-            musicDropdown.index = Mathf.Clamp(targetIndex, 0, musicOptions.Count - 1);
 
             musicDropdown.RegisterValueChangedCallback(evt =>
             {
@@ -99,12 +86,71 @@ public class GameConfigurationSettingsUI : UIControllerBase
             List<string> playerOptions = gameConfiguration.playerModels.Select(p => p != null ? p.name : "Onbekend").ToList();
             playerDropdown.choices = playerOptions;
 
-            playerDropdown.index = Mathf.Clamp(gameConfiguration.selectedPlayerModelIndex, 0, playerOptions.Count - 1);
-
             playerDropdown.RegisterValueChangedCallback(evt =>
             {
                 gameConfiguration.selectedPlayerModelIndex = playerDropdown.index;
             });
+        }
+
+        ApplyConfigurationToUI();
+    }
+
+    public void ApplyConfigurationToUI()
+    {
+        if (gameConfiguration == null) return;
+
+        if (fogToggle != null)
+        {
+            fogToggle.SetValueWithoutNotify(gameConfiguration.fogEnabled);
+        }
+
+        RefreshColorButtons();
+
+        if (fogDensitySlider != null)
+        {
+            fogDensitySlider.SetValueWithoutNotify(Mathf.Sqrt(gameConfiguration.fogDensity));
+        }
+
+        if (timeHoursSlider != null)
+        {
+            timeHoursSlider.SetValueWithoutNotify(gameConfiguration.timeHours);
+        }
+
+        if (musicDropdown != null && musicDropdown.choices.Count > 0)
+        {
+            int targetIndex = Mathf.Clamp(gameConfiguration.selectedMusicIndex + 1, 0, musicDropdown.choices.Count - 1);
+            musicDropdown.SetValueWithoutNotify(musicDropdown.choices[targetIndex]);
+        }
+
+        if (playerDropdown != null && playerDropdown.choices.Count > 0)
+        {
+            int targetIndex = Mathf.Clamp(gameConfiguration.selectedPlayerModelIndex, 0, playerDropdown.choices.Count - 1);
+            playerDropdown.SetValueWithoutNotify(playerDropdown.choices[targetIndex]);
+        }
+    }
+
+    private void RefreshColorButtons()
+    {
+        if (gameConfiguration == null) return;
+        UpdateColorSelection(gameConfiguration.fogColor);
+    }
+
+    private void UpdateColorSelection(Color targetColor)
+    {
+        foreach (var b in colorButtons)
+        {
+            Color btnColor = b.resolvedStyle.backgroundColor;
+            if (ColorsApproximatelyEqual(targetColor, btnColor))
+            {
+                HighlightSelectedColorButton(b);
+            }
+            else
+            {
+                b.style.borderTopWidth = 0;
+                b.style.borderBottomWidth = 0;
+                b.style.borderLeftWidth = 0;
+                b.style.borderRightWidth = 0;
+            }
         }
     }
 
@@ -129,6 +175,9 @@ public class GameConfigurationSettingsUI : UIControllerBase
 
     protected override void OnUIDisabled()
     {
+        if (gameConfiguration != null) {
+            gameConfiguration.OnInvalidateSettings -= ApplyConfigurationToUI;
+        }
         fogToggle = null;
         fogDensitySlider = null;
         timeHoursSlider = null;

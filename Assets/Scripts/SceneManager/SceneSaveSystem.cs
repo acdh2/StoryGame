@@ -15,8 +15,6 @@ public class SceneSaveSystem : MonoBehaviour
 
     private StoryDataStore storyDataStore;
 
-    public event Action OnSceneLoaded;
-
     [System.Serializable]
     public class SaveData
     {
@@ -169,8 +167,6 @@ public class SceneSaveSystem : MonoBehaviour
         {
             gameConfiguration.ImportFromJson(data.configJson);
         }
-
-        OnSceneLoaded?.Invoke();
     }
 
     public void NewScene()
@@ -199,7 +195,6 @@ public class SceneSaveSystem : MonoBehaviour
             gameConfiguration.Reset();
         }
 
-        OnSceneLoaded?.Invoke();
     }
 
     public void SaveSceneToFile(string fileName = "scene.json")

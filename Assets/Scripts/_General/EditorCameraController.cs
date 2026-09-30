@@ -15,8 +15,6 @@ public class EditorCameraController : MonoBehaviour
     private Vector3 originalPosition = Vector3.zero;
     private Quaternion originalRotation = Quaternion.identity;
 
-    private bool isLookBlockedByUI = false;
-
     private void Awake()
     {
         transform.GetPositionAndRotation(out originalPosition, out originalRotation);

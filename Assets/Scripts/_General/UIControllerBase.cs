@@ -8,6 +8,8 @@ public abstract class UIControllerBase : MonoBehaviour
     protected UIDocumentLifecycle Lifecycle { get; private set; }
     protected VisualElement RootElement { get; private set; }
 
+    [SerializeField]private bool runAtStartUp = false;
+
     protected bool isInitialised = false;
 
     protected virtual void Awake()
@@ -19,6 +21,8 @@ public abstract class UIControllerBase : MonoBehaviour
             Lifecycle.OnUIEnabledEvent += HandleUIEnabled;
             Lifecycle.OnUIDisabledEvent += HandleUIDisabled;
         }
+
+        isInitialised = runAtStartUp;
     }
 
     protected virtual void OnDestroy()

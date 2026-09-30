@@ -18,8 +18,12 @@ public class RespawnBehaviour : MonoBehaviour
     private Vector3 resetPosition = Vector3.zero;
     private Quaternion resetRotation = Quaternion.identity;
 
+    private AudioSource audioSource;
+
     void Start()
     {
+        audioSource = gameObject.AddComponent<AudioSource>();
+
         CinemachineCamera cinemachineCamera = GetComponentInParent<CinemachineCamera>();
         if (spawnPoint != null) {
             SetRespawnPoint(spawnPoint);
@@ -131,6 +135,13 @@ public class RespawnBehaviour : MonoBehaviour
         {
             if (rend.sharedMaterial.name.Contains("lava"))
             {
+                AudioClip clip = Resources.Load<AudioClip>("resetsound");
+
+                if (clip != null)
+                {
+                    audioSource.pitch = Random.Range(1.3f, 1.55f);
+                    audioSource.PlayOneShot(clip);
+                }
                 Respawn();
             }
         }

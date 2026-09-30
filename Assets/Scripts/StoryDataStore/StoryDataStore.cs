@@ -89,7 +89,7 @@ public class StoryDataStore : MonoBehaviour
         if (wrapper != null && wrapper.Commands != null)
         {
             commands = wrapper.Commands;
-            OnDataChanged?.Invoke();
+            //OnDataChanged?.Invoke();
         }
     }
 }

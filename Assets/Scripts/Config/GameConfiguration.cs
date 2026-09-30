@@ -3,20 +3,98 @@ using UnityEngine;
 
 public class GameConfiguration : MonoBehaviour
 {
+    public event System.Action OnSettingChanged;
+    public event System.Action OnInvalidateSettings;
+
     private bool isApplied = false;
     private Quaternion previousRotation = Quaternion.Euler(90, 45, 0);
 
     public List<AudioClip> musicTracks = new List<AudioClip>();
     public List<GameObject> playerModels = new List<GameObject>();
 
-    //Properties start here
-    public int selectedMusicIndex = 0; //bij -1 is er geen muziek
-    public int selectedPlayerModelIndex = 0; //moet van 0 t/m count-1
-    public bool fogEnabled = true;
-    public Color fogColor = new Color(0.71f, 0.75f, 0.80f);
-    public float fogDensity = 0.25f;
-    public float timeHours = 6.0f;
-    //Properties end here
+    private int _selectedMusicIndex = 0;
+    public int selectedMusicIndex
+    {
+        get => _selectedMusicIndex;
+        set
+        {
+            if (_selectedMusicIndex != value)
+            {
+                _selectedMusicIndex = value;
+                OnSettingChanged?.Invoke();
+            }
+        }
+    }
+
+    private int _selectedPlayerModelIndex = 0;
+    public int selectedPlayerModelIndex
+    {
+        get => _selectedPlayerModelIndex;
+        set
+        {
+            if (_selectedPlayerModelIndex != value)
+            {
+                _selectedPlayerModelIndex = value;
+                OnSettingChanged?.Invoke();
+            }
+        }
+    }
+
+    private bool _fogEnabled = true;
+    public bool fogEnabled
+    {
+        get => _fogEnabled;
+        set
+        {
+            if (_fogEnabled != value)
+            {
+                _fogEnabled = value;
+                OnSettingChanged?.Invoke();
+            }
+        }
+    }
+
+    private Color _fogColor = new Color(0.71f, 0.75f, 0.80f);
+    public Color fogColor
+    {
+        get => _fogColor;
+        set
+        {
+            if (_fogColor != value)
+            {
+                _fogColor = value;
+                OnSettingChanged?.Invoke();
+            }
+        }
+    }
+
+    private float _fogDensity = 0.25f;
+    public float fogDensity
+    {
+        get => _fogDensity;
+        set
+        {
+            if (!Mathf.Approximately(_fogDensity, value))
+            {
+                _fogDensity = value;
+                OnSettingChanged?.Invoke();
+            }
+        }
+    }
+
+    private float _timeHours = 6.0f;
+    public float timeHours
+    {
+        get => _timeHours;
+        set
+        {
+            if (!Mathf.Approximately(_timeHours, value))
+            {
+                _timeHours = value;
+                OnSettingChanged?.Invoke();
+            }
+        }
+    }
 
     private AudioSource audioSource;
 
@@ -47,30 +125,31 @@ public class GameConfiguration : MonoBehaviour
 
         defaultSettings = new SaveData
         {
-            selectedMusicIndex = selectedMusicIndex,
-            selectedPlayerModelIndex = selectedPlayerModelIndex,
-            fogEnabled = fogEnabled,
-            fogColorR = fogColor.r,
-            fogColorG = fogColor.g,
-            fogColorB = fogColor.b,
-            fogColorA = fogColor.a,
-            fogDensity = fogDensity,
-            timeHours = timeHours
+            selectedMusicIndex = -1,
+            selectedPlayerModelIndex = 0,
+            fogEnabled = false,
+            fogColorR = 1,
+            fogColorG = 1,
+            fogColorB = 1,
+            fogColorA = 1,
+            fogDensity = 0.75f,
+            timeHours = 12
         };
-
     }
 
     public void Reset()
-    {
+    {        
         if (defaultSettings == null) return;
 
-        selectedMusicIndex = defaultSettings.selectedMusicIndex;
-        selectedPlayerModelIndex = defaultSettings.selectedPlayerModelIndex;
-        fogEnabled = defaultSettings.fogEnabled;
-        fogColor = new Color(defaultSettings.fogColorR, defaultSettings.fogColorG, defaultSettings.fogColorB, defaultSettings.fogColorA);
-        fogDensity = defaultSettings.fogDensity;
-        timeHours = defaultSettings.timeHours;
-    }    
+        _selectedMusicIndex = defaultSettings.selectedMusicIndex;
+        _selectedPlayerModelIndex = defaultSettings.selectedPlayerModelIndex;
+        _fogEnabled = defaultSettings.fogEnabled;
+        _fogColor = new Color(defaultSettings.fogColorR, defaultSettings.fogColorG, defaultSettings.fogColorB, defaultSettings.fogColorA);
+        _fogDensity = defaultSettings.fogDensity;
+        _timeHours = defaultSettings.timeHours;
+
+        OnInvalidateSettings?.Invoke();
+    }
 
     public void Apply()
     {
@@ -135,8 +214,8 @@ public class GameConfiguration : MonoBehaviour
 
     public GameObject GetPlayerPrefab()
     {
-        if (selectedPlayerModelIndex < 0) selectedPlayerModelIndex = 0;
-        if (selectedPlayerModelIndex >= playerModels.Count) selectedPlayerModelIndex = playerModels.Count - 1;
+        if (selectedPlayerModelIndex < 0) _selectedPlayerModelIndex = 0;
+        if (selectedPlayerModelIndex >= playerModels.Count) _selectedPlayerModelIndex = playerModels.Count - 1;
         return playerModels[selectedPlayerModelIndex];
     }
 
@@ -163,12 +242,14 @@ public class GameConfiguration : MonoBehaviour
         SaveData data = JsonUtility.FromJson<SaveData>(json);
         if (data != null)
         {
-            selectedMusicIndex = data.selectedMusicIndex;
-            selectedPlayerModelIndex = data.selectedPlayerModelIndex;
-            fogEnabled = data.fogEnabled;
-            fogColor = new Color(data.fogColorR, data.fogColorG, data.fogColorB, data.fogColorA);
-            fogDensity = data.fogDensity;
-            timeHours = data.timeHours;
+            _selectedMusicIndex = data.selectedMusicIndex;
+            _selectedPlayerModelIndex = data.selectedPlayerModelIndex;
+            _fogEnabled = data.fogEnabled;
+            _fogColor = new Color(data.fogColorR, data.fogColorG, data.fogColorB, data.fogColorA);
+            _fogDensity = data.fogDensity;
+            _timeHours = data.timeHours;
+            
+            OnInvalidateSettings?.Invoke();
         }
     }
 }
