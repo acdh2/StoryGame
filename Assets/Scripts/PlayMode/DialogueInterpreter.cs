@@ -30,10 +30,7 @@ public class DialogueInterpreter : MonoBehaviour
     public class Instruction
     {
         public string Type;
-        public string Text;
-        public string Target;
-        public string VarName;
-        public string ItemName;
+        public string Argument;
     }
 
     private List<Instruction> instructions = new List<Instruction>();
@@ -203,8 +200,8 @@ public class DialogueInterpreter : MonoBehaviour
                 continue;
             }
 
-            if (type == "IF_SET" ||
-                type == "IF_UNSET")
+            if (type == "HAS" ||
+                type == "HAS_NOT")
             {
                 if (i + 1 < raw.Count)
                 {
@@ -212,7 +209,7 @@ public class DialogueInterpreter : MonoBehaviour
                         NormalizeType(
                             raw[i + 1].CommandType);
 
-                    if (nextType == "OPTION")
+                    if (nextType == "CHOICE")
                     {
                         result.Add(cmd);
                         result.Add(raw[i + 1]);
@@ -233,8 +230,8 @@ public class DialogueInterpreter : MonoBehaviour
                         NormalizeType(
                             raw[peek].CommandType);
 
-                    if (nextType == "IF_SET" ||
-                        nextType == "IF_UNSET")
+                    if (nextType == "HAS" ||
+                        nextType == "HAS_NOT")
                     {
                         ifIndices.Add(peek);
                         peek++;
@@ -262,9 +259,9 @@ public class DialogueInterpreter : MonoBehaviour
                                 currentIf.CommandType);
 
                         string invertedType =
-                            currentType == "IF_SET"
-                                ? "IF_UNSET"
-                                : "IF_SET";
+                            currentType == "HAS"
+                                ? "HAS_NOT"
+                                : "HAS";
 
                         result.Add(
                             new CommandData
@@ -278,7 +275,7 @@ public class DialogueInterpreter : MonoBehaviour
                         result.Add(
                             new CommandData
                             {
-                                CommandType = "JUMP",
+                                CommandType = "GOTO",
                                 Argument = exitLabel
                             });
                     }
@@ -291,11 +288,11 @@ public class DialogueInterpreter : MonoBehaviour
                             NormalizeType(
                                 raw[i].CommandType);
 
-                        if (bodyType == "LABEL" ||
-                            bodyType == "JUMP" ||
-                            bodyType == "OPTION" ||
-                            bodyType == "IF_SET" ||
-                            bodyType == "IF_UNSET")
+                        if (bodyType == "CHAPTER" ||
+                            bodyType == "GOTO" ||
+                            bodyType == "CHOICE" ||
+                            bodyType == "HAS" ||
+                            bodyType == "HAS_NOT")
                         {
                             break;
                         }
@@ -307,7 +304,7 @@ public class DialogueInterpreter : MonoBehaviour
                     result.Add(
                         new CommandData
                         {
-                            CommandType = "LABEL",
+                            CommandType = "CHAPTER",
                             Argument = exitLabel
                         });
 
@@ -335,7 +332,7 @@ public class DialogueInterpreter : MonoBehaviour
             string type =
                 NormalizeType(source[i].CommandType);
 
-            if (type != "OPTION")
+            if (type != "CHOICE")
             {
                 result.Add(source[i]);
                 i++;
@@ -354,7 +351,7 @@ public class DialogueInterpreter : MonoBehaviour
                     NormalizeType(
                         source[i].CommandType);
 
-                if (optionType != "OPTION")
+                if (optionType != "CHOICE")
                     break;
 
                 CommandData option =
@@ -379,7 +376,7 @@ public class DialogueInterpreter : MonoBehaviour
                     NormalizeType(
                         source[i].CommandType);
 
-                if (nextType == "OPTION")
+                if (nextType == "CHOICE")
                 {
                     optionInstructions.Add(
                         new CommandData
@@ -390,8 +387,8 @@ public class DialogueInterpreter : MonoBehaviour
                     continue;
                 }
 
-                if (nextType == "IF_SET" ||
-                    nextType == "IF_UNSET")
+                if (nextType == "HAS" ||
+                    nextType == "HAS_NOT")
                 {
                     optionInstructions.Add(
                         new CommandData
@@ -414,7 +411,7 @@ public class DialogueInterpreter : MonoBehaviour
                     NormalizeType(
                         source[i].CommandType);
 
-                if (afterInstruction != "OPTION")
+                if (afterInstruction != "CHOICE")
                     break;
             }
 
@@ -478,7 +475,7 @@ public class DialogueInterpreter : MonoBehaviour
         string arg =
             NormalizeArgument(cmd.Argument);
 
-        if (type == "LABEL")
+        if (type == "CHAPTER")
         {
             labels[arg] = instructions.Count;
         }
@@ -487,34 +484,7 @@ public class DialogueInterpreter : MonoBehaviour
             new Instruction
             {
                 Type = type,
-
-                Text =
-                    type == "SAY" ||
-                    type == "SHOWOPTION" ||
-                    type == "IF_OPTION"
-                        ? arg
-                        : null,
-
-                ItemName =
-                    type == "TOUCHED" ||
-                    type == "SHOW" ||
-                    type == "HIDE"
-                        ? arg
-                        : null,
-
-                Target =
-                    type == "LABEL" ||
-                    type == "JUMP"
-                        ? arg
-                        : null,
-
-                VarName =
-                    type == "SET" ||
-                    type == "UNSET" ||
-                    type == "IF_SET" ||
-                    type == "IF_UNSET"
-                        ? arg
-                        : null
+                Argument = arg
             };
 
         instructions.Add(instruction);
@@ -542,7 +512,7 @@ public class DialogueInterpreter : MonoBehaviour
 
                     if (dialogueTextLabel != null)
                         dialogueTextLabel.text =
-                            instr.Text;
+                            instr.Argument;
 
                     if (continueButton != null)
                         continueButton.style.display =
@@ -563,7 +533,7 @@ public class DialogueInterpreter : MonoBehaviour
                 case "SHOWOPTION":
 
                     cachedOptions.Add(
-                        instr.Text);
+                        instr.Argument);
 
                     pc++;
                     break;
@@ -590,7 +560,7 @@ public class DialogueInterpreter : MonoBehaviour
                 case "IF_OPTION":
 
                     if (string.Equals(
-                        instr.Text,
+                        instr.Argument,
                         selectedOptionText,
                         StringComparison.OrdinalIgnoreCase))
                     {
@@ -607,7 +577,7 @@ public class DialogueInterpreter : MonoBehaviour
 
                     touchedRequested = true;
                     lastTouchedItem =
-                        instr.ItemName;
+                        instr.Argument;
 
                     HideScreen();
 
@@ -622,7 +592,7 @@ public class DialogueInterpreter : MonoBehaviour
                 case "SHOW":
 
                     ToggleSceneObjectVisibility(
-                        instr.ItemName,
+                        instr.Argument,
                         true);
 
                     pc++;
@@ -631,16 +601,16 @@ public class DialogueInterpreter : MonoBehaviour
                 case "HIDE":
 
                     ToggleSceneObjectVisibility(
-                        instr.ItemName,
+                        instr.Argument,
                         false);
 
                     pc++;
                     break;
 
-                case "IF_SET":
+                case "HAS":
 
                     if (variables.Contains(
-                        instr.VarName))
+                        instr.Argument))
                     {
                         pc++;
                     }
@@ -651,10 +621,10 @@ public class DialogueInterpreter : MonoBehaviour
 
                     break;
 
-                case "IF_UNSET":
+                case "HAS_NOT":
 
                     if (!variables.Contains(
-                        instr.VarName))
+                        instr.Argument))
                     {
                         pc++;
                     }
@@ -665,31 +635,38 @@ public class DialogueInterpreter : MonoBehaviour
 
                     break;
 
-                case "SET":
+                case "GIVE":
 
                     variables.Add(
-                        instr.VarName);
+                        instr.Argument);
 
                     pc++;
                     break;
 
-                case "UNSET":
+                case "TAKE":
 
                     variables.Remove(
-                        instr.VarName);
+                        instr.Argument);
 
                     pc++;
                     break;
 
-                case "LABEL":
+                case "TELEPORT":
+
+                    KillAllPlayers(instr.Argument);
 
                     pc++;
                     break;
 
-                case "JUMP":
+                case "CHAPTER":
+
+                    pc++;
+                    break;
+
+                case "GOTO":
 
                     if (labels.TryGetValue(
-                        instr.Target,
+                        instr.Argument,
                         out int targetPc))
                     {
                         pc = targetPc;
@@ -697,7 +674,7 @@ public class DialogueInterpreter : MonoBehaviour
                     else
                     {
                         Debug.LogWarning(
-                            $"Dialogue jump target not found: {instr.Target}");
+                            $"Dialogue jump target not found: {instr.Argument}");
 
                         pc++;
                     }
@@ -820,6 +797,19 @@ public class DialogueInterpreter : MonoBehaviour
                 DisplayStyle.None;
         }
     }
+
+    public void KillAllPlayers(string target)
+    {
+        RespawnBehaviour[] respawnBehaviours = FindObjectsByType<RespawnBehaviour>(FindObjectsSortMode.None);
+        
+        foreach (RespawnBehaviour rb in respawnBehaviours)
+        {
+            if (rb != null)
+            {
+                rb.TeleportByName(target);
+            }
+        }
+    }    
 
     private string NormalizeType(
         string value)

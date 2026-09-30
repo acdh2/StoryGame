@@ -411,14 +411,15 @@ MonoBehaviour:
     - {fileID: 2100000, guid: 22fa2eda97cc84b48afbd40d3052714e, type: 2}
     - {fileID: 2100000, guid: d114ffa9530f64b229ef804a878007eb, type: 2}
     - {fileID: 2100000, guid: 258aad8be45d14b5b994cd51bc0b21d1, type: 2}
-    - {fileID: 2100000, guid: 8bc80ba0c1d6d4616a3df6e36f0bb6f3, type: 2}
-    - {fileID: 2100000, guid: c7fd4929fc719476c98421e3e6af8b1f, type: 2}
     - {fileID: 2100000, guid: c17f7ca4fafc14e29ba3add9a66ad1e2, type: 2}
     - {fileID: 2100000, guid: eba0faca199534789892cb10c463eadf, type: 2}
     - {fileID: 2100000, guid: a9f2c7bf5cf7249d0ad83ac423203bd8, type: 2}
     - {fileID: 2100000, guid: 23afe7adb5f0641f1875fb681f71f113, type: 2}
   - categoryName: Nature
     materials:
+    - {fileID: 2100000, guid: c13966d3291674a48b42b269caef02f0, type: 2}
+    - {fileID: 2100000, guid: d8d63e6cdfbbc4d2fac6e160d2d1aa7a, type: 2}
+    - {fileID: 2100000, guid: 62a3b8b573d014b10a9e8c938fc004a4, type: 2}
     - {fileID: 2100000, guid: 28bbafd92133f49a88d0825f9b0bcd8e, type: 2}
     - {fileID: 2100000, guid: 3ec75e10918c547a7a45ac974ebaa05a, type: 2}
     - {fileID: 2100000, guid: 2109094cafe5041479fc3f2b9e942251, type: 2}
@@ -445,6 +446,8 @@ MonoBehaviour:
     - {fileID: 2100000, guid: 5f82c3f517e9641939184cbb25fa107c, type: 2}
     - {fileID: 2100000, guid: 803348f2e44e84296b57561baf091b3f, type: 2}
     - {fileID: 2100000, guid: 71a959ab94046425eb1d29ff64b3a754, type: 2}
+    - {fileID: 2100000, guid: 8bc80ba0c1d6d4616a3df6e36f0bb6f3, type: 2}
+    - {fileID: 2100000, guid: c7fd4929fc719476c98421e3e6af8b1f, type: 2}
 --- !u!114 &45334832
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1180,6 +1183,7 @@ MonoBehaviour:
   editorCameraController: {fileID: 2000960783}
   objectSelector: {fileID: 330585548}
   dataStore: {fileID: 997034306}
+  sceneManager: {fileID: 997034304}
   itemTemplate: {fileID: 9197481963319205126, guid: 3c158910d6d49441a9cb1393d3f566d7, type: 3}
   newItemTemplate: {fileID: 9197481963319205126, guid: 6976b71330ac64bbab0027ee94612840, type: 3}
 --- !u!114 &1484268769

@@ -10,13 +10,17 @@ public class RespawnBehaviour : MonoBehaviour
 
     private Transform teleportationTarget = null;
 
-    public CinemachineCamera cinemachineCamera;
+    //public CinemachineCamera cinemachineCamera;
 
     public float fallThreshold = -10f;
 
+    private bool shouldReset = false;
+    private Vector3 resetPosition = Vector3.zero;
+    private Quaternion resetRotation = Quaternion.identity;
+
     void Start()
     {
-        cinemachineCamera = GetComponentInParent<CinemachineCamera>();
+        CinemachineCamera cinemachineCamera = GetComponentInParent<CinemachineCamera>();
         if (spawnPoint != null) {
             SetRespawnPoint(spawnPoint);
             Respawn();
@@ -29,6 +33,8 @@ public class RespawnBehaviour : MonoBehaviour
                 Respawn();
             }
         }
+        resetPosition = transform.position;
+        resetRotation = transform.rotation;
     }
 
     void Update()
@@ -42,8 +48,13 @@ public class RespawnBehaviour : MonoBehaviour
     void LateUpdate() 
     {
         if (teleportationTarget != null) {
-            TeleportImmediatelyTo(teleportationTarget);
+            TeleportImmediatelyTo(teleportationTarget.position, teleportationTarget.rotation);
             teleportationTarget = null;
+        }
+        if (shouldReset)
+        {
+            TeleportImmediatelyTo(resetPosition, resetRotation);
+            shouldReset = false;
         }
     }
 
@@ -54,11 +65,32 @@ public class RespawnBehaviour : MonoBehaviour
 
     public void Respawn()
     {
-        TeleportTo(respawnPoint);
+        if (respawnPoint != null) {
+            TeleportTo(respawnPoint);
+        } else
+        {
+            shouldReset = true;
+        }
     }
 
     public void Teleport(GameObject target) {
         TeleportTo(target.transform);
+    }
+
+    public void TeleportByName(string name)
+    {
+        if (string.IsNullOrEmpty(name)) return;
+
+        string searchName = name.Trim().ToLowerInvariant();
+        var transforms = FindObjectsByType<Transform>(FindObjectsSortMode.None);
+        foreach (var t in transforms)
+        {
+            if (t.name.Trim().ToUpperInvariant() == searchName.ToUpperInvariant())
+            {
+                TeleportTo(t);
+                break;
+            }
+        }
     }
 
     public void TeleportTo(Transform targetTransform)
@@ -66,18 +98,20 @@ public class RespawnBehaviour : MonoBehaviour
         teleportationTarget = targetTransform;
     }
 
-    private void TeleportImmediatelyTo(Transform targetTransform)
+    private void TeleportImmediatelyTo(Vector3 targetPosition, Quaternion targetRotation)
     {
         var characterController = GetComponent<CharacterController>();
         if (characterController != null) {
+            CinemachineCamera cinemachineCamera = GetComponentInParent<CinemachineCamera>();
+
             var currentCameraPosition = Vector3.zero;
             if (cinemachineCamera != null) {
                 currentCameraPosition = cinemachineCamera.Follow.transform.position;
             }
 
             characterController.enabled = false;
-            transform.position = targetTransform.position;
-            transform.rotation = targetTransform.rotation;
+            transform.position = targetPosition;
+            transform.rotation = targetRotation;
             characterController.enabled = true;
 
             if (cinemachineCamera != null) {

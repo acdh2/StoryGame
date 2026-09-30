@@ -10,6 +10,7 @@ public class CommandListController : UIControllerBase
     public EditorCameraController editorCameraController;
     public ObjectSelector objectSelector;
     public StoryDataStore dataStore;
+    public SceneManager sceneManager;
 
     [Header("UI Templates")]
     public VisualTreeAsset itemTemplate;
@@ -17,25 +18,26 @@ public class CommandListController : UIControllerBase
 
     private ScrollView scrollView;
     private VisualElement container;
+    private VisualElement footerContainer;
 
     private VisualElement draggedElement = null;
     private VisualElement placeholder = null;
     private bool isDragging = false;
+    private bool isRebuilding = false;
 
     protected override void OnUIEnabled(VisualElement root)
-    {        
+    {
         DisableEditorCamera();
 
         scrollView = root.Q<ScrollView>("list-scroll-view");
         if (scrollView == null) return;
 
         container = scrollView.contentContainer;
-        //container.style.paddingBottom = 300;
+        footerContainer = root.Q<VisualElement>("list-footer");
 
         if (dataStore != null)
         {
             dataStore.OnDataChanged += RebuildUI;
-            //dataStore.Load();\
             RebuildUI();
         }
 
@@ -49,11 +51,11 @@ public class CommandListController : UIControllerBase
         if (dataStore != null)
         {
             dataStore.OnDataChanged -= RebuildUI;
-            // dataStore.Save();
         }
 
         scrollView = null;
         container = null;
+        footerContainer = null;
         draggedElement = null;
         placeholder = null;
     }
@@ -63,96 +65,242 @@ public class CommandListController : UIControllerBase
         string type = commandType?.Trim().ToUpperInvariant() ?? "";
         switch (type)
         {
-            case "SAY": return new Color(0.2f, 0.4f, 0.6f);      // Blauw
-            case "OPTION": return new Color(0.2f, 0.6f, 0.4f);   // Groen
-            case "TOUCHED": return new Color(0.6f, 0.6f, 0.2f);  // Geel
+            case "SAY": return new Color(0.2f, 0.4f, 0.6f);
+            case "CHOICE": return new Color(0.2f, 0.6f, 0.4f);
+            case "TOUCHED": return new Color(0.6f, 0.6f, 0.2f);
             case "SHOW":
-            case "HIDE": return new Color(0.2f, 0.5f, 0.5f);     // Cyaan/Turquoise
-            case "JUMP":
-            case "LABEL": return new Color(0.6f, 0.4f, 0.2f);    // Oranje
-            case "SET":
-            case "UNSET": return new Color(0.5f, 0.2f, 0.6f);    // Paars
-            case "IF_SET":
-            case "IF_UNSET": return new Color(0.6f, 0.2f, 0.4f); // Roze/Magenta
-            default: return new Color(0.3f, 0.3f, 0.3f);         // Standaard grijs
+            case "HIDE": return new Color(0.2f, 0.5f, 0.5f);
+            case "GOTO":
+            case "CHAPTER": return new Color(0.6f, 0.4f, 0.2f);
+            case "GIVE":
+            case "TAKE": return new Color(0.5f, 0.2f, 0.6f);
+            case "HAS":
+            case "HAS_NOT": return new Color(0.6f, 0.2f, 0.4f);
+            default: return new Color(0.3f, 0.3f, 0.3f);
         }
     }
 
-    // private Color GetColorForCommand(string commandType)
-    // {
-    //     string type = commandType?.Trim().ToUpperInvariant() ?? "";
-    //     switch (type)
-    //     {
-    //         case "SAY": return new Color(0.2f, 0.4f, 0.6f);      // Blauw
-    //         case "OPTION": return new Color(0.2f, 0.6f, 0.4f);   // Groen
-    //         case "JUMP":
-    //         case "LABEL": return new Color(0.6f, 0.4f, 0.2f);    // Oranje
-    //         case "SET":
-    //         case "UNSET": return new Color(0.5f, 0.2f, 0.6f);    // Paars
-    //         default: return new Color(0.3f, 0.3f, 0.3f);         // Standaard grijs
-    //     }
-    // }    
-
-    private void RebuildUI()
+    private bool NeedsObjectParameter(string commandType)
     {
-        if (container == null || dataStore == null) return;
+        string type = commandType?.Trim().ToUpperInvariant() ?? "";
+        return type == "TOUCHED" || type == "SHOW" || type == "HIDE" || type == "TELEPORT";
+    }
 
-        container.Clear();
+    private bool NeedsLabelParameter(string commandType)
+    {
+        string type = commandType?.Trim().ToUpperInvariant() ?? "";
+        return type == "GOTO";
+    }
 
-        List<string> options = dataStore != null ? new List<string>(dataStore.AvailableCommandTypes) : new List<string> { "say" };
+    private List<string> GetAvailableChapters()
+    {
+        var chapters = new List<string>();
+        if (dataStore == null || dataStore.Commands == null) return chapters;
 
-        for (int i = 0; i < dataStore.Commands.Count; i++)
+        foreach (var cmd in dataStore.Commands)
         {
-            var data = dataStore.Commands[i];
-            int index = i;
-
-            TemplateContainer itemInstance = itemTemplate.Instantiate();
-            VisualElement itemRoot = itemInstance.Q<VisualElement>("command-item-root") ?? itemInstance;
-
-            DropdownField dropdown = itemRoot.Q<DropdownField>("command-dropdown");
-            if (dropdown != null)
+            if (cmd != null && (cmd.CommandType ?? "").Trim().ToUpperInvariant() == "CHAPTER")
             {
-                dropdown.choices = options;
-                dropdown.value = string.IsNullOrEmpty(data.CommandType) ? options[0] : data.CommandType;
-                dropdown.RegisterValueChangedCallback(evt =>
+                string arg = (cmd.Argument ?? "").Trim();
+                if (!string.IsNullOrEmpty(arg) && !chapters.Contains(arg))
                 {
-                    dataStore.UpdateCommand(index, evt.newValue, data.Argument);
-                    itemRoot.style.backgroundColor = GetColorForCommand(evt.newValue);
-                });    
+                    chapters.Add(arg);
+                }
             }
+        }
+        return chapters;
+    }
 
-            TextField inputField = itemRoot.Q<TextField>("command-input");
+    private void UpdateCommandView(VisualElement itemRoot, string command)
+    {
+        TextField inputField = itemRoot.Q<TextField>("command-input");
+        DropdownField objectDropdown = itemRoot.Q<DropdownField>("item-dropdown");
+        DropdownField labelDropdown = itemRoot.Q<DropdownField>("label-dropdown") ?? itemRoot.Q<DropdownField>("chapter-dropdown");
+
+        itemRoot.style.backgroundColor = GetColorForCommand(command);
+
+        string type = command?.Trim().ToUpperInvariant() ?? "";
+        
+        if (inputField != null) inputField.style.display = DisplayStyle.None;
+        if (objectDropdown != null) objectDropdown.style.display = DisplayStyle.None;
+        if (labelDropdown != null) labelDropdown.style.display = DisplayStyle.None;
+
+        if (NeedsObjectParameter(command))
+        {
+            if (objectDropdown != null) objectDropdown.style.display = DisplayStyle.Flex;
+        }
+        else if (NeedsLabelParameter(command))
+        {
+            if (labelDropdown != null) labelDropdown.style.display = DisplayStyle.Flex;
+        }
+        else
+        {
+            if (inputField != null) inputField.style.display = DisplayStyle.Flex;
+        }
+    }
+
+private void RebuildUI()
+{
+    if (container == null || dataStore == null || isRebuilding) return;
+
+    isRebuilding = true;
+
+    container.Clear();
+    if (footerContainer != null)
+    {
+        footerContainer.Clear();
+    }
+
+    List<string> commandOptions = dataStore.AvailableCommandTypes != null ? new List<string>(dataStore.AvailableCommandTypes) : new List<string> { "say" };
+    List<string> chapters = GetAvailableChapters();
+    List<string> objectNames = sceneManager != null ? sceneManager.GetUniqueObjectNames() : new List<string>();
+
+    for (int i = 0; i < dataStore.Commands.Count; i++)
+    {
+        var data = dataStore.Commands[i];
+        int index = i;
+
+        TemplateContainer itemInstance = itemTemplate.Instantiate();
+        VisualElement itemRoot = itemInstance.Q<VisualElement>("command-item-root") ?? itemInstance;
+
+        DropdownField typeDropdown = itemRoot.Q<DropdownField>("command-dropdown");
+        TextField inputField = itemRoot.Q<TextField>("command-input");
+        DropdownField objectDropdown = itemRoot.Q<DropdownField>("item-dropdown");
+        DropdownField labelDropdown = itemRoot.Q<DropdownField>("label-dropdown") ?? itemRoot.Q<DropdownField>("chapter-dropdown");
+
+        string currentType = string.IsNullOrEmpty(data.CommandType) ? commandOptions[0] : data.CommandType;
+
+        if (typeDropdown != null)
+        {
+            typeDropdown.choices = commandOptions;
+            typeDropdown.value = currentType;
+            
+            typeDropdown.RegisterValueChangedCallback(evt =>
+            {
+                if (isRebuilding) return;
+                string newType = evt.newValue;
+                string targetArg = data.Argument;
+                string upperType = newType?.Trim().ToUpperInvariant() ?? "";
+
+                if (upperType == "GOTO")
+                {
+                    targetArg = chapters.Count > 0 ? chapters[0] : "";
+                }
+                else if (NeedsObjectParameter(newType))
+                {
+                    targetArg = objectNames.Count > 0 ? objectNames[0] : "";
+                }
+                else if (upperType == "KILL")
+                {
+                    targetArg = "";
+                }
+
+                dataStore.UpdateCommand(index, newType, targetArg);
+                UpdateCommandView(itemRoot, newType);
+            });
+        }
+
+        if (NeedsObjectParameter(currentType))
+        {
+            if (objectDropdown != null)
+            {
+                objectDropdown.choices = objectNames;
+                if (objectNames.Count > 0)
+                {
+                    if (!string.IsNullOrEmpty(data.Argument) && objectNames.Contains(data.Argument))
+                    {
+                        objectDropdown.value = data.Argument;
+                    }
+                    else
+                    {
+                        objectDropdown.value = objectNames[0];
+                        dataStore.UpdateCommand(index, currentType, objectNames[0], true);
+                    }
+                }
+                else
+                {
+                    objectDropdown.value = "";
+                }
+
+                objectDropdown.RegisterValueChangedCallback(evt =>
+                {
+                    if (isRebuilding) return;
+                    dataStore.UpdateCommand(index, typeDropdown != null ? typeDropdown.value : currentType, evt.newValue, true);
+                });
+            }
+        }
+        else if (NeedsLabelParameter(currentType))
+        {
+            if (labelDropdown != null)
+            {
+                labelDropdown.choices = chapters;
+                if (chapters.Count > 0)
+                {
+                    if (!string.IsNullOrEmpty(data.Argument) && chapters.Contains(data.Argument))
+                    {
+                        labelDropdown.value = data.Argument;
+                    }
+                    else
+                    {
+                        labelDropdown.value = chapters[0];
+                        dataStore.UpdateCommand(index, currentType, chapters[0], true);
+                    }
+                }
+                else
+                {
+                    labelDropdown.value = "";
+                }
+
+                labelDropdown.RegisterValueChangedCallback(evt =>
+                {
+                    if (isRebuilding) return;
+                    dataStore.UpdateCommand(index, typeDropdown != null ? typeDropdown.value : currentType, evt.newValue, true);
+                });
+            }
+        }
+        else
+        {
             if (inputField != null)
             {
                 inputField.value = data.Argument;
                 inputField.RegisterValueChangedCallback(evt =>
                 {
-                    dataStore.UpdateCommand(index, dropdown != null ? dropdown.value : options[0], evt.newValue, false);
+                    if (isRebuilding) return;
+                    dataStore.UpdateCommand(index, typeDropdown != null ? typeDropdown.value : currentType, evt.newValue, false);
                 });
                 inputField.RegisterCallback<FocusOutEvent>(evt =>
                 {
-                    dataStore.UpdateCommand(index, dropdown != null ? dropdown.value : options[0], inputField.value, true);
+                    if (isRebuilding) return;
+                    dataStore.UpdateCommand(index, typeDropdown != null ? typeDropdown.value : currentType, inputField.value, true);
                 });                
+                
                 inputField.RegisterCallback<NavigationMoveEvent>(evt => evt.StopPropagation(), TrickleDown.TrickleDown);
                 inputField.RegisterCallback<NavigationSubmitEvent>(evt => evt.StopPropagation(), TrickleDown.TrickleDown);
                 inputField.RegisterCallback<NavigationCancelEvent>(evt => evt.StopPropagation(), TrickleDown.TrickleDown);
             }
-
-            itemRoot.style.backgroundColor = GetColorForCommand(data.CommandType);
-            RegisterDragEvents(itemRoot, index);
-            container.Add(itemRoot);
         }
 
-        if (newItemTemplate != null)
+        RegisterDragEvents(itemRoot, index);
+        UpdateCommandView(itemRoot, currentType);
+        container.Add(itemRoot);
+    }
+
+    if (newItemTemplate != null)
+    {
+        VisualElement addItemRoot = newItemTemplate.Instantiate();
+        addItemRoot.RegisterCallback<ClickEvent>(evt =>
         {
-            VisualElement addItemRoot = newItemTemplate.Instantiate();
-            addItemRoot.RegisterCallback<ClickEvent>(evt =>
-            {
-                dataStore.AddCommand();
-            });
-            container.Add(addItemRoot);
+            dataStore.AddCommand();
+        });
+
+        if (footerContainer != null)
+        {
+            footerContainer.Add(addItemRoot);
         }
     }
+
+    isRebuilding = false;
+}
 
     private void RegisterDragEvents(VisualElement element, int originalIndex)
     {

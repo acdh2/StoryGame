@@ -14,6 +14,9 @@ public class SceneManager : MonoBehaviour
     private readonly Stack<string> redoStack = new Stack<string>();
     private bool isPerformingUndoRedo = false;
 
+    public bool CanUndo => undoStack.Count > 1;
+    public bool CanRedo => redoStack.Count > 0;
+
     private void Awake()
     {
         saveSystem = GetComponent<SceneSaveSystem>();
@@ -159,8 +162,9 @@ public class SceneManager : MonoBehaviour
     public void RenameObject(GameObject targetObject, string newName)
     {
         if (targetObject == null || string.IsNullOrEmpty(newName)) return;
+        if (targetObject.CompareTag("SpawnPoint")) return;
 
-        targetObject.name = newName;
+        targetObject.name = newName.ToLowerInvariant();
         SaveCurrentScene();
     }
 
@@ -243,4 +247,15 @@ public class SceneManager : MonoBehaviour
 
         saveSystem.SaveSceneToFile(saveFileName);
     }
+
+    public List<string> GetUniqueObjectNames()
+    {
+        var names = new HashSet<string>();
+        foreach (Transform child in transform)
+        {
+            if (child.CompareTag("SpawnPoint")) continue;
+            names.Add(child.gameObject.name.ToLower());
+        }
+        return new List<string>(names);
+    }    
 }
