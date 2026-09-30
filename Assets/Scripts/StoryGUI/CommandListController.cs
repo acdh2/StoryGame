@@ -68,10 +68,13 @@ public class CommandListController : UIControllerBase
             case "SAY": return new Color(0.2f, 0.4f, 0.6f);
             case "CHOICE": return new Color(0.2f, 0.6f, 0.4f);
             case "TOUCHED": return new Color(0.6f, 0.6f, 0.2f);
+            case "BLOCK":
+            case "UNBLOCK":
             case "SHOW":
             case "HIDE": return new Color(0.2f, 0.5f, 0.5f);
             case "GOTO":
             case "CHAPTER": return new Color(0.6f, 0.4f, 0.2f);
+            case "TELEPORT":
             case "GIVE":
             case "TAKE": return new Color(0.5f, 0.2f, 0.6f);
             case "HAS":
@@ -83,7 +86,7 @@ public class CommandListController : UIControllerBase
     private bool NeedsObjectParameter(string commandType)
     {
         string type = commandType?.Trim().ToUpperInvariant() ?? "";
-        return type == "TOUCHED" || type == "SHOW" || type == "HIDE" || type == "TELEPORT";
+        return type == "TOUCHED" || type == "SHOW" || type == "HIDE" || type == "TELEPORT" || type == "BLOCK" || type == "UNBLOCK";
     }
 
     private bool NeedsLabelParameter(string commandType)

@@ -589,6 +589,24 @@ public class DialogueInterpreter : MonoBehaviour
                     pc++;
                     break;
 
+                case "BLOCK":
+
+                    ToggleSceneObjectIsTrigger(
+                        instr.Argument,
+                        false);
+
+                    pc++;
+                    break;
+
+                case "UNBLOCK":
+
+                    ToggleSceneObjectIsTrigger(
+                        instr.Argument,
+                        true);
+
+                    pc++;
+                    break;
+
                 case "SHOW":
 
                     ToggleSceneObjectVisibility(
@@ -699,6 +717,43 @@ public class DialogueInterpreter : MonoBehaviour
 
         OnDialogueEnded?.Invoke();
     }
+
+    private void ToggleSceneObjectIsTrigger(
+        string objectName,
+        bool isTrigger)
+    {
+        GameObject sceneRoot =
+            GameObject.Find("SceneManager");
+
+        if (sceneRoot == null)
+            return;
+
+        Transform[] transforms =
+            sceneRoot.GetComponentsInChildren<Transform>(
+                true);
+
+        foreach (Transform child in transforms)
+        {
+            if (child == sceneRoot.transform)
+                continue;
+
+            if (child.name.Equals(
+                objectName,
+                StringComparison.OrdinalIgnoreCase))
+            {
+                Collider[] colliders = child.GetComponentsInChildren<Collider>(true);
+                foreach (Collider col in colliders)
+                {
+                    if (col is MeshCollider meshCollider && isTrigger)
+                    {
+                        meshCollider.convex = true;
+                    }
+                    col.isTrigger = isTrigger;
+                }
+            }
+        }
+    }
+
 
     private void ToggleSceneObjectVisibility(
         string objectName,

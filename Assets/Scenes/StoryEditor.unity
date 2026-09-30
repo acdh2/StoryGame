@@ -349,7 +349,6 @@ MonoBehaviour:
     - {fileID: 2100000, guid: 7c111fcb608e54ed5b30e468def97f22, type: 2}
     - {fileID: 2100000, guid: ba9fa288055824898bf1972f3e1e4479, type: 2}
     - {fileID: 2100000, guid: b2a9b7f19710b429da3f60cfad67b2ee, type: 2}
-    - {fileID: 2100000, guid: 4a4a646a25af94879ba7f50b51a5a3f5, type: 2}
   - categoryName: Neon
     materials:
     - {fileID: 2100000, guid: bc162d13961424fb68ef0b50dcad8011, type: 2}
@@ -892,7 +891,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   objectSelector: {fileID: 330585548}
-  storyDataStore: {fileID: 0}
+  storyDataStore: {fileID: 997034306}
   saveFileName: defaultScene.json
   maxUndoSteps: 50
 --- !u!114 &997034305
@@ -5480,7 +5479,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2043554616}
-  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh: {fileID: 6374447877204676313, guid: 454cbe544a685424298b7242729895f4, type: 3}
 --- !u!4 &2043554620
 Transform:
   m_ObjectHideFlags: 0
