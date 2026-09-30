@@ -5379,8 +5379,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
   objectSelector: {fileID: 330585548}
-  moveSpeed: 10
-  lookSensitivity: 2
+  lookSensitivity: 0.5
+  zoomSpeed: 40
 --- !u!1 &2043554616
 GameObject:
   m_ObjectHideFlags: 0

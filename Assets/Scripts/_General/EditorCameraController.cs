@@ -1,20 +1,154 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.UIElements;
 
 public class EditorCameraController : MonoBehaviour
 {
     [SerializeField] private ObjectSelector objectSelector = null;
+    [SerializeField] private InputSystem_Actions inputActions;
 
-    [Header("Movement")]
-    public float moveSpeed = 10f;
+    [Header("Settings")]
+    public float lookSensitivity = 0.5f;
+    public float zoomSpeed = 5f;
 
-    [Header("Look")]
-    public float lookSensitivity = 2f;
-
-    private Transform cameraTransform;
     private float verticalRotation = 0f;
-
     private Vector3 originalPosition = Vector3.zero;
     private Quaternion originalRotation = Quaternion.identity;
+
+    private bool isLookBlockedByUI = false;
+
+    private void Awake()
+    {
+        transform.GetPositionAndRotation(out originalPosition, out originalRotation);
+        if (inputActions == null)
+        {
+            inputActions = new InputSystem_Actions();
+        }
+    }
+
+    private void OnEnable()
+    {
+        inputActions.Editor.Enable();
+        inputActions.Editor.Look.performed += OnLookPerformed;
+        inputActions.Editor.Zoom.performed += OnZoomPerformed;
+        inputActions.Editor.ResetView.performed += OnResetViewPerformed;
+    }
+
+    private void OnDisable()
+    {
+        inputActions.Editor.Look.performed -= OnLookPerformed;
+        inputActions.Editor.Zoom.performed -= OnZoomPerformed;
+        inputActions.Editor.ResetView.performed -= OnResetViewPerformed;
+        inputActions.Editor.Disable();
+    }
+
+    private void Start()
+    {
+    }
+
+    private void OnLookPerformed(InputAction.CallbackContext context)
+    {
+        // if (isLookBlockedByUI) return;
+
+        // Vector2 lookValue = context.ReadValue<Vector2>();
+        // if (lookValue == Vector2.zero) return;
+
+        // float mouseX = lookValue.x * lookSensitivity;
+        // float mouseY = lookValue.y * lookSensitivity;
+
+        // transform.Rotate(Vector3.up * mouseX, Space.World);
+
+        // verticalRotation -= mouseY;
+        // verticalRotation = Mathf.Clamp(verticalRotation, -90f, 90f);
+
+        // Vector3 currentEuler = transform.eulerAngles;
+        // transform.rotation = Quaternion.Euler(verticalRotation, currentEuler.y, 0f);
+    }    
+
+    private void OnResetViewPerformed(InputAction.CallbackContext context)
+    {
+        ResetView();
+    }    
+
+    private void Update()
+    {
+        HandleContinuousZoom();
+        HandleContinuousRotation();
+    }
+
+    private void HandleContinuousRotation()
+    {
+        if (IsPointerOverUI()) return;
+
+        //Vector2 zoomValue = inputActions.Editor.Zoom.ReadValue<Vector2>();
+        Vector2 lookValue = inputActions.Editor.Look.ReadValue<Vector2>();
+        if (lookValue != Vector2.zero) {
+
+            float mouseX = lookValue.x * lookSensitivity;
+            float mouseY = lookValue.y * lookSensitivity;
+
+            transform.Rotate(Vector3.up * mouseX, Space.World);
+
+            verticalRotation -= mouseY;
+            verticalRotation = Mathf.Clamp(verticalRotation, -90f, 90f);
+
+            Vector3 currentEuler = transform.eulerAngles;
+            transform.rotation = Quaternion.Euler(verticalRotation, currentEuler.y, 0f);        
+        }
+    }
+
+    private void HandleContinuousZoom()
+    {
+        if (IsPointerOverUI()) return;
+
+        Vector2 zoomValue = inputActions.Editor.Zoom.ReadValue<Vector2>();
+        if (zoomValue != Vector2.zero)
+        {
+            Vector3 moveDirection = new Vector3(zoomValue.x, 0f, zoomValue.y);
+            transform.Translate(moveDirection * (zoomSpeed * 0.1f * Time.deltaTime), Space.Self);
+        }
+
+        Vector2 liftValue = inputActions.Editor.Lift.ReadValue<Vector2>();
+        if (liftValue != Vector2.zero)
+        {
+            Vector3 moveDirection = new Vector3(0f, liftValue.y, 0f);
+            transform.Translate(moveDirection * (zoomSpeed * 0.1f * Time.deltaTime), Space.Self);
+        }
+    }    
+
+    private void OnZoomPerformed(InputAction.CallbackContext context)
+    {
+        if (IsPointerOverUI()) return;
+
+        Vector2 zoomValue = context.ReadValue<Vector2>();
+        Vector3 moveDirection = new Vector3(zoomValue.x, 0f, zoomValue.y);
+
+        transform.Translate(moveDirection * (zoomSpeed * Time.deltaTime), Space.Self);
+    }    
+
+    private bool IsPointerOverUI()
+    {
+        Vector2 mousePos = Input.mousePosition;
+        Vector2 pointerPosition = new Vector2(mousePos.x, Screen.height - mousePos.y);
+
+        UIDocument[] uiDocuments = FindObjectsByType<UIDocument>(FindObjectsSortMode.None);
+        foreach (var uiDoc in uiDocuments)
+        {
+            if (uiDoc != null && uiDoc.rootVisualElement != null)
+            {
+                if (uiDoc.rootVisualElement.style.display != DisplayStyle.None)
+                {
+                    Vector2 panelPosition = RuntimePanelUtils.ScreenToPanel(uiDoc.rootVisualElement.panel, pointerPosition);
+                    VisualElement picked = uiDoc.rootVisualElement.panel.Pick(panelPosition);
+                    if (picked != null && picked != uiDoc.rootVisualElement)
+                    {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
 
     public void ResetView()
     {
@@ -26,90 +160,16 @@ public class EditorCameraController : MonoBehaviour
                 Renderer renderer = selectedObject.GetComponentInChildren<Renderer>();
                 Vector3 targetCenter = renderer != null ? renderer.bounds.center : selectedObject.transform.position;
                 float objectSize = renderer != null ? renderer.bounds.size.z : 2f;
-                
                 float distance = Mathf.Max(objectSize * 2f, 3f);
                 
-                transform.position = targetCenter - Vector3.forward * distance;
-                transform.LookAt(targetCenter);
+                transform.position = targetCenter - transform.forward * distance;
                 return;
             }
         }
         
         transform.SetPositionAndRotation(originalPosition, originalRotation);
-    }
-    void Awake()
-    {
-        transform.GetPositionAndRotation(out originalPosition, out originalRotation);
-    }
 
-    void Start()
-    {
-        // Zoek de child camera op
-        Camera cam = GetComponentInChildren<Camera>();
-        if (cam != null)
-        {
-            cameraTransform = cam.transform;
-        }
-        else
-        {
-            Debug.LogError("Geen Camera gevonden als child van " + gameObject.name);
-        }
-    }
+        verticalRotation = transform.rotation.eulerAngles.x;
+    }    
 
-    void Update()
-    {
-        HandleLook();
-        HandleMovement();
-    }
-
-    void HandleLook()
-    {
-        // Alleen rondkijken wanneer de rechtermuisknop ingedrukt is
-        if (Input.GetMouseButton(1))
-        {
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
-
-            float mouseX = Input.GetAxis("Mouse X") * lookSensitivity;
-            float mouseY = Input.GetAxis("Mouse Y") * lookSensitivity;
-
-            // Horizontal rotatie: draai de Player op de Y-as
-            transform.Rotate(Vector3.up * mouseX);
-
-            // Verticale rotatie: kantel alleen de Camera op de X-as
-            verticalRotation -= mouseY;
-            verticalRotation = Mathf.Clamp(verticalRotation, -90f, 90f);
-
-            if (cameraTransform != null)
-            {
-                cameraTransform.localRotation = Quaternion.Euler(verticalRotation, 0f, 0f);
-            }
-        }
-        else if (Input.GetMouseButtonUp(1))
-        {
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
-        }
-    }
-
-void HandleMovement()
-    {
-        float inputX = Input.GetAxisRaw("Horizontal"); // A/D
-        float inputZ = Input.GetAxisRaw("Vertical");   // W/S
-
-        float inputY = 0f;
-        if (Input.GetKey(KeyCode.E)) inputY += 1f; // Omhoog
-        if (Input.GetKey(KeyCode.Q)) inputY -= 1f; // Omlaag
-
-        // Horizontale beweging op XZ-plane
-        Vector3 horizontalMove = (transform.right * inputX + transform.forward * inputZ).normalized;
-
-        // Verticale beweging op wereld Y-as
-        Vector3 verticalMove = Vector3.up * inputY;
-
-        // Gecombineerde beweging
-        Vector3 moveDirection = (horizontalMove + verticalMove).normalized;
-
-        transform.position += moveDirection * moveSpeed * Time.deltaTime;
-    }
 }
