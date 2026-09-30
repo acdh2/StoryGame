@@ -16,6 +16,8 @@ public class Navigator : UIControllerBase
     private readonly List<UIDocumentLifecycle> screenLifecycles = new List<UIDocumentLifecycle>();
     private readonly List<(Button button, System.Action action)> registeredListeners = new List<(Button, System.Action)>();
 
+    private VisualElement undoRedoBox;
+
     protected override void Awake()
     {
         base.Awake();
@@ -25,6 +27,13 @@ public class Navigator : UIControllerBase
     private void Start()
     {
         InitializeDefaultScreen();
+    }
+
+    void ReturnToFile()
+    {
+        OpenScreen(screens[0]);
+        navigationGroupBox.style.display = DisplayStyle.Flex;
+        closeButton.style.display = DisplayStyle.None;        
     }
 
     protected override void OnUIEnabled(VisualElement root)
@@ -38,13 +47,11 @@ public class Navigator : UIControllerBase
             return;
         }
 
+        undoRedoBox = root.Q<VisualElement>("undo-redo-box");
+
         closeButton = root.Q<Button>("close");
         closeButton.style.display = DisplayStyle.None;
-        closeButton.clicked += () => {
-            OpenScreen(screens[0]);
-            navigationGroupBox.style.display = DisplayStyle.Flex;
-            closeButton.style.display = DisplayStyle.None;
-        };
+        closeButton.clicked += () => ReturnToFile();
 
         CacheScreens();
         BuildDynamicButtons();
@@ -81,6 +88,7 @@ public class Navigator : UIControllerBase
         for (int i = 0; i < screens.Count; i++)
         {
             var screen = screens[i];
+            bool isFirst = (i == 0);
             bool isLast = (i == screens.Count - 1);
             if (screen == null) continue;
 
@@ -116,10 +124,19 @@ public class Navigator : UIControllerBase
                     onClickAction = () => {
                         navigationGroupBox.style.display = DisplayStyle.None;
                         closeButton.style.display = DisplayStyle.Flex;
+                        undoRedoBox.style.display = DisplayStyle.None;
+                        OpenScreen(screen);
+                    };
+                } else if (isFirst) {
+                    onClickAction = () => {
+                        undoRedoBox.style.display = DisplayStyle.None;
                         OpenScreen(screen);
                     };
                 } else {
-                    onClickAction = () => OpenScreen(screen);
+                    onClickAction = () => {
+                        undoRedoBox.style.display = DisplayStyle.Flex;
+                        OpenScreen(screen);
+                    };
                 }
                 btn.clicked += onClickAction;
                 registeredListeners.Add((btn, onClickAction));

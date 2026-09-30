@@ -2,6 +2,7 @@ using UnityEngine;
 #if ENABLE_INPUT_SYSTEM
 using UnityEngine.InputSystem;
 #endif
+using UnityEngine.UIElements;
 
 namespace StarterAssets
 {
@@ -29,6 +30,12 @@ namespace StarterAssets
         private void Start()
         {
             //SetControlsActive(controlsActive);
+
+#if UNITY_WEBGL
+        // disable WebGLInput.stickyCursorLock so if the browser unlocks the cursor (with the ESC key) the cursor will unlock in Unity
+        WebGLInput.stickyCursorLock = false;
+#endif
+
         }
 
         private void OnValidate()
@@ -63,6 +70,8 @@ namespace StarterAssets
                 _originalUpdateMode = _animator.updateMode;
                 _animator.updateMode = AnimatorUpdateMode.Fixed;
             }
+
+            SetCursorState(true);
         }
 
         public void EnableControls()
@@ -77,6 +86,20 @@ namespace StarterAssets
             {
                 _animator.updateMode = _originalUpdateMode;
             }
+
+            SetCursorState(false);
+        }
+
+        void SetCursorState(bool shouldBeEnabled)
+        {
+            if (shouldBeEnabled)
+            {
+                UnityEngine.Cursor.lockState = CursorLockMode.None;
+                UnityEngine.Cursor.visible = true;
+            } else {
+                UnityEngine.Cursor.lockState = CursorLockMode.Locked;
+                UnityEngine.Cursor.visible = false;
+            }
         }
 
         public void SetControlsActive(bool active)
@@ -84,5 +107,37 @@ namespace StarterAssets
             if (active) EnableControls();
             else DisableControls();
         }
+
+        private bool IsPointerOverUI()
+        {
+            Vector2 mousePos = Input.mousePosition;
+            Vector2 pointerPosition = new Vector2(mousePos.x, Screen.height - mousePos.y);
+
+            UIDocument[] uiDocuments = FindObjectsByType<UIDocument>(FindObjectsSortMode.None);
+            foreach (var uiDoc in uiDocuments)
+            {
+                if (uiDoc != null && uiDoc.rootVisualElement != null)
+                {
+                    if (uiDoc.rootVisualElement.style.display != DisplayStyle.None)
+                    {
+                        Vector2 panelPosition = RuntimePanelUtils.ScreenToPanel(uiDoc.rootVisualElement.panel, pointerPosition);
+                        VisualElement picked = uiDoc.rootVisualElement.panel.Pick(panelPosition);
+                        if (picked != null && picked != uiDoc.rootVisualElement)
+                        {
+                            return true;
+                        }
+                    }
+                }
+            }
+            return false;
+        }      
+
+#if UNITY_WEBGL
+        void Update()
+        {
+            UnityEngine.Cursor.visible = (UnityEngine.Cursor.lockState == CursorLockMode.None);
+        }
+#endif
+
     }
 }

@@ -127,8 +127,12 @@ public class CommandListController : UIControllerBase
                 inputField.value = data.Argument;
                 inputField.RegisterValueChangedCallback(evt =>
                 {
-                    dataStore.UpdateCommand(index, dropdown != null ? dropdown.value : options[0], evt.newValue);
+                    dataStore.UpdateCommand(index, dropdown != null ? dropdown.value : options[0], evt.newValue, false);
                 });
+                inputField.RegisterCallback<FocusOutEvent>(evt =>
+                {
+                    dataStore.UpdateCommand(index, dropdown != null ? dropdown.value : options[0], inputField.value, true);
+                });                
                 inputField.RegisterCallback<NavigationMoveEvent>(evt => evt.StopPropagation(), TrickleDown.TrickleDown);
                 inputField.RegisterCallback<NavigationSubmitEvent>(evt => evt.StopPropagation(), TrickleDown.TrickleDown);
                 inputField.RegisterCallback<NavigationCancelEvent>(evt => evt.StopPropagation(), TrickleDown.TrickleDown);

@@ -62,14 +62,19 @@ public class StoryDataStore : MonoBehaviour
         OnDataChanged?.Invoke();
     }
 
-    public void UpdateCommand(int index, string commandType, string argument)
+    public void UpdateCommand(int index, string commandType, string argument, bool invokeEvent = true)
     {
         if (index >= 0 && index < commands.Count)
         {
             commands[index].CommandType = commandType;
             commands[index].Argument = argument;
+            if (invokeEvent)
+            {
+                OnDataChanged?.Invoke();
+            }
         }
     }
+
 
     public string SerializeToJson()
     {

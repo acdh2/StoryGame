@@ -326,17 +326,125 @@ MonoBehaviour:
   sceneManager: {fileID: 997034304}
   defaultIcon: {fileID: 2800000, guid: 3e7726553fe3a4f9b8fea2a9f1b4238b, type: 3}
   categories:
-  - categoryName: Basic Colors
+  - categoryName: Basic Materials
     materials:
-    - {fileID: 2100000, guid: 589d7fec877394d8b832d91a5d0ba959, type: 2}
-    - {fileID: 2100000, guid: 042879040814949e7955992b0a715a3c, type: 2}
-    - {fileID: 2100000, guid: 7703794cce89f4e82bc04fa99b4eb043, type: 2}
-  - categoryName: Materials
+    - {fileID: 2100000, guid: f71f1689cee6340258584bb6752a98d6, type: 2}
+    - {fileID: 2100000, guid: e7a71f26ac89545bd9a79fb479149b46, type: 2}
+    - {fileID: 2100000, guid: 4bae26c9e6ae64589831b1a1f9e8d9b1, type: 2}
+    - {fileID: 2100000, guid: a9c4629ad399442f7ba452bd6eaeefe1, type: 2}
+    - {fileID: 2100000, guid: a92804322d07041b596e215eefbd6edf, type: 2}
+    - {fileID: 2100000, guid: 8b32e5dccf014441dbec1a6f320a6055, type: 2}
+    - {fileID: 2100000, guid: 58ef681fa0f644ef1ae814c71c158746, type: 2}
+    - {fileID: 2100000, guid: e3045dc7255e24189b3c6a0e7c65a6f9, type: 2}
+    - {fileID: 2100000, guid: f0964a3fb7cdf4d739b58e323e535f1e, type: 2}
+    - {fileID: 2100000, guid: 3aea16dcf0351417ea279e3570bc0e14, type: 2}
+    - {fileID: 2100000, guid: 34988d388a1aa45b3ac55ea754e81f7a, type: 2}
+    - {fileID: 2100000, guid: 1a89b46ab052149eca66d959c2b06a3b, type: 2}
+    - {fileID: 2100000, guid: 7e12fb5c3523944f08595d05f7f1bd62, type: 2}
+    - {fileID: 2100000, guid: b4dee8bcbf5234f4c984a7594fa967c3, type: 2}
+    - {fileID: 2100000, guid: c4e2055c2ffb64f278c8e726fc818cec, type: 2}
+    - {fileID: 2100000, guid: d14e696ea8fcd487ebd2767ff52c6fdf, type: 2}
+    - {fileID: 2100000, guid: a7a97446a2c504d768568b3d6c956823, type: 2}
+    - {fileID: 2100000, guid: 7414378dcba1f43489ae40eacf17745a, type: 2}
+    - {fileID: 2100000, guid: 7c111fcb608e54ed5b30e468def97f22, type: 2}
+    - {fileID: 2100000, guid: ba9fa288055824898bf1972f3e1e4479, type: 2}
+    - {fileID: 2100000, guid: b2a9b7f19710b429da3f60cfad67b2ee, type: 2}
+    - {fileID: 2100000, guid: 4a4a646a25af94879ba7f50b51a5a3f5, type: 2}
+  - categoryName: Neon
     materials:
-    - {fileID: 2100000, guid: 589d7fec877394d8b832d91a5d0ba959, type: 2}
-    - {fileID: 2100000, guid: 042879040814949e7955992b0a715a3c, type: 2}
-    - {fileID: 2100000, guid: 7703794cce89f4e82bc04fa99b4eb043, type: 2}
-    - {fileID: 2100000, guid: ccc402f6c83e34fbda41148bb09ee1d8, type: 2}
+    - {fileID: 2100000, guid: bc162d13961424fb68ef0b50dcad8011, type: 2}
+    - {fileID: 2100000, guid: 24bfa440531224e76b92d1fe3a0e6f7c, type: 2}
+    - {fileID: 2100000, guid: ef8529e66e9d4405db547ce6f762d1d4, type: 2}
+    - {fileID: 2100000, guid: 3cf79b9e3efd54aea98e77270843548c, type: 2}
+    - {fileID: 2100000, guid: 3ec5a23e88b7c4ddf9a89717ac8d9e05, type: 2}
+    - {fileID: 2100000, guid: 74649a58620974c1ea2979b386263b1d, type: 2}
+    - {fileID: 2100000, guid: 4460d7317f7454f37bafc20f3b9e135f, type: 2}
+  - categoryName: Building
+    materials:
+    - {fileID: 2100000, guid: e0908cd33811e4365aed111fac004112, type: 2}
+    - {fileID: 2100000, guid: ee8c29f8520364116a072a9c5ef74268, type: 2}
+    - {fileID: 2100000, guid: d1396657188a840b192cefa2c3d61d7f, type: 2}
+    - {fileID: 2100000, guid: 9f6af39f761e947b29c8aa7a27702099, type: 2}
+    - {fileID: 2100000, guid: ffb3d027c43904aad8612ac34b7fbe9d, type: 2}
+    - {fileID: 2100000, guid: 35cad57974147407b8765a76f90b508a, type: 2}
+    - {fileID: 2100000, guid: 0d91db3699aa6407d9741efacf7450f4, type: 2}
+    - {fileID: 2100000, guid: 872564ff8367e447bb708a6b92508fe3, type: 2}
+    - {fileID: 2100000, guid: b410bdb41fc394b0d993a24d57d7aecb, type: 2}
+    - {fileID: 2100000, guid: f337baa32d7ba4e28b2f10f4ffa0ecda, type: 2}
+    - {fileID: 2100000, guid: acb70023fa3224814bc01d273a08ac66, type: 2}
+    - {fileID: 2100000, guid: e89d4c09d3a1d4ead8d9cd35b35706ec, type: 2}
+    - {fileID: 2100000, guid: 8b0ae31565f414c11aa43c28089603a4, type: 2}
+    - {fileID: 2100000, guid: e498d6e0e204d465b9772e53fda2fa19, type: 2}
+    - {fileID: 2100000, guid: d98a72cce9521457287d2ee029ed8e70, type: 2}
+    - {fileID: 2100000, guid: 4765875e614724100b05a0863e4c1fce, type: 2}
+    - {fileID: 2100000, guid: b2164ff8bf75d4768ac0c3bdf3c08d11, type: 2}
+    - {fileID: 2100000, guid: 4fc76f39df33645d9aea554f7b2643f6, type: 2}
+    - {fileID: 2100000, guid: 37de7c78d3b41487a837df0b1fbfbb80, type: 2}
+    - {fileID: 2100000, guid: 13457afda493a41cdbccf92fcca5a581, type: 2}
+    - {fileID: 2100000, guid: ef02e530fabdf470ebd7623ca800be21, type: 2}
+    - {fileID: 2100000, guid: 46fd371d1bcda4a6f930ce1b6ebc2de9, type: 2}
+    - {fileID: 2100000, guid: 8577f1df70250445ca0a1c253e404f07, type: 2}
+    - {fileID: 2100000, guid: 55fb37eb73cbf4d2588bb5c28f01cd79, type: 2}
+    - {fileID: 2100000, guid: 4a4d48b2a4da3470ab9b44d93b28ec75, type: 2}
+    - {fileID: 2100000, guid: a32c1e209546d4c969ebcf61e374d7b1, type: 2}
+    - {fileID: 2100000, guid: f0de5369bd9aa4e0ba47efdffca646eb, type: 2}
+    - {fileID: 2100000, guid: d07bae03c8a154723a8c61a36a3e8214, type: 2}
+    - {fileID: 2100000, guid: e6bc92ade16254b8bbf83e8bc7268de9, type: 2}
+    - {fileID: 2100000, guid: e5a7831a4796f44019948092603ae5fc, type: 2}
+    - {fileID: 2100000, guid: 478741e9a856c4f5fa6b190d6bd415bf, type: 2}
+    - {fileID: 2100000, guid: 9f9cf3ed570cd42669dfb700136ff017, type: 2}
+    - {fileID: 2100000, guid: 8118ccadb253a4112ada93f611320ac0, type: 2}
+    - {fileID: 2100000, guid: 4f8cf006c5836410cb2840d262462916, type: 2}
+    - {fileID: 2100000, guid: 6a57f4771efb34e1780d4f84fecea506, type: 2}
+    - {fileID: 2100000, guid: 22f84c0dbc5de4d93b721c68aec2d150, type: 2}
+    - {fileID: 2100000, guid: 3c571e96d8970467dbeba2cce3f7d576, type: 2}
+    - {fileID: 2100000, guid: adcf5200c40034a83aca34e6ee423f0e, type: 2}
+    - {fileID: 2100000, guid: 1369abaae50d149a9a484142307cdee5, type: 2}
+    - {fileID: 2100000, guid: 91395974680274ff18080e152de38496, type: 2}
+    - {fileID: 2100000, guid: e74368544dd924133b85edfdbb59f675, type: 2}
+    - {fileID: 2100000, guid: a95026a8a510f4c6799e7c33527df9c4, type: 2}
+    - {fileID: 2100000, guid: c5633bb9c25a847cd81c08aff2fbc2ba, type: 2}
+    - {fileID: 2100000, guid: 1c726c751c5af4222975a889c2528a8b, type: 2}
+    - {fileID: 2100000, guid: aacd73e374bb2418d98e8d1dbca8ec22, type: 2}
+    - {fileID: 2100000, guid: 20309dbaf4ef34780b702a8e43e07176, type: 2}
+    - {fileID: 2100000, guid: 4a525a4b1d1c34074ac30862556b1596, type: 2}
+    - {fileID: 2100000, guid: 22fa2eda97cc84b48afbd40d3052714e, type: 2}
+    - {fileID: 2100000, guid: d114ffa9530f64b229ef804a878007eb, type: 2}
+    - {fileID: 2100000, guid: 258aad8be45d14b5b994cd51bc0b21d1, type: 2}
+    - {fileID: 2100000, guid: 8bc80ba0c1d6d4616a3df6e36f0bb6f3, type: 2}
+    - {fileID: 2100000, guid: c7fd4929fc719476c98421e3e6af8b1f, type: 2}
+    - {fileID: 2100000, guid: c17f7ca4fafc14e29ba3add9a66ad1e2, type: 2}
+    - {fileID: 2100000, guid: eba0faca199534789892cb10c463eadf, type: 2}
+    - {fileID: 2100000, guid: a9f2c7bf5cf7249d0ad83ac423203bd8, type: 2}
+    - {fileID: 2100000, guid: 23afe7adb5f0641f1875fb681f71f113, type: 2}
+  - categoryName: Nature
+    materials:
+    - {fileID: 2100000, guid: 28bbafd92133f49a88d0825f9b0bcd8e, type: 2}
+    - {fileID: 2100000, guid: 3ec75e10918c547a7a45ac974ebaa05a, type: 2}
+    - {fileID: 2100000, guid: 2109094cafe5041479fc3f2b9e942251, type: 2}
+    - {fileID: 2100000, guid: 5be1f438e13a54d86b4f0877cd832745, type: 2}
+    - {fileID: 2100000, guid: 8b16aa506072f45be9f1d5b4016b285b, type: 2}
+    - {fileID: 2100000, guid: 49e31176df07148a39fdced99b8054e0, type: 2}
+    - {fileID: 2100000, guid: d4843bd7202bf40d8a17610893b41bbf, type: 2}
+    - {fileID: 2100000, guid: 0aa3823b9dd144813942afa262c71805, type: 2}
+    - {fileID: 2100000, guid: 696bfcb74e10b4d919b74e9a3a998cb5, type: 2}
+    - {fileID: 2100000, guid: 3d39a98b9464945eba714217bb6854bf, type: 2}
+    - {fileID: 2100000, guid: 3b623343d72044b44b007256201f694e, type: 2}
+    - {fileID: 2100000, guid: 0a7c964d11e174acd8fd6514a07562ed, type: 2}
+    - {fileID: 2100000, guid: 69b90723f2e85452fb4ff917aa0b0224, type: 2}
+    - {fileID: 2100000, guid: f002c6e67aa444f3c91da51a39f2c4fa, type: 2}
+    - {fileID: 2100000, guid: c47f287c98f324ce0b12004f4a4816e9, type: 2}
+    - {fileID: 2100000, guid: 201b7648cb78d484aaea719912c8c815, type: 2}
+    - {fileID: 2100000, guid: c506913f9fce54471a6afdb451536118, type: 2}
+    - {fileID: 2100000, guid: 5844ddbd1bea04148bba530ad3a84713, type: 2}
+    - {fileID: 2100000, guid: 168bb0571a5094d5bb05a0151ca6db3b, type: 2}
+    - {fileID: 2100000, guid: 523c15bb417804588a118872b0362a2b, type: 2}
+    - {fileID: 2100000, guid: db8321f7865b0419386e8ae1e9c0114d, type: 2}
+    - {fileID: 2100000, guid: 54488399cf9aa4409a9e08b7338eb02b, type: 2}
+    - {fileID: 2100000, guid: 4b3077243ea5d4352b5c3a333d567456, type: 2}
+    - {fileID: 2100000, guid: 5f82c3f517e9641939184cbb25fa107c, type: 2}
+    - {fileID: 2100000, guid: 803348f2e44e84296b57561baf091b3f, type: 2}
+    - {fileID: 2100000, guid: 71a959ab94046425eb1d29ff64b3a754, type: 2}
 --- !u!114 &45334832
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -517,7 +625,7 @@ MonoBehaviour:
     m_Bits: 1
   m_VolumeTrigger: {fileID: 0}
   m_VolumeFrameworkUpdateModeOption: 2
-  m_RenderPostProcessing: 0
+  m_RenderPostProcessing: 1
   m_Antialiasing: 0
   m_AntialiasingQuality: 2
   m_StopNaN: 0
@@ -935,6 +1043,7 @@ GameObject:
   - component: {fileID: 1373448615}
   - component: {fileID: 1373448618}
   - component: {fileID: 1373448617}
+  - component: {fileID: 1373448619}
   m_Layer: 0
   m_Name: Menu
   m_TagString: Untagged
@@ -1006,6 +1115,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ccfa6454b7dfb4151a53707d80555891, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UIDocumentLifecycle
+--- !u!114 &1373448619
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1373448613}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b21b3ec3fee8742f496a6625066686d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UndoRedoController
+  sceneManager: {fileID: 997034304}
 --- !u!1 &1484268766
 GameObject:
   m_ObjectHideFlags: 0
@@ -1191,9 +1313,63 @@ MonoBehaviour:
   categories:
   - categoryName: Default
     items:
+    - itemName: Cone
+      thumbnail: {fileID: 2800000, guid: 2ce474fa2493d4e15ac1a9f49feadcef, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 7d337c9c338ef4c3f9b5b82931cd63e4, type: 3}
     - itemName: Cube
       thumbnail: {fileID: 2800000, guid: 7e987857784b64d84ac38539f3318c11, type: 3}
-      prefab: {fileID: 8929711720807349461, guid: 0e9c59b8c49814ae5a458af364cb3d13, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 9a3a7880b38a84ca68f00ace38ded230, type: 3}
+    - itemName: Cylinder
+      thumbnail: {fileID: 2800000, guid: afab0d58e3eb54fa8a3da5871e05eac4, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 166451fd43c844a31931dce441c42d54, type: 3}
+    - itemName: Diamond
+      thumbnail: {fileID: 2800000, guid: 106450d75842f43b09461af956e4399d, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 098f6184386924b34bc4d3ee3fc61095, type: 3}
+    - itemName: Egg
+      thumbnail: {fileID: 2800000, guid: bed77ae7dc81943a189e196a78af29b7, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 4c7e6660e0ba74b6e903e0e0c914f19c, type: 3}
+    - itemName: Heptagon
+      thumbnail: {fileID: 2800000, guid: 5caf920531c4643c2a778df53b405fff, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 78726648f6342459d9d829c95cf26a43, type: 3}
+    - itemName: Hexagon
+      thumbnail: {fileID: 2800000, guid: a12b1644d41524617a54da7b85104f6a, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 1b2db80eb350942e8a8e98b338299411, type: 3}
+    - itemName: Icosphere
+      thumbnail: {fileID: 2800000, guid: b81a15da41027433a83e5fecbca8e331, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 0a3ccd28ee57f419e8e8e6ca89112fec, type: 3}
+    - itemName: Octagon
+      thumbnail: {fileID: 2800000, guid: c0d58c0a5812048febd3cc68e89d9cac, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 2248665a2ee634e5ea046ed8c5bfe230, type: 3}
+    - itemName: Pentagon
+      thumbnail: {fileID: 2800000, guid: c7a5af0eaf3ce492ab743ed794f382c9, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 362b0ffe90be64e0f9a0fcf0f3f6b003, type: 3}
+    - itemName: Plane
+      thumbnail: {fileID: 2800000, guid: 4e78dc1c183f04424896012da1e62fe7, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 227c1fbc8677240b8bc7c034397a3495, type: 3}
+    - itemName: Prism
+      thumbnail: {fileID: 2800000, guid: 974c1faf447eb4a19a4f5259b00b5430, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 7abed8b1f00284907968a76c901f8702, type: 3}
+    - itemName: Pyramid
+      thumbnail: {fileID: 2800000, guid: 99d7eae17e669435ea3e357697d99e85, type: 3}
+      prefab: {fileID: 919132149155446097, guid: f56251abe82974091a914851ce1f78d7, type: 3}
+    - itemName: Semisphere
+      thumbnail: {fileID: 2800000, guid: 47461032a8e9e43e7a037571f17ae192, type: 3}
+      prefab: {fileID: 919132149155446097, guid: ccd8a20cc60b348bb89151eb97ea59d1, type: 3}
+    - itemName: Sphere
+      thumbnail: {fileID: 2800000, guid: 0823069ae06e14b8791294bc82f4a692, type: 3}
+      prefab: {fileID: 919132149155446097, guid: eff38847fe7734092b048aaa6dc561e2, type: 3}
+    - itemName: Suzanne
+      thumbnail: {fileID: 2800000, guid: dcee6a45e419d4c4e8fe9bd24b801721, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 8f7497fc41d8b47c19f92e1d831536cf, type: 3}
+    - itemName: Torus
+      thumbnail: {fileID: 2800000, guid: f5dff1e7862354c389bc7420047bf82f, type: 3}
+      prefab: {fileID: 919132149155446097, guid: ab333d3e5d0bc498cbd4614a2867192a, type: 3}
+    - itemName: Utah Teapot
+      thumbnail: {fileID: 2800000, guid: f0f02ed5c4110408cb6814e87094c1c6, type: 3}
+      prefab: {fileID: 919132149155446097, guid: afc5e56946c1d463e8422bf35d178f1e, type: 3}
+    - itemName: Wedge
+      thumbnail: {fileID: 2800000, guid: 76ea3229de6a74b30965729d5f22c218, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 11a23a33515384de4ba0dc79d94a53ba, type: 3}
   - categoryName: Bricks
     items:
     - itemName: bevel-hq-brick-1x1-round
@@ -2084,6 +2260,233 @@ MonoBehaviour:
     - itemName: square-lq-plate-corner
       thumbnail: {fileID: 2800000, guid: 65a12d461117540d4817d07585801931, type: 3}
       prefab: {fileID: 919132149155446097, guid: 913cfaf790d1f403dac48f1f3e65c6c5, type: 3}
+  - categoryName: Castle
+    items:
+    - itemName: bridge-draw
+      thumbnail: {fileID: 2800000, guid: 95f4abe2a004645899d2352da6c9a2cb, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 33a031b3bdf534ba3a8b51dca47d5b21, type: 3}
+    - itemName: bridge-straight-pillar
+      thumbnail: {fileID: 2800000, guid: bc91b8f4d99ab422cb467f46272b2990, type: 3}
+      prefab: {fileID: 919132149155446097, guid: c5a2e26f7f44540b69d4bf750164ba82, type: 3}
+    - itemName: door
+      thumbnail: {fileID: 2800000, guid: 7f82a09321d4b43ac83e970c92b3db30, type: 3}
+      prefab: {fileID: 919132149155446097, guid: be8a13a703db1402d8f41f6b13163aa9, type: 3}
+    - itemName: flag-banner-long
+      thumbnail: {fileID: 2800000, guid: 67ec3492d929d411283cf75f50427109, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 482e7e6799801425da08f6f1465e3de4, type: 3}
+    - itemName: flag-banner-short
+      thumbnail: {fileID: 2800000, guid: c19ec57024d6643ab8137a028b545b23, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 9b59e9ec8d89349c3836059a5a25636d, type: 3}
+    - itemName: flag-pennant
+      thumbnail: {fileID: 2800000, guid: 9da43b5ac2fb34b3eae529e0b8449a87, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 4368c04eaac904174b355f81fcfec301, type: 3}
+    - itemName: flag-wide
+      thumbnail: {fileID: 2800000, guid: db9abc20937ff44e9804b13b6526419f, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 870f1d81dabd4497db52172f4c3e790d, type: 3}
+    - itemName: flag
+      thumbnail: {fileID: 2800000, guid: 8541537270ea645b690a9ebb91b042dd, type: 3}
+      prefab: {fileID: 919132149155446097, guid: bf628d7ec92254d0990a46068c9c910e, type: 3}
+    - itemName: gate
+      thumbnail: {fileID: 2800000, guid: 93f95496d5f04485989403444e416c7e, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 8dd4298b3a14e4e82a87b8fe6e7410e4, type: 3}
+    - itemName: ground-hills
+      thumbnail: {fileID: 2800000, guid: 3ef103525d1e344dfb7fc6a9e57a670a, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 9f2fd237110a7405ea3edf67aeea4323, type: 3}
+    - itemName: ground
+      thumbnail: {fileID: 2800000, guid: 3235ba440bab847d1b663df7f55cfd3c, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 3968924e880414746a30ec9304719fb6, type: 3}
+    - itemName: metal-gate
+      thumbnail: {fileID: 2800000, guid: 4e294bce458aa40ae88d1fd6d61e6af0, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 5ecf267e3285a4126974a507c4be6d67, type: 3}
+    - itemName: rocks-large
+      thumbnail: {fileID: 2800000, guid: bb181cffa3e584b508f0c667cad98c02, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 288a011d82668427fa1bf14e75b73f02, type: 3}
+    - itemName: rocks-small
+      thumbnail: {fileID: 2800000, guid: e3d4e8ca8df16481f93bfc71531b2fc4, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 90a0dc08456e94af39ad57e99f0dfd0b, type: 3}
+    - itemName: siege-ballista-demolished
+      thumbnail: {fileID: 2800000, guid: 558ab1a2ea0734267a78bf1cd9de55f5, type: 3}
+      prefab: {fileID: 919132149155446097, guid: b146aa2e8ba24414f91f9f2ef5d61b3f, type: 3}
+    - itemName: siege-ballista
+      thumbnail: {fileID: 2800000, guid: c5a02d4ebad7844c2b20bd089d35109e, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 2b4218b74de4941a48196686ed881984, type: 3}
+    - itemName: siege-catapult-demolished
+      thumbnail: {fileID: 2800000, guid: 2637d729222cf4f2199e4791745fbc6a, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 452128c7c2636401fb84fe110d299b80, type: 3}
+    - itemName: siege-catapult
+      thumbnail: {fileID: 2800000, guid: f4851eae7d93a4e479d25660ad96303a, type: 3}
+      prefab: {fileID: 919132149155446097, guid: a1a65499612b442828fb8dedce5c69a9, type: 3}
+    - itemName: siege-ram-demolished
+      thumbnail: {fileID: 2800000, guid: 1ad71b475050e4bf6b4d357b9a9c906f, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 5d632ef34e7cc4b4ab96d3c66c862748, type: 3}
+    - itemName: siege-ram
+      thumbnail: {fileID: 2800000, guid: 003e619224d8048c89aed8fe487131da, type: 3}
+      prefab: {fileID: 919132149155446097, guid: b6db6d49c9ca2471fb9592bd8bf70891, type: 3}
+    - itemName: siege-tower-demolished
+      thumbnail: {fileID: 2800000, guid: cf2a661774c464c70ae440e9ccd1f495, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 92eb8c59f480e441782f8995dfe99ce8, type: 3}
+    - itemName: siege-tower
+      thumbnail: {fileID: 2800000, guid: c136069dffb634dce999a5925e38ec5c, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 3c12ce2aa30084e70ac1240c46948b62, type: 3}
+    - itemName: siege-trebuchet-demolished
+      thumbnail: {fileID: 2800000, guid: 8fc60fcc82d104e57926ca823dac089b, type: 3}
+      prefab: {fileID: 919132149155446097, guid: c63082c23a5504389b8f10ab788d7a91, type: 3}
+    - itemName: siege-trebuchet
+      thumbnail: {fileID: 2800000, guid: 00d5727cce3ac41e1a3b033c6efffa3b, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 2406c3cc476a348fa9a3860cf37df618, type: 3}
+    - itemName: stairs-stone-square
+      thumbnail: {fileID: 2800000, guid: 74eef8c0a7c37475590c8d81978ab30c, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 9f6e1ab5421274caab1f5d16831ff3a0, type: 3}
+    - itemName: stairs-stone
+      thumbnail: {fileID: 2800000, guid: f2b69a0a941e9447484bd4907abadacf, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 38bb9ac5f9d084080a2c2d1c7ed35e78, type: 3}
+    - itemName: tower-base
+      thumbnail: {fileID: 2800000, guid: fd343400ade22414286d717ed0dae3ac, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 2ec11e4f5887d4f8cba1addf738443cd, type: 3}
+    - itemName: tower-hexagon-base
+      thumbnail: {fileID: 2800000, guid: 3fa165d36ea824e3ebc2ac0c117c89f4, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 0f2b1eec2fadd48f1ae567d4e0670112, type: 3}
+    - itemName: tower-hexagon-mid
+      thumbnail: {fileID: 2800000, guid: c352ee7e5f8b24377a9a55b069155a4d, type: 3}
+      prefab: {fileID: 919132149155446097, guid: e2d9bd5da60d34c2ab69d7f1597e0d36, type: 3}
+    - itemName: tower-hexagon-roof-secondary
+      thumbnail: {fileID: 2800000, guid: f763b3c92a1db4bb4bfe6c13b066e33b, type: 3}
+      prefab: {fileID: 919132149155446097, guid: fef64489e52d44bd39276690e1130f09, type: 3}
+    - itemName: tower-hexagon-roof
+      thumbnail: {fileID: 2800000, guid: c352025a0a5a745edbb4eff9b212cd50, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 78f4ef52ef6434b5aa3d1ef2e80be42b, type: 3}
+    - itemName: tower-hexagon-top-wood
+      thumbnail: {fileID: 2800000, guid: f100e408b569b4654bd6614ae5d10661, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 69bdd1211de8b4d8eabbde35f97d74b9, type: 3}
+    - itemName: tower-hexagon-top
+      thumbnail: {fileID: 2800000, guid: 9fa33083df1884faeb46a0ea6f58d634, type: 3}
+      prefab: {fileID: 919132149155446097, guid: c88a74f931dff4bbc8eccca6f115bab4, type: 3}
+    - itemName: tower-slant-roof
+      thumbnail: {fileID: 2800000, guid: cf614da2d80a248d898f17f00a922208, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 516e92c69ac294215b28befe9ee275c7, type: 3}
+    - itemName: tower-square-arch
+      thumbnail: {fileID: 2800000, guid: 4a11473905d614dc5bdeb443077fe854, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 6792a4c33a7774b4bbd80a1212664856, type: 3}
+    - itemName: tower-square-base-border
+      thumbnail: {fileID: 2800000, guid: 82d47e9434f574900a0c8e8b093d7b6e, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 744974fe2c56f41d781d1fa506e6e2f0, type: 3}
+    - itemName: tower-square-base-color
+      thumbnail: {fileID: 2800000, guid: 047a6a8253f204388894a9022ee1606c, type: 3}
+      prefab: {fileID: 919132149155446097, guid: b1bd954585b5345c495be0555ea1aa8c, type: 3}
+    - itemName: tower-square-base
+      thumbnail: {fileID: 2800000, guid: 351bbbbad8dbe4a689370a86451e5026, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 4688b35244c82490b9d5fc102ffe685c, type: 3}
+    - itemName: tower-square-mid-color
+      thumbnail: {fileID: 2800000, guid: c6311452e4cc6497e96382e6e24be3b6, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 6f6f09ec1314c4293a5fdb0cc3c8f378, type: 3}
+    - itemName: tower-square-mid-door
+      thumbnail: {fileID: 2800000, guid: d8c15b2df5bc0455988f582b36c189c1, type: 3}
+      prefab: {fileID: 919132149155446097, guid: c08319ba414204ec596722f0f33875a6, type: 3}
+    - itemName: tower-square-mid-open-simple
+      thumbnail: {fileID: 2800000, guid: 54fab7f852d2e4e3dba6c5c5f145ae92, type: 3}
+      prefab: {fileID: 919132149155446097, guid: f9de1651f4e32428dbaa9b2dba26cb46, type: 3}
+    - itemName: tower-square-mid-open
+      thumbnail: {fileID: 2800000, guid: 7866084d276384539ab6608fac1419c0, type: 3}
+      prefab: {fileID: 919132149155446097, guid: ea527d26b15cb484ba0d3750ca4a53b1, type: 3}
+    - itemName: tower-square-mid-windows
+      thumbnail: {fileID: 2800000, guid: 0d998bd58714543639c2db12dfeec6a1, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 8ba2d6be3ea484abc9fa6c59b3289c1a, type: 3}
+    - itemName: tower-square-mid
+      thumbnail: {fileID: 2800000, guid: c482e7cdc8c424fef824867aac869655, type: 3}
+      prefab: {fileID: 919132149155446097, guid: b562590c6aad84091bcefd0c7e0fbd0e, type: 3}
+    - itemName: tower-square-roof
+      thumbnail: {fileID: 2800000, guid: b208e7dd2b23b4b9688f1344e6badf7b, type: 3}
+      prefab: {fileID: 919132149155446097, guid: c430491773abb4f929cb17337a554a0e, type: 3}
+    - itemName: tower-square-top-color
+      thumbnail: {fileID: 2800000, guid: cd889c20accaa48febdd1a1da1c86d17, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 25bfb4175a9984ac69d9fb6dfe9c952e, type: 3}
+    - itemName: tower-square-top-roof-high-windows
+      thumbnail: {fileID: 2800000, guid: cc5c59451f7114ab695758d416f5bdfd, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 2915c134633234b289546ced64229863, type: 3}
+    - itemName: tower-square-top-roof-high
+      thumbnail: {fileID: 2800000, guid: f8168a099db104b638ffe45a6ce9e322, type: 3}
+      prefab: {fileID: 919132149155446097, guid: be6e02c703fc148d38f37a9f68a16f78, type: 3}
+    - itemName: tower-square-top-roof-rounded
+      thumbnail: {fileID: 2800000, guid: cc367bd3867de47bf86af1c628e89f79, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 32371e426439f4c24b2030e0c2608f0f, type: 3}
+    - itemName: tower-square-top-roof
+      thumbnail: {fileID: 2800000, guid: 5a24e101393864c9fac1e363715946b0, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 6984917b847d3400ca5b130ea7ba8082, type: 3}
+    - itemName: tower-square-top
+      thumbnail: {fileID: 2800000, guid: fec825985a4934443be8a85476b3d302, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 098a5829a3bdd4a618daea3397b258b1, type: 3}
+    - itemName: tower-square
+      thumbnail: {fileID: 2800000, guid: f392aab61f8c547378f6b41457a9935f, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 943b9685b07f74b659d34b33027a336c, type: 3}
+    - itemName: tower-top
+      thumbnail: {fileID: 2800000, guid: ce4c670ff2874471ea2f037914f75022, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 81a2c9c75d8fc405baee8aef397f321a, type: 3}
+    - itemName: tree-large
+      thumbnail: {fileID: 2800000, guid: 701cd7643edc04748a727c0a65a9d613, type: 3}
+      prefab: {fileID: 919132149155446097, guid: c00bc6ba31c0f4cb98165d13674a60f6, type: 3}
+    - itemName: tree-log
+      thumbnail: {fileID: 2800000, guid: 1b78431f78cb24579af0a634caef8b80, type: 3}
+      prefab: {fileID: 919132149155446097, guid: f7b4fafa7b68e456a879cf8b777a6376, type: 3}
+    - itemName: tree-small
+      thumbnail: {fileID: 2800000, guid: eb6198b8ef5eb45bcba803ea23282b85, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 8d83397ba03e4444fa3e101e4a8769aa, type: 3}
+    - itemName: tree-trunk
+      thumbnail: {fileID: 2800000, guid: 130fea4dc6d6348fb9269b4bc2e13851, type: 3}
+      prefab: {fileID: 919132149155446097, guid: e4496de77d48646f0977c39fdd90240b, type: 3}
+    - itemName: wall-corner-half-tower
+      thumbnail: {fileID: 2800000, guid: 3f04fb1572b18422d806410013605ddb, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 16818ece7c38f46049f352a7c2caaff2, type: 3}
+    - itemName: wall-corner-half
+      thumbnail: {fileID: 2800000, guid: 99f8463921c134ad4b44afc640c0d02d, type: 3}
+      prefab: {fileID: 919132149155446097, guid: a742f1ac200464fdd933dc5330348f45, type: 3}
+    - itemName: wall-corner-slant
+      thumbnail: {fileID: 2800000, guid: b8bf0597e3f5d466988b22c649f714a0, type: 3}
+      prefab: {fileID: 919132149155446097, guid: fb90a1cf2b82546f4a9ffa2badaa9f43, type: 3}
+    - itemName: wall-corner
+      thumbnail: {fileID: 2800000, guid: 529e8e274d8b143c2ac3e946c41c78fa, type: 3}
+      prefab: {fileID: 919132149155446097, guid: b498e8ffe320e4b33885d9373a3d1131, type: 3}
+    - itemName: wall-doorway
+      thumbnail: {fileID: 2800000, guid: 120176ad00350487fbda7877ac9b0790, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 54e18cf37041e4aa2930ca9c63a799bf, type: 3}
+    - itemName: wall-half-modular
+      thumbnail: {fileID: 2800000, guid: f0c45e75169a64360802581710f2ed13, type: 3}
+      prefab: {fileID: 919132149155446097, guid: a7a0d8d4d8c74467e868c4003bbafb2d, type: 3}
+    - itemName: wall-half
+      thumbnail: {fileID: 2800000, guid: b506b704f1f7c4c139b00fc4aee10909, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 34f1a48a054044f9e81141b085a8e7e2, type: 3}
+    - itemName: wall-narrow-corner
+      thumbnail: {fileID: 2800000, guid: 384067d7a4a904c33a74bb470ae22b63, type: 3}
+      prefab: {fileID: 919132149155446097, guid: d5b412b139f47482796b17f6d8709ffd, type: 3}
+    - itemName: wall-narrow-gate
+      thumbnail: {fileID: 2800000, guid: fb0c7c929e07449e9b9ee399548c6b80, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 3465d852eb30743bb940ca08653031a4, type: 3}
+    - itemName: wall-narrow-stairs-rail
+      thumbnail: {fileID: 2800000, guid: c5c1140d48e004c4082bf28a108e266e, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 194aff2480ead43f3b3c74aebbf6dcf6, type: 3}
+    - itemName: wall-narrow-stairs
+      thumbnail: {fileID: 2800000, guid: 6d1974d1c4a3e476496a7a77a6701d88, type: 3}
+      prefab: {fileID: 919132149155446097, guid: f2e042010e98649749b79397317462bd, type: 3}
+    - itemName: wall-narrow-wood-fence
+      thumbnail: {fileID: 2800000, guid: 7616e9a9e5eda44c6a197978673959ee, type: 3}
+      prefab: {fileID: 919132149155446097, guid: bbac05609f07c41a59ea8441ba80755b, type: 3}
+    - itemName: wall-narrow-wood
+      thumbnail: {fileID: 2800000, guid: 1f8c95962b7334ad4a886706ffad6fdb, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 8b64dd15397c445378c3fc5cb498fdea, type: 3}
+    - itemName: wall-narrow
+      thumbnail: {fileID: 2800000, guid: 9bdaf4248a116483f8e69bcd7efca793, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 1c969148ca7e142a09e35b2de12a95be, type: 3}
+    - itemName: wall-pillar
+      thumbnail: {fileID: 2800000, guid: 758a04d64121b4423a31463371171f7e, type: 3}
+      prefab: {fileID: 919132149155446097, guid: c7b621b94f5ae4ddc97b5958b0956a3f, type: 3}
+    - itemName: wall-stud
+      thumbnail: {fileID: 2800000, guid: 0714cd1b3db9f4e98ac47fbfa24719d0, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 26fa99a3f204d45b38f427b47abae32a, type: 3}
+    - itemName: wall-to-narrow
+      thumbnail: {fileID: 2800000, guid: 02ab18f2f349647e0a5366f2ba89d82d, type: 3}
+      prefab: {fileID: 919132149155446097, guid: e8ce6f7e657d44ecc83a57b0958c209e, type: 3}
+    - itemName: wall
+      thumbnail: {fileID: 2800000, guid: 30ecb07765d864542a689349246d1788, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 56fae1ab76a264317a01792038275f78, type: 3}
   - categoryName: Characters
     items:
     - itemName: Barbarian
@@ -2709,6 +3112,1002 @@ MonoBehaviour:
     - itemName: wine-white
       thumbnail: {fileID: 2800000, guid: ad9521058855b49a2b3c753e9930b78c, type: 3}
       prefab: {fileID: 919132149155446097, guid: 28072f9515a4443a1a68d633a8281583, type: 3}
+  - categoryName: Furniture
+    items:
+    - itemName: bathroomCabinet
+      thumbnail: {fileID: 2800000, guid: 5eb4647e2cd6e4fbeb765472803bac71, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 57730cb4b76f74a42932f090bda580de, type: 3}
+    - itemName: bathroomCabinetDrawer
+      thumbnail: {fileID: 2800000, guid: 147fee5bc7799418dac143327885a3ef, type: 3}
+      prefab: {fileID: 919132149155446097, guid: b2078edd2739e4c259441c22605fcceb, type: 3}
+    - itemName: bathroomMirror
+      thumbnail: {fileID: 2800000, guid: e0894e13350c94ff0b75392a0a81540b, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 146499460bdbd4570abd2abaee53322d, type: 3}
+    - itemName: bathroomSink
+      thumbnail: {fileID: 2800000, guid: f348a86ee06e64336b042975f5cf81be, type: 3}
+      prefab: {fileID: 919132149155446097, guid: ee27b072ca99d4568a268e08328f7562, type: 3}
+    - itemName: bathroomSinkSquare
+      thumbnail: {fileID: 2800000, guid: 37d8b0b63062a4fd9bb2530adf212593, type: 3}
+      prefab: {fileID: 919132149155446097, guid: fe2660e3765e144af92963cfa45278dd, type: 3}
+    - itemName: bathtub
+      thumbnail: {fileID: 2800000, guid: 9da8b0cb4fd464cb38115aed2b740594, type: 3}
+      prefab: {fileID: 919132149155446097, guid: f41da3a42271049e68c624d3215acb0a, type: 3}
+    - itemName: bear
+      thumbnail: {fileID: 2800000, guid: 237ea416523fb4e86bbdb11c2ce315a4, type: 3}
+      prefab: {fileID: 919132149155446097, guid: a464ec943a3c8479d8bee5c257d48033, type: 3}
+    - itemName: bedBunk
+      thumbnail: {fileID: 2800000, guid: cc4bceb4cfb04492fbe61bfee3950c2d, type: 3}
+      prefab: {fileID: 919132149155446097, guid: b3dbca38ba2934a7e89be23b6d2637e5, type: 3}
+    - itemName: bedDouble
+      thumbnail: {fileID: 2800000, guid: 3233d8e0853174bc0a7806f5484d6ee5, type: 3}
+      prefab: {fileID: 919132149155446097, guid: ace8ec953eda54563a0f438bf8d18d91, type: 3}
+    - itemName: bedSingle
+      thumbnail: {fileID: 2800000, guid: 66c216ff36eff45c58a2898eee920578, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 3ce038573d75845afba621bd58ba0d85, type: 3}
+    - itemName: bench
+      thumbnail: {fileID: 2800000, guid: 307fee38a0a524eada35623b623db623, type: 3}
+      prefab: {fileID: 919132149155446097, guid: d8dcaa7b7456b40bf9b50b5708fd702b, type: 3}
+    - itemName: benchCushion
+      thumbnail: {fileID: 2800000, guid: 619dc9ebf2fd24a349b55af2d7ed4890, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 58830e0f6b6f24d7ea61ee517c26fa54, type: 3}
+    - itemName: benchCushionLow
+      thumbnail: {fileID: 2800000, guid: 07fb90e2237924949be785dfd3e82535, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 36b88a44c763c4f19a3213802372a842, type: 3}
+    - itemName: bookcaseClosed
+      thumbnail: {fileID: 2800000, guid: 56a9af408cb194248bfb6594c978b138, type: 3}
+      prefab: {fileID: 919132149155446097, guid: c3c9b18a471af4a61b7818036ac42ce2, type: 3}
+    - itemName: bookcaseClosedDoors
+      thumbnail: {fileID: 2800000, guid: 612bdee2233d14f49bcb1c8f5a0b23bf, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 53e99bb46dcf94a64861c68dbdf4d301, type: 3}
+    - itemName: bookcaseClosedWide
+      thumbnail: {fileID: 2800000, guid: d9282b89003ce40509e0914820b4f95a, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 2c8d8f005d5af43b7b9c383804a834dc, type: 3}
+    - itemName: bookcaseOpen
+      thumbnail: {fileID: 2800000, guid: 56cd497b3280342b0a86401d9a4a66f5, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 30bebb91dcd254512a3d18bb901e8f75, type: 3}
+    - itemName: bookcaseOpenLow
+      thumbnail: {fileID: 2800000, guid: b1f8009e0225b404c96688f0c215665a, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 8ef55d17f039a42d4aa897d19d615b91, type: 3}
+    - itemName: books
+      thumbnail: {fileID: 2800000, guid: b63c5d14a02ad4a849076c35bdc42307, type: 3}
+      prefab: {fileID: 919132149155446097, guid: c7cebc8e7373d42c1ad4a87e8e33bb23, type: 3}
+    - itemName: cabinetBed
+      thumbnail: {fileID: 2800000, guid: 19e7ccfef1c2740d2acc3c05971d94e6, type: 3}
+      prefab: {fileID: 919132149155446097, guid: ed1e38a0bd9e14f2a94aa67be08b6ac1, type: 3}
+    - itemName: cabinetBedDrawer
+      thumbnail: {fileID: 2800000, guid: d88cb17bea8f642cc8a66f778278eca9, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 624843f61cc0f47379224a3fe816ae42, type: 3}
+    - itemName: cabinetBedDrawerTable
+      thumbnail: {fileID: 2800000, guid: ef33315d25c1c4607a018e5c91cb25e6, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 3e619d8cd8fed46f690a0ea1aebc73db, type: 3}
+    - itemName: cabinetTelevision
+      thumbnail: {fileID: 2800000, guid: 48b3504aba78e408f942d55d963ce057, type: 3}
+      prefab: {fileID: 919132149155446097, guid: f960685944ac1448c922c2e0ce280c82, type: 3}
+    - itemName: cabinetTelevisionDoors
+      thumbnail: {fileID: 2800000, guid: e7209771dae314e75aeaa4a821b57fec, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 7467357d951ad41e2bb827eb66e0b1ba, type: 3}
+    - itemName: cardboardBoxClosed
+      thumbnail: {fileID: 2800000, guid: 033fe44bfacf54946847803d20354e4c, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 61cc309a245d347e7b11479f6c954f1c, type: 3}
+    - itemName: cardboardBoxOpen
+      thumbnail: {fileID: 2800000, guid: a94b77c9a1859453aaf48c3990e06bb2, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 1cbff7488257340afbd166cd25b26009, type: 3}
+    - itemName: ceilingFan
+      thumbnail: {fileID: 2800000, guid: 68619a829041b4a949e35d4f330516f2, type: 3}
+      prefab: {fileID: 919132149155446097, guid: df5f75806f8f5410f9f3f670f6217a57, type: 3}
+    - itemName: chair
+      thumbnail: {fileID: 2800000, guid: 7f1419be8d2644f449ddcf2948d787ee, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 796b92a40598f4fe38dc4ef6fb4adc40, type: 3}
+    - itemName: chairCushion
+      thumbnail: {fileID: 2800000, guid: d53b7bc3cf40a4fa88febb3b40ee20b8, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 454a8a9b0a1534093b70ff0293b4637e, type: 3}
+    - itemName: chairDesk
+      thumbnail: {fileID: 2800000, guid: 52dc8098128cb43379def66686e8351a, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 215ca3c32ded4497380fd80145bd9377, type: 3}
+    - itemName: chairModernCushion
+      thumbnail: {fileID: 2800000, guid: 49cffcdee055d42ab9d42698bdaa8850, type: 3}
+      prefab: {fileID: 919132149155446097, guid: d61339246fce6476ca8308d308dc787a, type: 3}
+    - itemName: chairModernFrameCushion
+      thumbnail: {fileID: 2800000, guid: d0d888aeb06ef4405ae2e94d27372a58, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 807c3203324be49628e6ba902db18527, type: 3}
+    - itemName: chairRounded
+      thumbnail: {fileID: 2800000, guid: cc09cd194333a48b18af457f76aba0d1, type: 3}
+      prefab: {fileID: 919132149155446097, guid: d010ef73524cf4e5eae55a419471f1b5, type: 3}
+    - itemName: coatRack
+      thumbnail: {fileID: 2800000, guid: b8dd1b1bfb726409987179d5299abd5f, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 59aa526170b494c4fa1bf6f59560be9a, type: 3}
+    - itemName: coatRackStanding
+      thumbnail: {fileID: 2800000, guid: 6cb7d583c19c34c318a76c57726be890, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 873818e12faa841bdbac44cee1555fed, type: 3}
+    - itemName: computerKeyboard
+      thumbnail: {fileID: 2800000, guid: 4637c9cf5850f40b892d960da15874f5, type: 3}
+      prefab: {fileID: 919132149155446097, guid: eda3107a376114c00b90e8d8fb3a5493, type: 3}
+    - itemName: computerMouse
+      thumbnail: {fileID: 2800000, guid: d3a55983e0d354ec59c78c1ad6f5d29b, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 91b5c1e38907847cdbf7e4fe86736acc, type: 3}
+    - itemName: computerScreen
+      thumbnail: {fileID: 2800000, guid: 605e2a96933364986a7750fb6b4430b3, type: 3}
+      prefab: {fileID: 919132149155446097, guid: c7eccb6fe6e674d0caf452b66e95721c, type: 3}
+    - itemName: desk
+      thumbnail: {fileID: 2800000, guid: f2fe493ca62f74566a078c19c1de41c8, type: 3}
+      prefab: {fileID: 919132149155446097, guid: f611723762f7a4c83a6886eff02caf61, type: 3}
+    - itemName: deskCorner
+      thumbnail: {fileID: 2800000, guid: a0bf991de864b4dc89cbbc6f8be356d1, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 121a4690328e2469c874b38f82da29fc, type: 3}
+    - itemName: doorway
+      thumbnail: {fileID: 2800000, guid: a65cbc93e83074a4695ebad61d7993a8, type: 3}
+      prefab: {fileID: 919132149155446097, guid: f6cb9c811b4ad4491a9945bee68d8257, type: 3}
+    - itemName: doorwayFront
+      thumbnail: {fileID: 2800000, guid: 2d48f06d9d64541df8976788fb477c7a, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 92fe1cf88870f403eb1e3259a2b4c20e, type: 3}
+    - itemName: doorwayOpen
+      thumbnail: {fileID: 2800000, guid: 16fd05bce9ddf4b999dfaf8bb5a6e210, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 09e6b3664f1954c66b9a22c00ccf101e, type: 3}
+    - itemName: dryer
+      thumbnail: {fileID: 2800000, guid: 50ec0ae8b9f4a47dea83e4044592d28a, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 780fb076d085a43fbb899340928ee0d7, type: 3}
+    - itemName: floorCorner
+      thumbnail: {fileID: 2800000, guid: 37653e6d48dbd47bf9785689386b5f46, type: 3}
+      prefab: {fileID: 919132149155446097, guid: bccf3257e5bc04c119cfab9873db8586, type: 3}
+    - itemName: floorCornerRound
+      thumbnail: {fileID: 2800000, guid: 54a47a2a272b74079906ae0e553a2be5, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 9e71aa4ba80b444cc96acd480985dfe2, type: 3}
+    - itemName: floorFull
+      thumbnail: {fileID: 2800000, guid: 1e252168373f64155a2223e8573a1e38, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 08389a795b7f04c10941bae2b4b1277f, type: 3}
+    - itemName: floorHalf
+      thumbnail: {fileID: 2800000, guid: 1503a6418f25447779a696406615eda9, type: 3}
+      prefab: {fileID: 919132149155446097, guid: ab26cc3c3b0374d128dc88fba139ad54, type: 3}
+    - itemName: hoodLarge
+      thumbnail: {fileID: 2800000, guid: 0624d1a6296494966993a328a65d6d0e, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 127d8370cda5e4b06bebb7ec2bbcfdc4, type: 3}
+    - itemName: hoodModern
+      thumbnail: {fileID: 2800000, guid: 0524b55d5c9064f7dac0a35d465a8507, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 5e722cc2236fd4e2a9b9a1c271c5ad71, type: 3}
+    - itemName: kitchenBar
+      thumbnail: {fileID: 2800000, guid: 6bc0905d324f9480b9ea279c56d08c00, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 5e806efeadc2f492289c6d9c6d8e283a, type: 3}
+    - itemName: kitchenBarEnd
+      thumbnail: {fileID: 2800000, guid: 8e027bca5a88242619784363d08eb5cc, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 18b58d2579b6d48779b42a8d78d31282, type: 3}
+    - itemName: kitchenBlender
+      thumbnail: {fileID: 2800000, guid: 113cdeff584f5406b8011cd9a62b0d53, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 68650c801e6934243a903da2b9099028, type: 3}
+    - itemName: kitchenCabinet
+      thumbnail: {fileID: 2800000, guid: 943de724a7d3c4f3d95f8250c9e93255, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 64013774494a943cba3419cb7b7ff4f8, type: 3}
+    - itemName: kitchenCabinetCornerInner
+      thumbnail: {fileID: 2800000, guid: 19ee22f96a86244c1b1752b851171468, type: 3}
+      prefab: {fileID: 919132149155446097, guid: fc40ed7d274fc48b9b4ac631656984de, type: 3}
+    - itemName: kitchenCabinetCornerRound
+      thumbnail: {fileID: 2800000, guid: 34d46706bbcac47c5958ff24a3fa92e1, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 3fc74a00b6d144068b78a57b1e3df3f1, type: 3}
+    - itemName: kitchenCabinetDrawer
+      thumbnail: {fileID: 2800000, guid: 845a51a466842481cab1949d4685b4d7, type: 3}
+      prefab: {fileID: 919132149155446097, guid: f1cc8b37389404988904daf1604399e2, type: 3}
+    - itemName: kitchenCabinetUpper
+      thumbnail: {fileID: 2800000, guid: a32e90756eba4442e8cc716569863410, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 34674c9ccbeb14c90b6e318947a8f996, type: 3}
+    - itemName: kitchenCabinetUpperCorner
+      thumbnail: {fileID: 2800000, guid: 14415d9f97cd74709aab87509780989b, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 3b53120856781483b8e80bba14acd430, type: 3}
+    - itemName: kitchenCabinetUpperDouble
+      thumbnail: {fileID: 2800000, guid: 7a32635af7def45a3bcbc099b2a70941, type: 3}
+      prefab: {fileID: 919132149155446097, guid: cd32ca979868a479eaa974521e9cf947, type: 3}
+    - itemName: kitchenCabinetUpperLow
+      thumbnail: {fileID: 2800000, guid: 3f081c6330c724af6af670f3d5da34e6, type: 3}
+      prefab: {fileID: 919132149155446097, guid: c99bddd056a84491ab5656a84f0b29bd, type: 3}
+    - itemName: kitchenCoffeeMachine
+      thumbnail: {fileID: 2800000, guid: e77bf83b1708642438185b7510490eb5, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 3c75729d25b3143b58c9d0661fb7853a, type: 3}
+    - itemName: kitchenFridge
+      thumbnail: {fileID: 2800000, guid: a1ddb5fcdeb124757960d11ff4937dcb, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 3d985a1328484467e833ea389321a52e, type: 3}
+    - itemName: kitchenFridgeBuiltIn
+      thumbnail: {fileID: 2800000, guid: 45ce4dbf4f5394ff783808a11364def3, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 1d49e096700eb43dd90ac08f91234faa, type: 3}
+    - itemName: kitchenFridgeLarge
+      thumbnail: {fileID: 2800000, guid: 197020680f3a34d08b788b0df3a6cb0d, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 6b14a2ace919b492dafe7f75eacdab5e, type: 3}
+    - itemName: kitchenFridgeSmall
+      thumbnail: {fileID: 2800000, guid: e49344ecf42204c1989f6c7bb03c07c8, type: 3}
+      prefab: {fileID: 919132149155446097, guid: bd82802b15cca4904b0a2fafbbd83cf8, type: 3}
+    - itemName: kitchenMicrowave
+      thumbnail: {fileID: 2800000, guid: 3e3479e5ddd334d0f895248ef0342069, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 6216c6f984a7d4fe38a4d9980b3ce34f, type: 3}
+    - itemName: kitchenSink
+      thumbnail: {fileID: 2800000, guid: d4f1666f7f2ef424bafbbcac55d35c75, type: 3}
+      prefab: {fileID: 919132149155446097, guid: f265f7ba172d348e18e324435790ad3d, type: 3}
+    - itemName: kitchenStove
+      thumbnail: {fileID: 2800000, guid: 15996ffe00a08422ba0797d9f85fe3e8, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 59caab13ee3dc4d779949956a0af624c, type: 3}
+    - itemName: kitchenStoveElectric
+      thumbnail: {fileID: 2800000, guid: 22599acc593534029a33bef1841e12d0, type: 3}
+      prefab: {fileID: 919132149155446097, guid: cb4bdf67366f847bfaa0b509a8674c2e, type: 3}
+    - itemName: lampRoundFloor
+      thumbnail: {fileID: 2800000, guid: 84e88bc34668742f4b81085ce05dfef2, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 817a790cf7f0b47948b52069a3ebb597, type: 3}
+    - itemName: lampRoundTable
+      thumbnail: {fileID: 2800000, guid: 557aff40092c94ccb8b8f7ad4fb88dfa, type: 3}
+      prefab: {fileID: 919132149155446097, guid: fe3a550a5fb434f5a920888a0257960a, type: 3}
+    - itemName: lampSquareCeiling
+      thumbnail: {fileID: 2800000, guid: 34abc9c36bfda48b89df7c3b63883551, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 3275c1bd541f042ae980b0ba0be4e929, type: 3}
+    - itemName: lampSquareFloor
+      thumbnail: {fileID: 2800000, guid: 0c221c0eaa01d492a8d78de8f5f1d2a5, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 8fd75c86e35c44eeca9756345682ee7e, type: 3}
+    - itemName: lampSquareTable
+      thumbnail: {fileID: 2800000, guid: 757c2649addf3458e8e5f73ced275394, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 2c6b0004550a94594bb19c71b8299d1c, type: 3}
+    - itemName: lampWall
+      thumbnail: {fileID: 2800000, guid: bb593874bc9034af2b16001a1101b9a0, type: 3}
+      prefab: {fileID: 919132149155446097, guid: ab6e0241f1c334c65baf75395bce6a3b, type: 3}
+    - itemName: laptop
+      thumbnail: {fileID: 2800000, guid: 8b3af326b2a4e45d9ac563c46e73f80c, type: 3}
+      prefab: {fileID: 919132149155446097, guid: cd5f039dc742c4cf6b4e6266e8410baf, type: 3}
+    - itemName: loungeChair
+      thumbnail: {fileID: 2800000, guid: 3b94f2f7d4ee04056a89f0c80c9dfb5e, type: 3}
+      prefab: {fileID: 919132149155446097, guid: e478ed366ab6b49acb122b9352f3a852, type: 3}
+    - itemName: loungeChairRelax
+      thumbnail: {fileID: 2800000, guid: 12aa24c3dddf348be9b5dfcb52a04cb7, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 6311171ba47a94b60bf4f6be353a34d1, type: 3}
+    - itemName: loungeDesignChair
+      thumbnail: {fileID: 2800000, guid: 242944a8a625e41debb0ac94ad907c00, type: 3}
+      prefab: {fileID: 919132149155446097, guid: a1281eca3639a4ee9859bd0a02b1b27e, type: 3}
+    - itemName: loungeDesignSofa
+      thumbnail: {fileID: 2800000, guid: c333603cfe7c0413cba303f916f27b9d, type: 3}
+      prefab: {fileID: 919132149155446097, guid: de0f89507b8374f1d8e46c7ea202e67b, type: 3}
+    - itemName: loungeDesignSofaCorner
+      thumbnail: {fileID: 2800000, guid: 2eae43ec0e3d24baaa07977f698d2447, type: 3}
+      prefab: {fileID: 919132149155446097, guid: f87895fe29da54cc499ea9ed6074ea80, type: 3}
+    - itemName: loungeSofa
+      thumbnail: {fileID: 2800000, guid: be634a7d0999b4d65a9679f1c62ee2aa, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 7f1961704b2464d25b5bb7df17675c6f, type: 3}
+    - itemName: loungeSofaCorner
+      thumbnail: {fileID: 2800000, guid: 27028ed3016154059af6b35a0ab2fdc7, type: 3}
+      prefab: {fileID: 919132149155446097, guid: f31f8c7851a83485dbb64aa968bdf993, type: 3}
+    - itemName: loungeSofaLong
+      thumbnail: {fileID: 2800000, guid: 9f35ca65574f0448e9c6fc11abe224ac, type: 3}
+      prefab: {fileID: 919132149155446097, guid: bead5376261a241269097f987523afc6, type: 3}
+    - itemName: loungeSofaOttoman
+      thumbnail: {fileID: 2800000, guid: 42c6fb40398eb4442b21962910f029e0, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 23c5a9a15f82f4b5785e9f3970f8fbbc, type: 3}
+    - itemName: paneling
+      thumbnail: {fileID: 2800000, guid: a3b23c074217b43f6a5e7fe0f5722a56, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 428bbc2db22ca42a2bc27b853869715d, type: 3}
+    - itemName: pillow
+      thumbnail: {fileID: 2800000, guid: f25e7fc53aaeb4a19aa4dd16da771d7e, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 171f3dcafde4141a9bc69e432dd5886e, type: 3}
+    - itemName: pillowBlue
+      thumbnail: {fileID: 2800000, guid: d0ea954e5ba4f47e68080163bc668207, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 4b64dd31931cc4a2fbd692bdc91e8b48, type: 3}
+    - itemName: pillowBlueLong
+      thumbnail: {fileID: 2800000, guid: c74f510afedb149e199ed991411e0fce, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 967bd104e3a624be3b9f180b42d19259, type: 3}
+    - itemName: pillowLong
+      thumbnail: {fileID: 2800000, guid: 7fb397708c1a5448f9977f2739cf12e6, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 6a3d6a2bb6b1743ac877ab1853601729, type: 3}
+    - itemName: plantSmall1
+      thumbnail: {fileID: 2800000, guid: 906c7ed0315f644f889f84022eaa9696, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 07e7fab7b5603419ab6be7a41d987fd3, type: 3}
+    - itemName: plantSmall2
+      thumbnail: {fileID: 2800000, guid: fc968e05d91a24617a4f2863adf83e37, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 45b55d144740f49c6b1b808f70f216ad, type: 3}
+    - itemName: plantSmall3
+      thumbnail: {fileID: 2800000, guid: 59cfa9f0c5e7a4005841e541a40668ec, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 07904afa5a3754df4941117c7ad9c833, type: 3}
+    - itemName: pottedPlant
+      thumbnail: {fileID: 2800000, guid: 9b0f4ef2a9efe4a798339817fb40f518, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 3df38e563bde54a5cbf8d1abd0278d57, type: 3}
+    - itemName: radio
+      thumbnail: {fileID: 2800000, guid: 8af0f3af4dbbc4165b08023542e85616, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 8254044d1776d4b1a8208e8f2a313d47, type: 3}
+    - itemName: rugDoormat
+      thumbnail: {fileID: 2800000, guid: 57084d0a66a894b248b9ade16b376063, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 39f8804f3a58b4f43889c39cf04eabbf, type: 3}
+    - itemName: rugRectangle
+      thumbnail: {fileID: 2800000, guid: 2bc3991e5819449df98baf42a5344a7e, type: 3}
+      prefab: {fileID: 919132149155446097, guid: f76fca2e3038644daae60f76991f6026, type: 3}
+    - itemName: rugRound
+      thumbnail: {fileID: 2800000, guid: fae90c8d853e64d86800fd50ed449df6, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 39703912b7959474eb884264f20a0d03, type: 3}
+    - itemName: rugRounded
+      thumbnail: {fileID: 2800000, guid: 7779c6054455f4531a9a476723c7343e, type: 3}
+      prefab: {fileID: 919132149155446097, guid: a20ad32e1aac848c5a3c8f9e2ab0c4d5, type: 3}
+    - itemName: rugSquare
+      thumbnail: {fileID: 2800000, guid: 58f7bdef302d945dc9e6bd38d0b0066a, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 1593b991df1b34623973f588a458d9d7, type: 3}
+    - itemName: shower
+      thumbnail: {fileID: 2800000, guid: 8ee362ce748254f32b8262eaa3883b51, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 2fec1022e597540e9ba1f6fd640cc938, type: 3}
+    - itemName: showerRound
+      thumbnail: {fileID: 2800000, guid: 48ae01691cb584ccd93f96a9c520e7d7, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 0039cee4f0bfe42059e3f6fb60a802d5, type: 3}
+    - itemName: sideTable
+      thumbnail: {fileID: 2800000, guid: 997ec524d53864eaabf08ae1f4e77928, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 2d7ea2b9bcacc4ed8bbf04df89fa96e9, type: 3}
+    - itemName: sideTableDrawers
+      thumbnail: {fileID: 2800000, guid: 45ecd2cffee894890acc0d1141b6b86f, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 875f3ea8b51b347e2b991032ddc5f2ca, type: 3}
+    - itemName: speaker
+      thumbnail: {fileID: 2800000, guid: 313c33336d3714d17a50464dcd7bc612, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 6e53c7e007ef048d9897dedcdcc3d4e9, type: 3}
+    - itemName: speakerSmall
+      thumbnail: {fileID: 2800000, guid: edd70f126187d48e797ca9ba9f5055c4, type: 3}
+      prefab: {fileID: 919132149155446097, guid: d83cae14ea0cf4930b02971fd37e78e0, type: 3}
+    - itemName: stairs
+      thumbnail: {fileID: 2800000, guid: ee796c5f7668b446081378a67fef9f45, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 108967c67d4fd432089ce4d4cc09fe32, type: 3}
+    - itemName: stairsCorner
+      thumbnail: {fileID: 2800000, guid: 80b5531906318423ba24b8c7b261cfb0, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 8f028dd4446f34b3a8c25a84b7f5bd87, type: 3}
+    - itemName: stairsOpen
+      thumbnail: {fileID: 2800000, guid: 47953ec07658340ab9e227ebf4bf59f6, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 7b4b87899b49448ccbc868fc82a35b67, type: 3}
+    - itemName: stairsOpenSingle
+      thumbnail: {fileID: 2800000, guid: fdfdbc082f5914865868ee1423c24d8a, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 60c898ee86bdf4276aff82a604a2aace, type: 3}
+    - itemName: stoolBar
+      thumbnail: {fileID: 2800000, guid: 7e4aaebe457d74a848ba8b563cd225b2, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 5f8534f485b2846beba4682c9a2505b5, type: 3}
+    - itemName: stoolBarSquare
+      thumbnail: {fileID: 2800000, guid: 65d4207ce10da46ebaff980e7df76821, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 53e1272421c3b4f15afa845f7161b6a4, type: 3}
+    - itemName: table
+      thumbnail: {fileID: 2800000, guid: 9f378ef9dae4a4499ba0af4fe79d5ef5, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 3c891fa7d35194ac1b60030aa2a3aadf, type: 3}
+    - itemName: tableCloth
+      thumbnail: {fileID: 2800000, guid: 6374bc67519c740e1950a5285160cfd0, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 332fd415a48c648fa8d72fc13cd05fb7, type: 3}
+    - itemName: tableCoffee
+      thumbnail: {fileID: 2800000, guid: 03c18de68f5a143088f71652e7cb2358, type: 3}
+      prefab: {fileID: 919132149155446097, guid: b82c7f6de018e41ae9e4cef6577d5811, type: 3}
+    - itemName: tableCoffeeGlass
+      thumbnail: {fileID: 2800000, guid: e3fbf055d9ff34cdab13a722a8f6a18d, type: 3}
+      prefab: {fileID: 919132149155446097, guid: a910b3469b3604e05a769fb81ee9f14c, type: 3}
+    - itemName: tableCoffeeGlassSquare
+      thumbnail: {fileID: 2800000, guid: bbf097e4fe174414cb4bd73187089b2c, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 02cbc140ddae94f57b2bff5d8cac1c46, type: 3}
+    - itemName: tableCoffeeSquare
+      thumbnail: {fileID: 2800000, guid: 3db2484283ad9420b9d112dc86788cbd, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 1f2ae8caef7c14353bc50c2834fc29a5, type: 3}
+    - itemName: tableCross
+      thumbnail: {fileID: 2800000, guid: e201e7619fa974081b1e6f9391f4f155, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 76efdd6d1087b4a4f9c85af7c85cb6cc, type: 3}
+    - itemName: tableCrossCloth
+      thumbnail: {fileID: 2800000, guid: 3e7c97818fac74a4bb2e0c1ab6fe57c4, type: 3}
+      prefab: {fileID: 919132149155446097, guid: d99e32010f4b940609421af23afb2ac6, type: 3}
+    - itemName: tableGlass
+      thumbnail: {fileID: 2800000, guid: 68ff86a1b2247459b8b2f124eebaa5f4, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 2e4af169e6d934dec98651e7e28544d0, type: 3}
+    - itemName: tableRound
+      thumbnail: {fileID: 2800000, guid: e4d80367daffd4a3eb011f96641e8f8f, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 9fae0395452184377a4c868b2408c5d0, type: 3}
+    - itemName: televisionAntenna
+      thumbnail: {fileID: 2800000, guid: f72d19c09257f4ba6a435ad59a029d26, type: 3}
+      prefab: {fileID: 919132149155446097, guid: fc405afaea63845c7a48021f515b3257, type: 3}
+    - itemName: televisionModern
+      thumbnail: {fileID: 2800000, guid: c6553865f55b24257921711e3f6feb04, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 7b8c1dde6362541d589593034dc6ba56, type: 3}
+    - itemName: televisionVintage
+      thumbnail: {fileID: 2800000, guid: 4b548b0064b184f23a0a69cba343a607, type: 3}
+      prefab: {fileID: 919132149155446097, guid: b5f05291e3105408e9cfc046097266f3, type: 3}
+    - itemName: toaster
+      thumbnail: {fileID: 2800000, guid: a16981b1a7f724328b95c2d4a7174b02, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 51a1adc2ee4654767919cbc559ce70e4, type: 3}
+    - itemName: toilet
+      thumbnail: {fileID: 2800000, guid: 1db9034a4fb6d4dc7a00a640b84a7864, type: 3}
+      prefab: {fileID: 919132149155446097, guid: a4b7fa4ee95d04ed4b7f7dcc28a4bd13, type: 3}
+    - itemName: toiletSquare
+      thumbnail: {fileID: 2800000, guid: b1504ba5c7cc8476db86951f26f8470b, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 906fc69786c2f42cca9614002e25b05b, type: 3}
+    - itemName: trashcan
+      thumbnail: {fileID: 2800000, guid: ad3e01dbe048d400ba43b3af304a6101, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 0f5641d86c92d4b2c8e2418cc5ec5822, type: 3}
+    - itemName: wall
+      thumbnail: {fileID: 2800000, guid: 30ecb07765d864542a689349246d1788, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 8895f2e391e4540d1b404a3ef90d01cb, type: 3}
+    - itemName: wallCorner
+      thumbnail: {fileID: 2800000, guid: 80c0a0f6479e045128b420e6411bc112, type: 3}
+      prefab: {fileID: 919132149155446097, guid: cc0e4221e887c490ebeed387eb04e27f, type: 3}
+    - itemName: wallCornerRond
+      thumbnail: {fileID: 2800000, guid: 7f844a20fb512400cba04d039c4233d1, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 87f27513023214001b989a0cbb3cd8ff, type: 3}
+    - itemName: wallDoorway
+      thumbnail: {fileID: 2800000, guid: 577f81d45442f48f6ae8b5bf0b9fb434, type: 3}
+      prefab: {fileID: 919132149155446097, guid: b3ee8ad49dd1444a1b7d73b34dc592df, type: 3}
+    - itemName: wallDoorwayWide
+      thumbnail: {fileID: 2800000, guid: d8e49bfb0607948e0a95f8a9042e20af, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 9e1eee8bc59904ffba8b3ca147557599, type: 3}
+    - itemName: wallHalf
+      thumbnail: {fileID: 2800000, guid: 1bdbe6b17296840a0ab27195cc7808f1, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 979ff7d31f4a3467e8db1375de32c60e, type: 3}
+    - itemName: wallWindow
+      thumbnail: {fileID: 2800000, guid: 1ec43d134e20e41ceb891f29e4987f8a, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 92ba176a578d64fcf9f64f15c80550b6, type: 3}
+    - itemName: wallWindowSlide
+      thumbnail: {fileID: 2800000, guid: 087b5dd9715734f8fac3cc6102a69217, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 69229c51a5fca46f0a2dac2cdb8adddd, type: 3}
+    - itemName: washer
+      thumbnail: {fileID: 2800000, guid: 59cb751a816d840f89f5f65903462ba8, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 1eb019efa99774017a05c3c0a4234638, type: 3}
+    - itemName: washerDryerStacked
+      thumbnail: {fileID: 2800000, guid: 23471e920d1464a00b14fe5bf7d753fd, type: 3}
+      prefab: {fileID: 919132149155446097, guid: c2ad5da7e3cec40a6b14c8b1bd8d6503, type: 3}
+  - categoryName: Graveyard
+    items:
+    - itemName: altar-stone
+      thumbnail: {fileID: 2800000, guid: bb183690406034729b2d7f1c2af5ffdd, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 7c4ceed4ef1c4451fa2b79d95d5c71ab, type: 3}
+    - itemName: altar-wood
+      thumbnail: {fileID: 2800000, guid: ceaea4b2af9274fd693c6db71a83715e, type: 3}
+      prefab: {fileID: 919132149155446097, guid: a3fc3a4b9308745128eab5ff31082130, type: 3}
+    - itemName: bench-damaged
+      thumbnail: {fileID: 2800000, guid: 9f68f9aea4e7a423c95bc3f3e31642a3, type: 3}
+      prefab: {fileID: 919132149155446097, guid: d577d55f76e954972ab95844bfe12516, type: 3}
+    - itemName: bench
+      thumbnail: {fileID: 2800000, guid: 307fee38a0a524eada35623b623db623, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 0d33249e8e1c847729b61d7092c9d465, type: 3}
+    - itemName: border-pillar
+      thumbnail: {fileID: 2800000, guid: ec73cd852ff20426d9aac6c28c4142ad, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 1e71532ebdb0d4014a7eee889c63acb4, type: 3}
+    - itemName: brick-wall-curve-small
+      thumbnail: {fileID: 2800000, guid: edbd8a37c69db4fedb2f12f6acc3cff2, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 355307ac0a3c5424bbbe00e5aa09fc7a, type: 3}
+    - itemName: brick-wall-curve
+      thumbnail: {fileID: 2800000, guid: df2741f5fc8ed4186967d9f80c88dd54, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 0001474e59ec64852955519f477b010f, type: 3}
+    - itemName: brick-wall-end
+      thumbnail: {fileID: 2800000, guid: 37252753bec724a4fa34ab44eda4a7d6, type: 3}
+      prefab: {fileID: 919132149155446097, guid: c3d9ce4f582484c88bd263abf14a40f2, type: 3}
+    - itemName: brick-wall
+      thumbnail: {fileID: 2800000, guid: a37134037ff0f44d792ad20066d7e36d, type: 3}
+      prefab: {fileID: 919132149155446097, guid: c086aecd274f94fafb6bd926ad85f964, type: 3}
+    - itemName: candle-multiple
+      thumbnail: {fileID: 2800000, guid: fc19cd519695b49bbaed52824bea2f4a, type: 3}
+      prefab: {fileID: 919132149155446097, guid: e0184d847e6624633b11930fca00e4ce, type: 3}
+    - itemName: candle
+      thumbnail: {fileID: 2800000, guid: 37b9d178dea5e4c869920c7311f0240a, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 5f97464c3f1424efebc4b12ae8f3a9bb, type: 3}
+    - itemName: character-ghost
+      thumbnail: {fileID: 2800000, guid: 2c2043647707a4d65a9d18d816ee6a43, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 2c9a37e5b8ea5400ab170adab9fa20f6, type: 3}
+    - itemName: character-keeper
+      thumbnail: {fileID: 2800000, guid: 13cbf7bbf9f844f548c8f236b1348a64, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 7fe3a8c287b44407cb81a223202eb47d, type: 3}
+    - itemName: character-skeleton
+      thumbnail: {fileID: 2800000, guid: 36c0921bdfa6946e58cfc6ec540a6990, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 4022f134c86594d3eb1239cc844de0c8, type: 3}
+    - itemName: character-vampire
+      thumbnail: {fileID: 2800000, guid: ac5ff516975a948baa485fe12727a6a7, type: 3}
+      prefab: {fileID: 919132149155446097, guid: d4a6130d2b5e74104877bf391f867e21, type: 3}
+    - itemName: character-zombie
+      thumbnail: {fileID: 2800000, guid: fb6ee58e320e74237a10ec827f223174, type: 3}
+      prefab: {fileID: 919132149155446097, guid: ffe4a987e90214d8fb89946cab805797, type: 3}
+    - itemName: coffin-old
+      thumbnail: {fileID: 2800000, guid: 4bea42d4265db4bedb8ddd1d696390bf, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 86b9f3e34174f4bfeb3fc1f8ed54bac4, type: 3}
+    - itemName: coffin
+      thumbnail: {fileID: 2800000, guid: 037281c4995124454bedfa8715b9c3d1, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 2e4e6f5b653eb4d6b9ce9e3d76987313, type: 3}
+    - itemName: column-large
+      thumbnail: {fileID: 2800000, guid: 76b071e6d4b6d4ad18f14fe1581e50a8, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 25786f99f57e9419bb6a05b92611d41f, type: 3}
+    - itemName: cross-column
+      thumbnail: {fileID: 2800000, guid: 70b8708701dca4d1cbb82014f1b2d0b8, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 6fc7a012c88354735aa0ad86b5002d09, type: 3}
+    - itemName: cross-wood
+      thumbnail: {fileID: 2800000, guid: e52c981b7fe484ff886bb699f8fd0d1a, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 080954107f97d49b494a179e64d11643, type: 3}
+    - itemName: cross
+      thumbnail: {fileID: 2800000, guid: 669e2fc3a05714864a26db5a46a2c78e, type: 3}
+      prefab: {fileID: 919132149155446097, guid: ad965d66716c144f5827bc45e8c35d28, type: 3}
+    - itemName: crypt-a
+      thumbnail: {fileID: 2800000, guid: cb8430f0dee0e451b811256efff41313, type: 3}
+      prefab: {fileID: 919132149155446097, guid: af056b4ac426f40629a9c2ffac283780, type: 3}
+    - itemName: crypt-b
+      thumbnail: {fileID: 2800000, guid: 6f1a2ffbc28c045deb460bb46833f05f, type: 3}
+      prefab: {fileID: 919132149155446097, guid: fac2f01aea9f3461090050d0c654b7e2, type: 3}
+    - itemName: crypt-door
+      thumbnail: {fileID: 2800000, guid: 0ed5070751d5e40fd9ff73036e0f5a43, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 8cbadfb53a26b4daca720d5cabbf64fa, type: 3}
+    - itemName: crypt-large-door
+      thumbnail: {fileID: 2800000, guid: e3178d668f1c94312a833bd4e4cf77dc, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 87f3ddda2dd1f48ef91aa1507a81ab04, type: 3}
+    - itemName: crypt-large-roof
+      thumbnail: {fileID: 2800000, guid: b74b0b8a972834b08ae5a9ca204b20c2, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 8a056971a88a145c3b1ee33a9297574e, type: 3}
+    - itemName: crypt-large
+      thumbnail: {fileID: 2800000, guid: bab89bb83a0b94fa880cbe6b118f3ee2, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 71c033fe2f757437e92411551c11a67e, type: 3}
+    - itemName: crypt-small-roof
+      thumbnail: {fileID: 2800000, guid: 8fe78f97b155b4d8e97c7785d0a26f12, type: 3}
+      prefab: {fileID: 919132149155446097, guid: fe2a8b236535547efa1f039b2386c8a9, type: 3}
+    - itemName: crypt-small
+      thumbnail: {fileID: 2800000, guid: 4c21c0caf5093481886147411b013080, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 3f51a4e96035f4722973352c9a61343e, type: 3}
+    - itemName: crypt
+      thumbnail: {fileID: 2800000, guid: 081ef55e0194e4bb89902034597bb450, type: 3}
+      prefab: {fileID: 919132149155446097, guid: bca7fc04456cf416a8504af2da87aa01, type: 3}
+    - itemName: debris-wood
+      thumbnail: {fileID: 2800000, guid: 6c72e648404194172bfbd3553b7913be, type: 3}
+      prefab: {fileID: 919132149155446097, guid: b27212dc08bff4c3b988f903d067324d, type: 3}
+    - itemName: debris
+      thumbnail: {fileID: 2800000, guid: ff678c685243c429880e63a1697f6b64, type: 3}
+      prefab: {fileID: 919132149155446097, guid: d9bedb118d8c04f12b712ad156625a3d, type: 3}
+    - itemName: detail-bowl
+      thumbnail: {fileID: 2800000, guid: eeecac0fc069641b3bb6b38803e10198, type: 3}
+      prefab: {fileID: 919132149155446097, guid: b6b128e58d58948eb91ac9fccb18d9a8, type: 3}
+    - itemName: detail-chalice
+      thumbnail: {fileID: 2800000, guid: f6b66124db95042e9bd9226feb500301, type: 3}
+      prefab: {fileID: 919132149155446097, guid: bd24f955f5e9d403ebf46276a5aeb8fe, type: 3}
+    - itemName: detail-plate
+      thumbnail: {fileID: 2800000, guid: c1487428bc0af4caba76422925873be2, type: 3}
+      prefab: {fileID: 919132149155446097, guid: e2848b6ef83674234b27ae439f9524b1, type: 3}
+    - itemName: fence-damaged
+      thumbnail: {fileID: 2800000, guid: 94439213dd5af4679a5f83ef8cae8370, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 08803a0921438469ea8eca6654f10a3a, type: 3}
+    - itemName: fence-gate
+      thumbnail: {fileID: 2800000, guid: 9b123e5c237194f70bb096791df35974, type: 3}
+      prefab: {fileID: 919132149155446097, guid: dd0c8ee5ccf0546b2bfacc3b5368b698, type: 3}
+    - itemName: fence
+      thumbnail: {fileID: 2800000, guid: 706b591a2e9314bbfab92a1234cddfef, type: 3}
+      prefab: {fileID: 919132149155446097, guid: b20aa2bd6555c48b68d36c08f9239e00, type: 3}
+    - itemName: fire-basket
+      thumbnail: {fileID: 2800000, guid: d234cf744ce87467891a3f910c94117c, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 5824ca0f5aa184b16a6f739029c118ae, type: 3}
+    - itemName: grave-border
+      thumbnail: {fileID: 2800000, guid: d4c8fb711063845179c858f228710a90, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 2c5c3b36818e14bc9bbdfda8fddf70e1, type: 3}
+    - itemName: grave
+      thumbnail: {fileID: 2800000, guid: d77f717adf14844eeb1c4f19867c3485, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 1c66f86c2aba24528a5ec6efc59d8e9f, type: 3}
+    - itemName: gravestone-bevel
+      thumbnail: {fileID: 2800000, guid: c5478bef2628e4adcbdc13828e25f6e0, type: 3}
+      prefab: {fileID: 919132149155446097, guid: a9383d05c9cd84c299a6836b01fd9a2f, type: 3}
+    - itemName: gravestone-broken
+      thumbnail: {fileID: 2800000, guid: 7c60b19ad8b2644388f767bf0801ef93, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 0d45350d539784e42846548aef80dbf9, type: 3}
+    - itemName: gravestone-cross-large
+      thumbnail: {fileID: 2800000, guid: fff1230c9395b46cabcfe5848af5b99d, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 109a7bc29c2b149ad9b9410b0f6aaf26, type: 3}
+    - itemName: gravestone-cross
+      thumbnail: {fileID: 2800000, guid: ba35c924c3b75490aa56e9ae804d45ca, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 2dad9da8e4b084e2a9249260793240ec, type: 3}
+    - itemName: gravestone-debris
+      thumbnail: {fileID: 2800000, guid: 411b26d85729e41cda5548c0e2aa9a30, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 0b306cf1266e14b2ab062b7ee5553aa3, type: 3}
+    - itemName: gravestone-decorative
+      thumbnail: {fileID: 2800000, guid: 675c76f83dcdd483ebe0d7cdc3c8e563, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 70bac3bd7d20a4269ac4cb04e2e29da0, type: 3}
+    - itemName: gravestone-roof
+      thumbnail: {fileID: 2800000, guid: 766e8af4c8cbc456fa9bf9c645606ebb, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 1fd863e595c7646c889bea72191fcb84, type: 3}
+    - itemName: gravestone-round
+      thumbnail: {fileID: 2800000, guid: f6b0e0e9e58da48ada3291c6ccc8a4a1, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 0a2141350a5104a98b200cdbe1d0fd76, type: 3}
+    - itemName: gravestone-wide
+      thumbnail: {fileID: 2800000, guid: 8fc82c7b1888a47eda258ceae8a45879, type: 3}
+      prefab: {fileID: 919132149155446097, guid: e3b3750bce513492285f8ed075c3dd1d, type: 3}
+    - itemName: hay-bale-bundled
+      thumbnail: {fileID: 2800000, guid: 12253c9216318415f84a640e31baf92c, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 9e8f69ab1bbf84c70b9e9eb7c4838007, type: 3}
+    - itemName: hay-bale
+      thumbnail: {fileID: 2800000, guid: a82c2738b106040ceabb4c92d71afb2d, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 5954e0869110b408c8dcd3881f23b5f0, type: 3}
+    - itemName: iron-fence-bar
+      thumbnail: {fileID: 2800000, guid: cdfcd5fd3090c4d83ab54d693e0cadd9, type: 3}
+      prefab: {fileID: 919132149155446097, guid: d9a5818d5e7d94119978c8da61b88728, type: 3}
+    - itemName: iron-fence-border-column
+      thumbnail: {fileID: 2800000, guid: 3ab60f01daec44e4abe18527a68fae01, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 4043477576ce04051a59cff98d68dc6a, type: 3}
+    - itemName: iron-fence-border-curve
+      thumbnail: {fileID: 2800000, guid: 436cba57cf062466e820190cab31a2ee, type: 3}
+      prefab: {fileID: 919132149155446097, guid: c1b00f42cd7714536a5eac166b923671, type: 3}
+    - itemName: iron-fence-border-gate
+      thumbnail: {fileID: 2800000, guid: 85601a70e31494631b51b3ba84e575b3, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 5c59d8052e1ea48c1b08bea448497927, type: 3}
+    - itemName: iron-fence-border
+      thumbnail: {fileID: 2800000, guid: 1a8acc3f359d4411d811bfa870f8bc84, type: 3}
+      prefab: {fileID: 919132149155446097, guid: b5304a094481d4bafa5af07c6529428e, type: 3}
+    - itemName: iron-fence-curve
+      thumbnail: {fileID: 2800000, guid: a7677ad653eea41d99ab3f2292e7ded0, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 530cf2b5c10124851bef870b39108ef0, type: 3}
+    - itemName: iron-fence-damaged
+      thumbnail: {fileID: 2800000, guid: f9985796b7488453e9a1a402e8d94a9b, type: 3}
+      prefab: {fileID: 919132149155446097, guid: bfe4382c1dfc74ff2aa25baec6a0a787, type: 3}
+    - itemName: iron-fence
+      thumbnail: {fileID: 2800000, guid: 9c6483a36ebad45be919924e01816f15, type: 3}
+      prefab: {fileID: 919132149155446097, guid: c2d20bb1a133f4bf48032235685e3d4a, type: 3}
+    - itemName: lantern-candle
+      thumbnail: {fileID: 2800000, guid: 0bea992bf76e044c2b23eabf436bf639, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 5521e9f9f30c14758a8d153240d624ac, type: 3}
+    - itemName: lantern-glass
+      thumbnail: {fileID: 2800000, guid: a4d7bfee8a6fa48b4935dbd4c260a83d, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 4848bd4d11ff1421fb7aa26666553693, type: 3}
+    - itemName: lightpost-all
+      thumbnail: {fileID: 2800000, guid: 98d2bff991b874c37b5cc97a07620557, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 03dea793dd9bf4162aa6af395b401de2, type: 3}
+    - itemName: lightpost-double
+      thumbnail: {fileID: 2800000, guid: 0579e57ce84c54cf284c10530fea0a6f, type: 3}
+      prefab: {fileID: 919132149155446097, guid: ce53241992cf04eaaa715a29480f8428, type: 3}
+    - itemName: lightpost-single
+      thumbnail: {fileID: 2800000, guid: 49775b7da64f54b9892d9a32786067da, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 3b567442f1d514ed3adeb373f6fbdff5, type: 3}
+    - itemName: pillar-large
+      thumbnail: {fileID: 2800000, guid: be47e95f1c5ec46d480819997ee4fda0, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 3e633734dd94947d2a3e5ce25f3288d9, type: 3}
+    - itemName: pillar-obelisk
+      thumbnail: {fileID: 2800000, guid: 6c901005178a24c0a96a7d86725c4e36, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 0c9e4788db7d14657b3f7729c688eea7, type: 3}
+    - itemName: pillar-small
+      thumbnail: {fileID: 2800000, guid: c87f4f6bf5f04444596dd3e83273f233, type: 3}
+      prefab: {fileID: 919132149155446097, guid: c4842660db8514cb4b9219cfcb7021ee, type: 3}
+    - itemName: pillar-square
+      thumbnail: {fileID: 2800000, guid: f66058fd241e54676acdac15dea29feb, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 0a01bad2baad1433cbe95da476a2d6de, type: 3}
+    - itemName: pine-crooked
+      thumbnail: {fileID: 2800000, guid: 92e04c3fcc95148578639eee50918244, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 90340d77fb97e4356b5637f333716b32, type: 3}
+    - itemName: pine-fall-crooked
+      thumbnail: {fileID: 2800000, guid: 2a0df856d0ddd458ebea3bd1b330718c, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 528fffe15b21e4a689a8075849f72ecc, type: 3}
+    - itemName: pine-fall
+      thumbnail: {fileID: 2800000, guid: c3b3dd35b202047689c8b94fb2a3db0b, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 96545273f27564ed19399591439f70d9, type: 3}
+    - itemName: pine
+      thumbnail: {fileID: 2800000, guid: c6f68aa14f4a04806aff8b37605c5758, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 68a419b3f0d9d49bf9ee624ae67b7986, type: 3}
+    - itemName: pumpkin-carved
+      thumbnail: {fileID: 2800000, guid: d464d503ebb6c4294923573a08c7a6fc, type: 3}
+      prefab: {fileID: 919132149155446097, guid: a44b3f58f75b3493cb76ea9b46736697, type: 3}
+    - itemName: pumpkin-tall-carved
+      thumbnail: {fileID: 2800000, guid: 82d336fb615544ce7927e74bb0dc97d9, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 238222264bbc949fabdedd4ccde9501d, type: 3}
+    - itemName: pumpkin-tall
+      thumbnail: {fileID: 2800000, guid: f86aeeb88e23a4e60a8b8f5fd0401a27, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 1dde3c9873f3648c9958369cfdb5a93d, type: 3}
+    - itemName: pumpkin
+      thumbnail: {fileID: 2800000, guid: a7f5c808c04c449cabf43e168eff6d24, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 65a3231d40b69429ba7196e7b4d042c7, type: 3}
+    - itemName: road
+      thumbnail: {fileID: 2800000, guid: aa53ada6b95d7458bb8f6aab28f7bcb4, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 945f4f2e432114097bf74eadb19537ad, type: 3}
+    - itemName: rocks-tall
+      thumbnail: {fileID: 2800000, guid: 34523492f69e04ca282edc317dabda97, type: 3}
+      prefab: {fileID: 919132149155446097, guid: c7b95e6454058456087dbb785c41ae57, type: 3}
+    - itemName: rocks
+      thumbnail: {fileID: 2800000, guid: 1ba22a6376298415682a1458e40c6f66, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 230d161685c074473b48a3143d7f6ae3, type: 3}
+    - itemName: shovel-dirt
+      thumbnail: {fileID: 2800000, guid: 89154821ecafe499b9b48834cdcee91a, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 292a5937539674abeba4b983dbb747f7, type: 3}
+    - itemName: shovel
+      thumbnail: {fileID: 2800000, guid: 82e903b2583c64c939f895b5971d80de, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 0a030f6c95c6643599f333b1e2493443, type: 3}
+    - itemName: stone-wall-column
+      thumbnail: {fileID: 2800000, guid: e8906dc2893df49808e49a5c534b2cb8, type: 3}
+      prefab: {fileID: 919132149155446097, guid: ca2f6424cdbc54548ae121da9ba68523, type: 3}
+    - itemName: stone-wall-curve
+      thumbnail: {fileID: 2800000, guid: 2c3368efe9ced48089a250c66953f201, type: 3}
+      prefab: {fileID: 919132149155446097, guid: e7f250a996e654c23b47f922e298197e, type: 3}
+    - itemName: stone-wall-damaged
+      thumbnail: {fileID: 2800000, guid: 50d64ac4f2e65489ea3e7a1120592c90, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 90142ae9291914d89aab06aad393ddec, type: 3}
+    - itemName: stone-wall
+      thumbnail: {fileID: 2800000, guid: fcd3063b49748443483699abc6e3202a, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 22859cb77cf2f4b729849afd622743c3, type: 3}
+    - itemName: trunk-long
+      thumbnail: {fileID: 2800000, guid: f3b2b3e5c20944e59b25b84dae845f2b, type: 3}
+      prefab: {fileID: 919132149155446097, guid: b9393196d862444aa9e04f5da8c5a25e, type: 3}
+    - itemName: trunk
+      thumbnail: {fileID: 2800000, guid: 609fd0d6257da46f2af07ef728c5d2d7, type: 3}
+      prefab: {fileID: 919132149155446097, guid: a142caf51ad6f45fa9b72e5b08be1305, type: 3}
+    - itemName: urn-round
+      thumbnail: {fileID: 2800000, guid: 62ebf04e9623549dabd3a36a0ca51bdf, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 3dab1437ac6ca4ece9b2bbc82d249860, type: 3}
+    - itemName: urn-square
+      thumbnail: {fileID: 2800000, guid: bd389d1123a2e42caa90ed7773a95a1d, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 7faa4f5ed71f64011b0794e1868f4958, type: 3}
+  - categoryName: Holiday
+    items:
+    - itemName: bench-short
+      thumbnail: {fileID: 2800000, guid: d67db8c06480841c3a478ed82c351fc0, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 582d5a297f2754ed6b42a8d03274b664, type: 3}
+    - itemName: bench
+      thumbnail: {fileID: 2800000, guid: 307fee38a0a524eada35623b623db623, type: 3}
+      prefab: {fileID: 919132149155446097, guid: e1c24222020e14dd18cb0dd1d37920be, type: 3}
+    - itemName: cabin-corner-bottom
+      thumbnail: {fileID: 2800000, guid: 9f42e198f252743b59a77d18571589f1, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 9528f8626cdfe4aa2bb6b5cf3862f384, type: 3}
+    - itemName: cabin-corner-logs
+      thumbnail: {fileID: 2800000, guid: 1ab9dc07c75c14124ae727eca2ef1f76, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 8acfbce698aaf455aa0249c3dee1a224, type: 3}
+    - itemName: cabin-corner
+      thumbnail: {fileID: 2800000, guid: bd38eb5d17ff844e6810d08f67dccabd, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 1f45a4fbfd87a43baa6a063e8e415d88, type: 3}
+    - itemName: cabin-door-rotate
+      thumbnail: {fileID: 2800000, guid: 896d6692b1fd4496cae593f65ebc1cd7, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 75321b842cf28400c82a3f9d9898bd1e, type: 3}
+    - itemName: cabin-doorway-center
+      thumbnail: {fileID: 2800000, guid: df82d6cb787fa48bfb44b1c7dbf9b092, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 93cb1b32d918447c8a62765e572c7078, type: 3}
+    - itemName: cabin-doorway-left
+      thumbnail: {fileID: 2800000, guid: 827a782a2abaf4fa2be901f55fd29136, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 06f970c9f058748299aab316d18b0b54, type: 3}
+    - itemName: cabin-doorway-right
+      thumbnail: {fileID: 2800000, guid: 960ba6a30e3b1453e8349e2ac5c56cd7, type: 3}
+      prefab: {fileID: 919132149155446097, guid: c63cf1ee3c4ea4edd8fff73bb3e295ff, type: 3}
+    - itemName: cabin-doorway
+      thumbnail: {fileID: 2800000, guid: 1f5f7816418784680b3ce2969b4a88b6, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 717410b55354e4e1ebea118215e30484, type: 3}
+    - itemName: cabin-fence
+      thumbnail: {fileID: 2800000, guid: 9a1098847d86d46e7b6add7da2d72b39, type: 3}
+      prefab: {fileID: 919132149155446097, guid: aabc4f81a36014668be92ce620a9cc68, type: 3}
+    - itemName: cabin-overhang-door-rotate
+      thumbnail: {fileID: 2800000, guid: 9e2c9795ec6f04a5eafcc14fa5264018, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 9cd0ffb276dde4a39ae21ef5177a3f60, type: 3}
+    - itemName: cabin-overhang-doorway
+      thumbnail: {fileID: 2800000, guid: 3f6f6c20c04444748a01ad534b04d0e7, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 94e02f6b946074ddca5df1d730b4af21, type: 3}
+    - itemName: cabin-roof-chimney
+      thumbnail: {fileID: 2800000, guid: de0fb6288e304476c9ba5fd6641a74df, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 5fc1374385f2a4a93aa970cdbb4b8165, type: 3}
+    - itemName: cabin-roof-corner
+      thumbnail: {fileID: 2800000, guid: 123efae12be1c4f37a31b092a35fd69d, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 669528b9bd2e043049520769e31f81ef, type: 3}
+    - itemName: cabin-roof-dormer
+      thumbnail: {fileID: 2800000, guid: 3c26f7f42b65c4a1e93d9b57010a7a07, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 1bf5371e9114440889adaffbef9fe9be, type: 3}
+    - itemName: cabin-roof-point
+      thumbnail: {fileID: 2800000, guid: ce1240dfe71ca45ed850fa5f00703f45, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 3f47c10262354498dad576cb26b65d85, type: 3}
+    - itemName: cabin-roof-snow-chimney
+      thumbnail: {fileID: 2800000, guid: b539452d0096c46a088256f4afd5cb62, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 244631e98e09a411494c8699b1721f80, type: 3}
+    - itemName: cabin-roof-snow-corner
+      thumbnail: {fileID: 2800000, guid: 9752f7fbb622843eab1830af274480e4, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 76071a348db6640b0bdcf2984a3d5917, type: 3}
+    - itemName: cabin-roof-snow-dormer
+      thumbnail: {fileID: 2800000, guid: 1f7822cc09dda4f98bd60de803d646ba, type: 3}
+      prefab: {fileID: 919132149155446097, guid: d5b29d17aff0340908e4fcfb57f7c1cf, type: 3}
+    - itemName: cabin-roof-snow-point
+      thumbnail: {fileID: 2800000, guid: dce845f240325422f85b1976b663ea24, type: 3}
+      prefab: {fileID: 919132149155446097, guid: e5ca22408fa0a4b81a14f98aa9d9d161, type: 3}
+    - itemName: cabin-roof-snow
+      thumbnail: {fileID: 2800000, guid: 42ea321393c2c44b88617cd4c54e09a8, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 4d9fa166b1a5b428f9791f1c3f43c57e, type: 3}
+    - itemName: cabin-roof-top
+      thumbnail: {fileID: 2800000, guid: a93c8ac2b0a61494cb23f0a201d4563d, type: 3}
+      prefab: {fileID: 919132149155446097, guid: a6104250c3ef040a8bca515097a91425, type: 3}
+    - itemName: cabin-roof
+      thumbnail: {fileID: 2800000, guid: 5b6f0ba41c5784c268af6a5ab56ef028, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 509b7212d77b8473a9ea781a280d451d, type: 3}
+    - itemName: cabin-wall-low
+      thumbnail: {fileID: 2800000, guid: 37e60545cf4384749936cc6adb35e8f5, type: 3}
+      prefab: {fileID: 919132149155446097, guid: e535500a84e54458894be2d9e2177fd1, type: 3}
+    - itemName: cabin-wall-roof-center
+      thumbnail: {fileID: 2800000, guid: cb681672546c24f52b1f9fe12779fe94, type: 3}
+      prefab: {fileID: 919132149155446097, guid: fa55ac529c1e942a4b31a94159f32c39, type: 3}
+    - itemName: cabin-wall-roof
+      thumbnail: {fileID: 2800000, guid: 06028c4f913684a26b9f1d4aae931c1a, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 4d5ca86e92dc645da8e8f54c765db0dc, type: 3}
+    - itemName: cabin-wall-wreath
+      thumbnail: {fileID: 2800000, guid: 8264189cd6dfe44dc9d1ae5b75c20f3b, type: 3}
+      prefab: {fileID: 919132149155446097, guid: bac1e35c833614614b038ee6ed059cd2, type: 3}
+    - itemName: cabin-wall
+      thumbnail: {fileID: 2800000, guid: f49d64bcea12848b8bf0d4e23ed8a1eb, type: 3}
+      prefab: {fileID: 919132149155446097, guid: a22b468b17838452c8d5645404b115e5, type: 3}
+    - itemName: cabin-window-a
+      thumbnail: {fileID: 2800000, guid: 8902666a8149c4c6ab215372a2f1e33b, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 6da11b105830f4feba60e17c19ed1401, type: 3}
+    - itemName: cabin-window-b
+      thumbnail: {fileID: 2800000, guid: 0aaf78b2520cf4451b0f2da8933f6f2c, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 319a389ca21784042b3b6f7d01377463, type: 3}
+    - itemName: cabin-window-c
+      thumbnail: {fileID: 2800000, guid: 0fa6ccd7739c34321a6a2bd3336ec293, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 40de8bed7cb964fdfacd720e11b38abd, type: 3}
+    - itemName: cabin-window-large
+      thumbnail: {fileID: 2800000, guid: a4c8141f0ed5a4131a39a9862e553370, type: 3}
+      prefab: {fileID: 919132149155446097, guid: f4d55d54bf3bb4f2bbe934dde26d2143, type: 3}
+    - itemName: candy-cane-green
+      thumbnail: {fileID: 2800000, guid: b87c265e596a442e18ea1d22c82aa73d, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 0ffcf28e4cf8c4923b897bf57495cd09, type: 3}
+    - itemName: candy-cane-red
+      thumbnail: {fileID: 2800000, guid: 8ef32c6d85c81440c812df23376ff2bc, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 4a91cca2019014354bf91ca57d95ea68, type: 3}
+    - itemName: festivus-pole
+      thumbnail: {fileID: 2800000, guid: 3f8eb91b640ff49fa89a15b0c74201a6, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 0daf7173b13564cfc9306a84018cae39, type: 3}
+    - itemName: floor-stone
+      thumbnail: {fileID: 2800000, guid: 251cdaf8d93cf4b3fbbd851e3418bf39, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 070066a8e961745eda084931c62ff47b, type: 3}
+    - itemName: floor-wood-snow
+      thumbnail: {fileID: 2800000, guid: a4ef78ce621d7482dbfe41fdf0d278cb, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 322a9efc9655241eeada760958c4c935, type: 3}
+    - itemName: floor-wood
+      thumbnail: {fileID: 2800000, guid: 83759823d34b74cdfb0647395b80a3f5, type: 3}
+      prefab: {fileID: 919132149155446097, guid: cdaa980cb88614027b9b71fce827ecf5, type: 3}
+    - itemName: gingerbread-man
+      thumbnail: {fileID: 2800000, guid: 11f744bf31dc040698db44c17c31bde0, type: 3}
+      prefab: {fileID: 919132149155446097, guid: c3333218d3bfb4ff984c7d13b3af1200, type: 3}
+    - itemName: gingerbread-woman
+      thumbnail: {fileID: 2800000, guid: d711cd0027efc48a09816dc25adcd3cf, type: 3}
+      prefab: {fileID: 919132149155446097, guid: be2295b90cb764c25b351c3aebdd9848, type: 3}
+    - itemName: hanukkah-dreidel
+      thumbnail: {fileID: 2800000, guid: e5b17f52af09a4b478387c3525ce931b, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 3055842a874774319b0ac94ae6eb7876, type: 3}
+    - itemName: hanukkah-menorah-candles
+      thumbnail: {fileID: 2800000, guid: a067ff660baa94dc0aecf17de912402e, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 7197e070f5bed46a6b227b1741818e61, type: 3}
+    - itemName: hanukkah-menorah
+      thumbnail: {fileID: 2800000, guid: 6366c995bc57c4165aeeb301394f3456, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 7e988118042264976b4f54f411f996b5, type: 3}
+    - itemName: kwanzaa-kikombe
+      thumbnail: {fileID: 2800000, guid: c95ebd4a2223742b3b72f1c28f61474e, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 656748f0faef44b2dacc7c7758fbd831, type: 3}
+    - itemName: kwanzaa-kinara-alternative
+      thumbnail: {fileID: 2800000, guid: 40a51cef07d6341b5ae01652f84264e6, type: 3}
+      prefab: {fileID: 919132149155446097, guid: eccdebd0d3d2145bc9670cf28b9fec2e, type: 3}
+    - itemName: kwanzaa-kinara
+      thumbnail: {fileID: 2800000, guid: 55b31862042a94e1a95b4dba4177b744, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 992dbffbaf7504de4afb7027525f1a3c, type: 3}
+    - itemName: lantern-hanging
+      thumbnail: {fileID: 2800000, guid: c6cbbc34c7bfc4f76a8aab65b9171798, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 10608566d348042c2acd0ed95d9200f5, type: 3}
+    - itemName: lantern
+      thumbnail: {fileID: 2800000, guid: e9447fcf49ec8440196a56c9baff8668, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 2073ded59057343dd9243002846983cc, type: 3}
+    - itemName: lights-colored
+      thumbnail: {fileID: 2800000, guid: 03ed765f53b244431ac783ad1198de47, type: 3}
+      prefab: {fileID: 919132149155446097, guid: bc5afecee012f4f1ebf29ccc2453638a, type: 3}
+    - itemName: lights-green
+      thumbnail: {fileID: 2800000, guid: 07c22a08cf8594a81af19cd1a612753f, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 4daa544e41b47462ea584a3369c8c8dd, type: 3}
+    - itemName: lights-red
+      thumbnail: {fileID: 2800000, guid: ab827bd33eec645bda2e453cef1f19c5, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 72521623ed2fc49a09644d2c7f0da9fe, type: 3}
+    - itemName: nutcracker
+      thumbnail: {fileID: 2800000, guid: 6c300bb14c9424c15b6d4611bdb571df, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 54de2239696374e5db0c31fc01346698, type: 3}
+    - itemName: present-a-cube
+      thumbnail: {fileID: 2800000, guid: 25b38e1a41b6e44b996b0d7c0e7b2c1b, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 4ea8de347da024e5d94c0ae864ae4787, type: 3}
+    - itemName: present-a-rectangle
+      thumbnail: {fileID: 2800000, guid: dc371f9a3b45e4975a437d2ff7f8938c, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 71787590c3f404fca89a32c6e140297d, type: 3}
+    - itemName: present-a-round
+      thumbnail: {fileID: 2800000, guid: 926d3728436334dfbaac7237dafcad3e, type: 3}
+      prefab: {fileID: 919132149155446097, guid: f8ef6dd042c984ff9af2943346d9ba16, type: 3}
+    - itemName: present-b-cube
+      thumbnail: {fileID: 2800000, guid: 100a064c781904c69b8251120fef768d, type: 3}
+      prefab: {fileID: 919132149155446097, guid: a1e0bd300de684fcebcd8758598c0553, type: 3}
+    - itemName: present-b-rectangle
+      thumbnail: {fileID: 2800000, guid: 9cbbf0851d3dd492ab92468f3daeaa81, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 41fb6dd6e436945779a340af1deaace6, type: 3}
+    - itemName: present-b-round
+      thumbnail: {fileID: 2800000, guid: 176a541571de742128012c931a40a33b, type: 3}
+      prefab: {fileID: 919132149155446097, guid: aadf005ec6f2849bdb4c4041ff763a4c, type: 3}
+    - itemName: reindeer
+      thumbnail: {fileID: 2800000, guid: 21c222131190e489a9579c547b7eefa3, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 07fc90b59d9c343ecbeca7049e2a05f6, type: 3}
+    - itemName: rocks-large
+      thumbnail: {fileID: 2800000, guid: bb181cffa3e584b508f0c667cad98c02, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 64b8418dfbe254be1b4794b7b24c94d8, type: 3}
+    - itemName: rocks-medium
+      thumbnail: {fileID: 2800000, guid: 8c97e64235c794325a5cb89cdebb41dc, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 70d6982d8d22245e697f8a37c34de196, type: 3}
+    - itemName: rocks-small
+      thumbnail: {fileID: 2800000, guid: e3d4e8ca8df16481f93bfc71531b2fc4, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 079aedc59fa6e42b69e4f18246dc3d24, type: 3}
+    - itemName: sled-long
+      thumbnail: {fileID: 2800000, guid: 1c813ee5fefd348f3b8feb7a2f367e4f, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 62c8a38e0d0fe4b91bb1872a624be4cb, type: 3}
+    - itemName: sled
+      thumbnail: {fileID: 2800000, guid: 727d0b708c22c40eaa7f66e91d5c7f17, type: 3}
+      prefab: {fileID: 919132149155446097, guid: cc1dfa5a9a3944268b3ca92206748e9e, type: 3}
+    - itemName: snow-bunker
+      thumbnail: {fileID: 2800000, guid: 702f589c860c14a579725bc47b8da43a, type: 3}
+      prefab: {fileID: 919132149155446097, guid: a3d997e51b4344f9ab8d6c2989e8ef6c, type: 3}
+    - itemName: snow-flat-large
+      thumbnail: {fileID: 2800000, guid: e630cabc6d6fe4c68a0a57e6bffdb252, type: 3}
+      prefab: {fileID: 919132149155446097, guid: aa966aa6ecf4642a09fa3cb1e1b147a5, type: 3}
+    - itemName: snow-flat
+      thumbnail: {fileID: 2800000, guid: c4b14b09372d94ec9ab73d9fbd4c66c0, type: 3}
+      prefab: {fileID: 919132149155446097, guid: f97d925b07805473da0ec31301747534, type: 3}
+    - itemName: snow-pile
+      thumbnail: {fileID: 2800000, guid: b9a84b3b1f3674c419f6f55cf1f363b3, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 74fbf3d1e699e49a3a9985300e5f0662, type: 3}
+    - itemName: snowflake-a
+      thumbnail: {fileID: 2800000, guid: bd0691964f8724982bd54e544e837bd9, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 7d163129166e24ee2a362a62a4e1ab14, type: 3}
+    - itemName: snowflake-b
+      thumbnail: {fileID: 2800000, guid: f6000642e22a04314962fe0ac7242051, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 96c686ee285f341ee8582726a9a11451, type: 3}
+    - itemName: snowflake-c
+      thumbnail: {fileID: 2800000, guid: 128b3ce07ec92484a90422b7f220baad, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 4899dfbdd451549bb819ef0c5d822420, type: 3}
+    - itemName: snowman-hat
+      thumbnail: {fileID: 2800000, guid: ac8f9624f95924fcebf92a7a07540a39, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 37dd18b7e05b14a5da65103edb4a0d0c, type: 3}
+    - itemName: snowman
+      thumbnail: {fileID: 2800000, guid: a1313cc9e01004007a9cba96aae619a8, type: 3}
+      prefab: {fileID: 919132149155446097, guid: c698995f994914c3a880853061359a74, type: 3}
+    - itemName: sock-green-cane
+      thumbnail: {fileID: 2800000, guid: f2e3cb238f89a48ad809609459b4f592, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 5ce120c2c32dd4c4f9d259ae25eb1f03, type: 3}
+    - itemName: sock-green
+      thumbnail: {fileID: 2800000, guid: 1e7ab969264764bf7a73e5ade1ab21d1, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 624b5075703e240f080211c7b1313a58, type: 3}
+    - itemName: sock-red-cane
+      thumbnail: {fileID: 2800000, guid: 79fc92f2ae7d74ec89424c6c8dc5db06, type: 3}
+      prefab: {fileID: 919132149155446097, guid: d6b8a3c1485a244438483e4a79c1697a, type: 3}
+    - itemName: sock-red
+      thumbnail: {fileID: 2800000, guid: 502e357ee33684bf78c8ec4ab7a94710, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 5da00f21b5b9c435cbf49374a48196c4, type: 3}
+    - itemName: train-locomotive
+      thumbnail: {fileID: 2800000, guid: 15f203b51c7344f8eb0dc518d4a01a2f, type: 3}
+      prefab: {fileID: 919132149155446097, guid: ff949d1187f8d4398b8857652cfa9b8d, type: 3}
+    - itemName: train-tender
+      thumbnail: {fileID: 2800000, guid: 77f299a34cda6431d8034510b1db6a1b, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 5a0c8c5dd446d43e38ef4eb069643032, type: 3}
+    - itemName: train-wagon-flat-short
+      thumbnail: {fileID: 2800000, guid: 0e4b005f19d3f4e50a3d5344970c6eb2, type: 3}
+      prefab: {fileID: 919132149155446097, guid: fc5afc0a294f04495946a50497f3d9b1, type: 3}
+    - itemName: train-wagon-flat
+      thumbnail: {fileID: 2800000, guid: 18c94f97b7aa44703a691c1e29dc5397, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 0a4eceb58c92c42918a1abc1840f6e7d, type: 3}
+    - itemName: train-wagon-logs
+      thumbnail: {fileID: 2800000, guid: acdd03448b9d247a3893d13150d6282b, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 70ebb1fbcbb2c414dba3d6f2c5561c5c, type: 3}
+    - itemName: train-wagon-short
+      thumbnail: {fileID: 2800000, guid: 7a3bfee919b6845cba24c0e34d88a5b8, type: 3}
+      prefab: {fileID: 919132149155446097, guid: dad144f945c7b4556a542c3bfcec56ef, type: 3}
+    - itemName: train-wagon
+      thumbnail: {fileID: 2800000, guid: b5e47811f321b49f989c33335fbd5d3d, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 60b3d6657437242d584dcb5d68cc08be, type: 3}
+    - itemName: trainset-rail-bend
+      thumbnail: {fileID: 2800000, guid: 74b3bc48b8ee24d15a9a021bd00b09cd, type: 3}
+      prefab: {fileID: 919132149155446097, guid: fdfcd8536fe0d4e1a99ac6286547d131, type: 3}
+    - itemName: trainset-rail-corner
+      thumbnail: {fileID: 2800000, guid: c9323cbb3e19a494cad7a2d9b5d2bf01, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 63afb837ddb5a4bd6b9cf70fef77b82f, type: 3}
+    - itemName: trainset-rail-detailed-bend
+      thumbnail: {fileID: 2800000, guid: 4bc3e52a6951b4d5bb6bd947f5991c87, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 5d2569f6a9d9f43469b26dab858cf742, type: 3}
+    - itemName: trainset-rail-detailed-corner
+      thumbnail: {fileID: 2800000, guid: 2ebb852808b834aba8fdd53d93a4d4d4, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 223048f4f60e142759e22e799b4e37e5, type: 3}
+    - itemName: trainset-rail-detailed-straight
+      thumbnail: {fileID: 2800000, guid: 6bd4a2b92582f4372879156dadb23213, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 5a822a5fa324f44e992362557a41813e, type: 3}
+    - itemName: trainset-rail-straight
+      thumbnail: {fileID: 2800000, guid: 180fd9fc5566d4f048c41374eb7978e9, type: 3}
+      prefab: {fileID: 919132149155446097, guid: dae6763e4a22948f0b1b86587b3e927f, type: 3}
+    - itemName: tree-decorated-snow
+      thumbnail: {fileID: 2800000, guid: 22acee8f3066443d3af038b35110a670, type: 3}
+      prefab: {fileID: 919132149155446097, guid: c1dae2682488a4a1eb211ee8e6d4620b, type: 3}
+    - itemName: tree-decorated
+      thumbnail: {fileID: 2800000, guid: ef716cb7e9a61490195c5b7cfe8e2112, type: 3}
+      prefab: {fileID: 919132149155446097, guid: d3003fa8169f947378a89303c1494d0a, type: 3}
+    - itemName: tree-snow-a
+      thumbnail: {fileID: 2800000, guid: b1526deeaffa74d6a907e10a9a9030b6, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 8353bddbb42814179add17136fe8333b, type: 3}
+    - itemName: tree-snow-b
+      thumbnail: {fileID: 2800000, guid: fb16b6b8652604b638dc1df774ac9c9d, type: 3}
+      prefab: {fileID: 919132149155446097, guid: cc43c903c7caa450a896e76988826682, type: 3}
+    - itemName: tree-snow-c
+      thumbnail: {fileID: 2800000, guid: 54dfdb44905a64fbe9add4e2ffdfc83a, type: 3}
+      prefab: {fileID: 919132149155446097, guid: a12f8da41db554c63a151044a49c2ee4, type: 3}
+    - itemName: tree
+      thumbnail: {fileID: 2800000, guid: fbc6ead34c99a43a7ae1dd41fdfb9c91, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 3c96390a42cc24c2cb5429e919968476, type: 3}
+    - itemName: wreath-decorated
+      thumbnail: {fileID: 2800000, guid: 12120aa551e644ee2abbb2c6d98c4fd1, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 56f1f23f3b72448a0b3d5af3e17394de, type: 3}
+    - itemName: wreath
+      thumbnail: {fileID: 2800000, guid: 1f217c5095a6040a99d1591ae6201394, type: 3}
+      prefab: {fileID: 919132149155446097, guid: ac154e5fe5d9445b4b6dedca4f0433b9, type: 3}
   - categoryName: KayKit
     items:
     - itemName: BarrelBlue
@@ -2821,6 +4220,224 @@ MonoBehaviour:
     - itemName: Tree_05
       thumbnail: {fileID: 2800000, guid: adca8303f1a5c4828a607a5c4b380dba, type: 3}
       prefab: {fileID: 9069115365609291303, guid: 60f79905accf3b24fa0114b941f1aac0, type: 3}
+  - categoryName: Pirate
+    items:
+    - itemName: barrel
+      thumbnail: {fileID: 2800000, guid: bbf312466b61a4c50b0f8df0651f929a, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 77d37fe1ce3ba40f0aa8bbeb7aa4dff2, type: 3}
+    - itemName: boat-row-large
+      thumbnail: {fileID: 2800000, guid: b4319d59cb4fd4e71803a330d622dfa7, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 65268c77564b8483db5bba8d9a688a53, type: 3}
+    - itemName: boat-row-small
+      thumbnail: {fileID: 2800000, guid: 579fd091133704a5486cb2b0e3e9c6d9, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 01273ce2beeb44ed28a27f581f67c17f, type: 3}
+    - itemName: bottle-large
+      thumbnail: {fileID: 2800000, guid: 944697efe0d9b4b4fab1b66d2d88cb71, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 7f4a201e9850a42bea2dbeff9c1c6d91, type: 3}
+    - itemName: bottle
+      thumbnail: {fileID: 2800000, guid: aece1783e1bb84feaa0cff00b0a6d8e7, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 7f40ccf6c970445d8a165062ef3b0361, type: 3}
+    - itemName: cannon-ball
+      thumbnail: {fileID: 2800000, guid: 3f62cae1ef914444996e3e786111c97e, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 39cfdbd6d3f9645d68dfb2837a9e7d68, type: 3}
+    - itemName: cannon-mobile
+      thumbnail: {fileID: 2800000, guid: 62689c093cfeb40afaaab39a9cb53458, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 74ebd7fb031b04405a47540413f001ae, type: 3}
+    - itemName: cannon
+      thumbnail: {fileID: 2800000, guid: aaae24c2475294705882b722920ebd2a, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 4d56494f7a5bf4a8794e60f830165ef9, type: 3}
+    - itemName: castle-door
+      thumbnail: {fileID: 2800000, guid: 44101de49aef74a58a1f9c7e6034f2f7, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 5a8596acb467241ef8b054a5c592c3b2, type: 3}
+    - itemName: castle-gate
+      thumbnail: {fileID: 2800000, guid: aac93e5eb17ec437eb0c654427625e35, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 623fa0eb4421f45929f381bc2f4bd197, type: 3}
+    - itemName: castle-wall
+      thumbnail: {fileID: 2800000, guid: 6be2cdf9a519d4df6be6333d5469eb04, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 23726fd1ca93948f48979e7651937541, type: 3}
+    - itemName: castle-window
+      thumbnail: {fileID: 2800000, guid: a8560870ef66042e6bdd16c8b308d5ff, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 13c1fa91fd3de46aa93edc65830bc3ac, type: 3}
+    - itemName: chest
+      thumbnail: {fileID: 2800000, guid: b05a69ab3d5114e7e98d2c37e222425d, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 21f8020d8060d4ad49ef954949772478, type: 3}
+    - itemName: crate-bottles
+      thumbnail: {fileID: 2800000, guid: 114a6f78ea2d24772b398260ab6712ce, type: 3}
+      prefab: {fileID: 919132149155446097, guid: fc465184a6bea4390ba4437b082496c5, type: 3}
+    - itemName: crate
+      thumbnail: {fileID: 2800000, guid: 4a1a77ccac41749ad98cac76a3590d49, type: 3}
+      prefab: {fileID: 919132149155446097, guid: f9324df8474534a489bdd668492a8bd4, type: 3}
+    - itemName: flag-high-pennant
+      thumbnail: {fileID: 2800000, guid: 7a81ba38889a945f9a7829334755ce43, type: 3}
+      prefab: {fileID: 919132149155446097, guid: d8660e694f89d469ea18c1f236346511, type: 3}
+    - itemName: flag-high
+      thumbnail: {fileID: 2800000, guid: 142360b941759492cac5a4933d58db50, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 46f83d85b70db40bebf8a8d46c9a7fb6, type: 3}
+    - itemName: flag-pennant
+      thumbnail: {fileID: 2800000, guid: 9da43b5ac2fb34b3eae529e0b8449a87, type: 3}
+      prefab: {fileID: 919132149155446097, guid: ad5ed397e03124945b2a74ae5cdd11b0, type: 3}
+    - itemName: flag-pirate-high-pennant
+      thumbnail: {fileID: 2800000, guid: 3c02ea71a912d4174a91021163afebbc, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 21d6e9e02926f45df80ae0ccce83a1bf, type: 3}
+    - itemName: flag-pirate-high
+      thumbnail: {fileID: 2800000, guid: 2b8108702e78f44b285486c3ef7783f0, type: 3}
+      prefab: {fileID: 919132149155446097, guid: a45414b894567439984834294b94b737, type: 3}
+    - itemName: flag-pirate-pennant
+      thumbnail: {fileID: 2800000, guid: 07387176cc80c49ad8cad76f858f7ae2, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 5030ee7d8ce474d0eb7b18f25d45ee6c, type: 3}
+    - itemName: flag-pirate
+      thumbnail: {fileID: 2800000, guid: daadac5688c304b99b81b4ecab992d4d, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 382e392bf687844ada879628ca5f9e80, type: 3}
+    - itemName: flag
+      thumbnail: {fileID: 2800000, guid: 8541537270ea645b690a9ebb91b042dd, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 4d84eee99bd774f2881ebab555ba087e, type: 3}
+    - itemName: grass-patch
+      thumbnail: {fileID: 2800000, guid: 009e278c451fc4d8f946a43c915e224a, type: 3}
+      prefab: {fileID: 919132149155446097, guid: bbd74bf2cc13f4bb6818385879977577, type: 3}
+    - itemName: grass-plant
+      thumbnail: {fileID: 2800000, guid: da5f605ac3d6f49f884da47466e04cf6, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 43ef2077c6e164ad294a59ebf90ed728, type: 3}
+    - itemName: grass
+      thumbnail: {fileID: 2800000, guid: a23f563ba773f49fb8f4d57a9bf31d7e, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 2b36feceee789460abc3018caf03a2f1, type: 3}
+    - itemName: hole
+      thumbnail: {fileID: 2800000, guid: a094e2978f0f04a809d84c1adf631e64, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 8fac387e1542a4428ba1da35d0f94056, type: 3}
+    - itemName: mast-ropes
+      thumbnail: {fileID: 2800000, guid: 1a5734acdd55e44f7b09a55477a08944, type: 3}
+      prefab: {fileID: 919132149155446097, guid: fea1754e7754f495483bb277417f9daf, type: 3}
+    - itemName: mast
+      thumbnail: {fileID: 2800000, guid: ab8e7605f5d4a44d3b4fc00f52a5a67b, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 86842c131a0824ab89260f1760715d25, type: 3}
+    - itemName: palm-bend
+      thumbnail: {fileID: 2800000, guid: 91aa70bbe6a1f4f729acd56e66ec8196, type: 3}
+      prefab: {fileID: 919132149155446097, guid: c35f496da86da407aa6ba17792d01429, type: 3}
+    - itemName: palm-detailed-bend
+      thumbnail: {fileID: 2800000, guid: c20de8bcc0186496b8486d5d94883870, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 012adcc1d762e478e81a0e79da929deb, type: 3}
+    - itemName: palm-detailed-straight
+      thumbnail: {fileID: 2800000, guid: ca3b2a1a9a56a42f7b674daabc6e8138, type: 3}
+      prefab: {fileID: 919132149155446097, guid: e67d1c2919e48416283b357872e5443c, type: 3}
+    - itemName: palm-straight
+      thumbnail: {fileID: 2800000, guid: 3a22a3f89c6864831b6279c12878b3ca, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 810105bffe76d44e49352fd204379232, type: 3}
+    - itemName: patch-grass-foliage
+      thumbnail: {fileID: 2800000, guid: 036098baacc1c42bda170b0edcf5e207, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 4917fbb8e7359438690d6f0f42d64877, type: 3}
+    - itemName: patch-grass
+      thumbnail: {fileID: 2800000, guid: 9d860b819727d4156b6f656635836248, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 335f7edcdc0b747dba408997b6c4403b, type: 3}
+    - itemName: patch-sand-foliage
+      thumbnail: {fileID: 2800000, guid: 2bbe0250597674e639ffb86349e3a445, type: 3}
+      prefab: {fileID: 919132149155446097, guid: d881cf336c6584e46926a8ce29e77f5e, type: 3}
+    - itemName: patch-sand
+      thumbnail: {fileID: 2800000, guid: b1baef56cffcf4ad688afcdc068cf445, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 41dbdd3c5be004f8492ee462a8cff540, type: 3}
+    - itemName: platform-planks
+      thumbnail: {fileID: 2800000, guid: 343877765931e4399b75513032344bb3, type: 3}
+      prefab: {fileID: 919132149155446097, guid: b6092a625dee747fc8f8fbf3dc5c7ea5, type: 3}
+    - itemName: platform
+      thumbnail: {fileID: 2800000, guid: 496b2644856d841bc8750b72a934fa72, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 9056c793bf9ea4faeb9933aa4f8d480f, type: 3}
+    - itemName: rocks-a
+      thumbnail: {fileID: 2800000, guid: 6e529676c500e4a128ea9dc248096683, type: 3}
+      prefab: {fileID: 919132149155446097, guid: b160a0a840b3f40cc9cec57d0a0566cb, type: 3}
+    - itemName: rocks-b
+      thumbnail: {fileID: 2800000, guid: 700d9acb6da324f0fbe3c00d2f349559, type: 3}
+      prefab: {fileID: 919132149155446097, guid: bd6c05091ca794373bfb3c974df6cce0, type: 3}
+    - itemName: rocks-c
+      thumbnail: {fileID: 2800000, guid: 847aa003a9ba7462fb74abaa132345b5, type: 3}
+      prefab: {fileID: 919132149155446097, guid: e6f65da0794a64fb7acc28aa285ac642, type: 3}
+    - itemName: rocks-sand-a
+      thumbnail: {fileID: 2800000, guid: cfa858c7d161b484ab1584a586c54283, type: 3}
+      prefab: {fileID: 919132149155446097, guid: ce0d1b7275abf43eb947b57dd10c749b, type: 3}
+    - itemName: rocks-sand-b
+      thumbnail: {fileID: 2800000, guid: 630be114be0b34fd68f02045a08b034a, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 2b3e468e291d049348a541d3d70257ba, type: 3}
+    - itemName: rocks-sand-c
+      thumbnail: {fileID: 2800000, guid: 2337486c3fadc4fe995c3eb6920de042, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 8073f98c85e1c475697ab41880f0d98a, type: 3}
+    - itemName: ship-ghost
+      thumbnail: {fileID: 2800000, guid: 97deacf4a9b6b44238d5561365a241da, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 757dd7850820244558918dc615ccd89a, type: 3}
+    - itemName: ship-large
+      thumbnail: {fileID: 2800000, guid: 665fa261568864b08ad9e51e876910db, type: 3}
+      prefab: {fileID: 919132149155446097, guid: d00a438bc5d2142bda71784f29454c13, type: 3}
+    - itemName: ship-medium
+      thumbnail: {fileID: 2800000, guid: 021e9eb944c974134ae5039468548356, type: 3}
+      prefab: {fileID: 919132149155446097, guid: fb98113ace41f4e108a119f59f7cea04, type: 3}
+    - itemName: ship-pirate-large
+      thumbnail: {fileID: 2800000, guid: c1c84e4fc3cbe48ac9a6909840027f8f, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 0812081b6060c434da4dfdf46f4e909a, type: 3}
+    - itemName: ship-pirate-medium
+      thumbnail: {fileID: 2800000, guid: 8946950a86f9b48268c645cc0dc4b626, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 221891a53cb1e4511a4d94e78317daef, type: 3}
+    - itemName: ship-pirate-small
+      thumbnail: {fileID: 2800000, guid: 9eb355ed7e8dd4c51ac3fa03bbe69ec0, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 4deb1a29a10d144df83f4b2e6d833e34, type: 3}
+    - itemName: ship-small
+      thumbnail: {fileID: 2800000, guid: 469afa066c62c4d9089ee8d2da7123f9, type: 3}
+      prefab: {fileID: 919132149155446097, guid: e886da70aa0de4983a34e6090658a4f7, type: 3}
+    - itemName: ship-wreck
+      thumbnail: {fileID: 2800000, guid: fbb0e1bcba88c4cae880fc800bfbf7c0, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 177d0d9a594934bac81febae7e169134, type: 3}
+    - itemName: structure-fence-sides
+      thumbnail: {fileID: 2800000, guid: 68fc5864508c14b64937c2443de7c434, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 6d6d5783eaa80425eb8508aa610e37af, type: 3}
+    - itemName: structure-fence
+      thumbnail: {fileID: 2800000, guid: 0bbff4982989d4a2fb50da0d0e2ce56b, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 4c57d462ecdbb4c62b53806f6af4b5d0, type: 3}
+    - itemName: structure-platform-dock-small
+      thumbnail: {fileID: 2800000, guid: 4e48950532918452d90199b52ab85b04, type: 3}
+      prefab: {fileID: 919132149155446097, guid: d5aa58aad5b2a4e10a69cb098b10b586, type: 3}
+    - itemName: structure-platform-dock
+      thumbnail: {fileID: 2800000, guid: 7e21ffd23226846b797568dfae5f7611, type: 3}
+      prefab: {fileID: 919132149155446097, guid: fb208d00cf4d74d30b1bcf8d47eb034b, type: 3}
+    - itemName: structure-platform-small
+      thumbnail: {fileID: 2800000, guid: 68b444d2d7a384af6ac17456b4425f8b, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 59ebde167b51043fc9930b1fd43f4005, type: 3}
+    - itemName: structure-platform
+      thumbnail: {fileID: 2800000, guid: 6257b9a352ebd413c8545f649fdee007, type: 3}
+      prefab: {fileID: 919132149155446097, guid: e0bd800cf142d45f0b918c8ec1a1a07a, type: 3}
+    - itemName: structure-roof
+      thumbnail: {fileID: 2800000, guid: 24f550629a3dd4483b852b279abda0db, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 220f29e9750754c969db0bd40a13830d, type: 3}
+    - itemName: structure
+      thumbnail: {fileID: 2800000, guid: 1379fdcf55cff4b3ead5d42cd527036b, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 316574cf100334cd89d19097a4ba0eef, type: 3}
+    - itemName: tool-paddle
+      thumbnail: {fileID: 2800000, guid: e6ef1a413b61b477882e95855f615ce5, type: 3}
+      prefab: {fileID: 919132149155446097, guid: b06ae09fe2691413d9cf6c36e5ce37b0, type: 3}
+    - itemName: tool-shovel
+      thumbnail: {fileID: 2800000, guid: e170e8a9a3ee24e9999e159cb7291020, type: 3}
+      prefab: {fileID: 919132149155446097, guid: ff00534f63f1244ccb51a8068e11ff5f, type: 3}
+    - itemName: tower-base-door
+      thumbnail: {fileID: 2800000, guid: a613a1c61ba3b4318823bc4268504b03, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 9049952240861479f80464510380c270, type: 3}
+    - itemName: tower-base
+      thumbnail: {fileID: 2800000, guid: fd343400ade22414286d717ed0dae3ac, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 1787485d75cdf43bd99e794c1a127da2, type: 3}
+    - itemName: tower-complete-large
+      thumbnail: {fileID: 2800000, guid: 1c6888e0c27b449de82cf5bc9b005cf8, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 76f43de4a3dc34677943e4c59d4f9b49, type: 3}
+    - itemName: tower-complete-small
+      thumbnail: {fileID: 2800000, guid: 216948c3d1fa045fc9b91be35d8ab1c3, type: 3}
+      prefab: {fileID: 919132149155446097, guid: e69408efba56842bca48caed86eca25d, type: 3}
+    - itemName: tower-middle-windows
+      thumbnail: {fileID: 2800000, guid: a8ce9886cf6b6418eb1d89dfd3a4cdf5, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 4464910cc91414d99a2002315ceec103, type: 3}
+    - itemName: tower-middle
+      thumbnail: {fileID: 2800000, guid: 64e6a3b8ffc7745ddbd4d95e43b44042, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 64f7e002ab1284d279e826a71fc88635, type: 3}
+    - itemName: tower-roof
+      thumbnail: {fileID: 2800000, guid: 69e8770912eab48bb816229deb66ad70, type: 3}
+      prefab: {fileID: 919132149155446097, guid: b919fe829f32945d6ae90f0cf993dbc1, type: 3}
+    - itemName: tower-top
+      thumbnail: {fileID: 2800000, guid: ce4c670ff2874471ea2f037914f75022, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 0ff1a4c35a07d4dc390855b45dbb1794, type: 3}
+    - itemName: tower-watch
+      thumbnail: {fileID: 2800000, guid: 5e7a24e56774943a9872a4ed6b004677, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 4fee244a9c11442d99ee245f73d3cec1, type: 3}
   - categoryName: Survival
     items:
     - itemName: barrel-open
@@ -3823,7 +5440,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: ccc402f6c83e34fbda41148bb09ee1d8, type: 2}
+  - {fileID: 2100000, guid: 80a3060e1356b46dda2ece1af8ffee62, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
