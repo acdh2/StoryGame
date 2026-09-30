@@ -5,6 +5,8 @@ TagManager:
   serializedVersion: 3
   tags:
   - Handles
+  - CinemachineTarget
+  - SpawnPoint
   layers:
   - Default
   - TransparentFX

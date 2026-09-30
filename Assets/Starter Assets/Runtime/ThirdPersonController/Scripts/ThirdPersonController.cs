@@ -303,7 +303,7 @@ namespace StarterAssets
                 if (_input.jump && _jumpTimeoutDelta <= 0.0f)
                 {
                     // the square root of H * -2 * G = how much velocity needed to reach desired height
-                    _verticalVelocity = Mathf.Sqrt(JumpHeight * -2f * Gravity);
+                    _verticalVelocity = Mathf.Sqrt(JumpHeight * -2.75f * Gravity);
 
                     // update animator if using character
                     if (_hasAnimator)
@@ -338,7 +338,7 @@ namespace StarterAssets
                 }
 
                 // if we are not grounded, do not jump
-                _input.jump = false;
+                //_input.jump = false;
             }
 
             // apply gravity over time if under terminal (multiply by delta time twice to linearly speed up over time)
@@ -346,6 +346,14 @@ namespace StarterAssets
             {
                 _verticalVelocity += Gravity * Time.deltaTime;
             }
+        }
+
+        private void FixedUpdate()
+        {
+            if (!_input.jump && _verticalVelocity > 0.0f)
+            {
+                _verticalVelocity *= 0.9f;
+            }                        
         }
 
         private static float ClampAngle(float lfAngle, float lfMin, float lfMax)

@@ -235,6 +235,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 974238578668270704, guid: c708a3b79cd542b42bbfedb17e213bc1, type: 3}
       insertIndex: -1
       addedObject: {fileID: 8222172171835692327}
+    - targetCorrespondingSourceObject: {fileID: 974238578668270704, guid: c708a3b79cd542b42bbfedb17e213bc1, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5805637306043059000}
   m_SourcePrefab: {fileID: 100100000, guid: c708a3b79cd542b42bbfedb17e213bc1, type: 3}
 --- !u!4 &1247384274817962636 stripped
 Transform:
@@ -285,6 +288,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StarterAssets.PlayerControlBlocker
   controlsActive: 1
+--- !u!114 &5805637306043059000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4831881815639854308}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44b06fbe56ea14791b30b57def1e2286, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RespawnBehaviour
+  spawnPoint: {fileID: 0}
+  cinemachineCamera: {fileID: 0}
+  fallThreshold: -10
 --- !u!114 &4831881815639854312 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 974238578668270716, guid: c708a3b79cd542b42bbfedb17e213bc1, type: 3}

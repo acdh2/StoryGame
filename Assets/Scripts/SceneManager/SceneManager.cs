@@ -128,7 +128,7 @@ public class SceneManager : MonoBehaviour
 
         GameObject newObject = Instantiate(itemData.prefab, spawnPosition, Quaternion.identity);
         newObject.transform.parent = transform;
-        newObject.name = itemData.itemName;
+        newObject.name = "default";//itemData.itemName;
         SetLayerRecursively(newObject, LayerMask.NameToLayer("SelectableObjects"));
 
         ObjectIdentifier identifier = newObject.GetComponent<ObjectIdentifier>();

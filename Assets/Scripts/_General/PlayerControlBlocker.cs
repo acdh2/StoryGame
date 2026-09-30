@@ -31,7 +31,7 @@ namespace StarterAssets
         {
             //SetControlsActive(controlsActive);
 
-#if UNITY_WEBGL
+#if UNITY_WEBGL && !UNITY_EDITOR
         // disable WebGLInput.stickyCursorLock so if the browser unlocks the cursor (with the ESC key) the cursor will unlock in Unity
         WebGLInput.stickyCursorLock = false;
 #endif
@@ -132,10 +132,18 @@ namespace StarterAssets
             return false;
         }      
 
-#if UNITY_WEBGL
+#if UNITY_WEBGL && !UNITY_EDITOR
         void Update()
         {
             UnityEngine.Cursor.visible = (UnityEngine.Cursor.lockState == CursorLockMode.None);
+        }
+#elif UNITY_WEBGL && UNITY_EDITOR
+        void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                SetControlsActive(false);
+            }
         }
 #endif
 
