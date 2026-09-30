@@ -8,7 +8,6 @@ public class CommandListController : UIControllerBase
     public event Action OnUIReady;
 
     public EditorCameraController editorCameraController;
-    public ObjectSelector objectSelector;
     public StoryDataStore dataStore;
     public SceneManager sceneManager;
 
@@ -409,16 +408,10 @@ private void RebuildUI()
     private void DisableEditorCamera() 
     {
         if (editorCameraController != null) editorCameraController.enabled = false;
-        if (objectSelector != null)
-        {
-            objectSelector.SelectObject(null);
-            objectSelector.enabled = false;
-        }
     }
 
     private void EnableEditorCamera()
     {
         if (editorCameraController != null) editorCameraController.enabled = true;
-        if (objectSelector != null) objectSelector.enabled = true;
     }
 }

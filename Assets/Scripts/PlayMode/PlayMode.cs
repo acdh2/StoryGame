@@ -7,7 +7,6 @@ using UnityEngine.UIElements;
 public class PlayMode : UIControllerBase
 {
     public GameObject editorCamera;
-    public ObjectSelector objectSelector;
 
     public GameConfiguration gameConfiguration;
 
@@ -44,21 +43,12 @@ public class PlayMode : UIControllerBase
     {
         if (editorCamera != null)
             editorCamera.SetActive(false);
-
-        if (objectSelector != null) {
-            objectSelector.SelectObject(null);
-            objectSelector.gameObject.SetActive(false);
-        }
     }
 
     private void EnableEditorCamera()
     {
         if (editorCamera != null) {
             editorCamera.SetActive(true);
-        }
-
-        if (objectSelector != null) {
-            objectSelector.gameObject.SetActive(true);
         }
     }
 

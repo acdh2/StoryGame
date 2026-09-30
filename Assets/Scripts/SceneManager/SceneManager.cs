@@ -125,7 +125,7 @@ public class SceneManager : MonoBehaviour
         }
     }
 
-    public GameObject SpawnAndRegister(LevelObjectPalette.LevelItemData itemData, Vector3 spawnPosition, ObjectSelector selector)
+    public GameObject SpawnAndRegister(LevelObjectPalette.LevelItemData itemData, Vector3 spawnPosition)
     {
         if (itemData.prefab == null) return null;
 
@@ -141,7 +141,7 @@ public class SceneManager : MonoBehaviour
         }
         identifier.SetPrefabId(itemData.itemName);
 
-        selector?.SelectObject(newObject);
+        objectSelector?.SelectObject(newObject);
 
         SaveCurrentScene();
         return newObject;

@@ -20,8 +20,11 @@ public class ObjectSelector : MonoBehaviour
     private LayerMask _handleLayer;
 
     private int currentHandleType = 0;
+    private bool isEnabled = false;
 
     public GameObject SelectedObject => _currentTarget != null ? _currentTarget.gameObject : null;
+
+    private GameObject lastSelected = null;
 
     void Start()
     {
@@ -32,11 +35,26 @@ public class ObjectSelector : MonoBehaviour
         _handleLayer = LayerMask.GetMask("TransformHandle");
     }
 
+    public void SetEnabled(bool enable)
+    {
+        if (enable)
+        {
+            SelectObject(lastSelected);
+        } else
+        {
+            lastSelected = SelectedObject;
+            ClearHandleTarget();
+        }
+        isEnabled = enable;
+    }
+
     void Update() 
     {
-        if (Input.GetMouseButtonDown(0)) 
-        {
-            TrySelectObject();
+        if (isEnabled) {
+            if (Input.GetMouseButtonDown(0)) 
+            {
+                TrySelectObject();
+            }
         }
     }
 

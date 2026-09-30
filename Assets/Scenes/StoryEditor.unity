@@ -447,6 +447,7 @@ MonoBehaviour:
     - {fileID: 2100000, guid: 71a959ab94046425eb1d29ff64b3a754, type: 2}
     - {fileID: 2100000, guid: 8bc80ba0c1d6d4616a3df6e36f0bb6f3, type: 2}
     - {fileID: 2100000, guid: c7fd4929fc719476c98421e3e6af8b1f, type: 2}
+    - {fileID: 2100000, guid: 2f78c43b2d96c4b87b206a49fc3c982c, type: 2}
 --- !u!114 &45334832
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -972,7 +973,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayMode
   editorCamera: {fileID: 2000960781}
-  objectSelector: {fileID: 330585548}
   gameConfiguration: {fileID: 5086135}
 --- !u!114 &1361484488
 MonoBehaviour:
@@ -1180,7 +1180,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CommandListController
   editorCameraController: {fileID: 2000960783}
-  objectSelector: {fileID: 330585548}
   dataStore: {fileID: 997034306}
   sceneManager: {fileID: 997034304}
   itemTemplate: {fileID: 9197481963319205126, guid: 3c158910d6d49441a9cb1393d3f566d7, type: 3}
