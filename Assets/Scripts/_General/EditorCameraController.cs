@@ -15,6 +15,8 @@ public class EditorCameraController : MonoBehaviour
     private Vector3 originalPosition = Vector3.zero;
     private Quaternion originalRotation = Quaternion.identity;
 
+    private Vector3 velocity = Vector3.zero;
+
     private void Awake()
     {
         transform.GetPositionAndRotation(out originalPosition, out originalRotation);
@@ -29,6 +31,10 @@ public class EditorCameraController : MonoBehaviour
         inputActions.Editor.Enable();
         inputActions.Editor.Look.performed += OnLookPerformed;
         inputActions.Editor.Zoom.performed += OnZoomPerformed;
+        inputActions.Editor.Move.performed += OnMovePerformed;
+        inputActions.Editor.Move.canceled += OnMoveCanceled;
+        inputActions.Editor.Lift.performed += OnLiftPerformed;
+        inputActions.Editor.Lift.canceled += OnLiftCanceled;
         inputActions.Editor.ResetView.performed += OnResetViewPerformed;
     }
 
@@ -36,6 +42,10 @@ public class EditorCameraController : MonoBehaviour
     {
         inputActions.Editor.Look.performed -= OnLookPerformed;
         inputActions.Editor.Zoom.performed -= OnZoomPerformed;
+        inputActions.Editor.Move.performed -= OnMovePerformed;
+        inputActions.Editor.Move.canceled -= OnMoveCanceled;
+        inputActions.Editor.Lift.performed -= OnLiftPerformed;
+        inputActions.Editor.Lift.canceled -= OnLiftCanceled;
         inputActions.Editor.ResetView.performed -= OnResetViewPerformed;
         inputActions.Editor.Disable();
     }
@@ -44,74 +54,60 @@ public class EditorCameraController : MonoBehaviour
     {
     }
 
+    private void OnLiftPerformed(InputAction.CallbackContext context)
+    {
+        Vector2 moveInput = context.ReadValue<Vector2>();
+        velocity = new Vector3(velocity.x, moveInput.y, velocity.z);
+    }
+
+    private void OnLiftCanceled(InputAction.CallbackContext context)
+    {
+        Vector2 moveInput = context.ReadValue<Vector2>();
+        velocity = new Vector3(velocity.x, moveInput.y, velocity.z);
+    }
+
+    private void OnMovePerformed(InputAction.CallbackContext context)
+    {
+        Vector2 moveInput = context.ReadValue<Vector2>();
+        velocity = new Vector3(moveInput.x, velocity.y, moveInput.y);
+    }
+
+    private void OnMoveCanceled(InputAction.CallbackContext context)
+    {
+        Vector2 moveInput = context.ReadValue<Vector2>();
+        velocity = new Vector3(moveInput.x, velocity.y, moveInput.y);
+    }    
+
+    private void FixedUpdate()
+    {
+        if (velocity.magnitude > 0.01f) {
+            transform.Translate(velocity, Space.Self);
+            //velocity *= 0.9f;
+        }
+    }
+
     private void OnLookPerformed(InputAction.CallbackContext context)
     {
-        // if (isLookBlockedByUI) return;
+        if (IsPointerOverUI()) return;
 
-        // Vector2 lookValue = context.ReadValue<Vector2>();
-        // if (lookValue == Vector2.zero) return;
+        Vector2 lookValue = context.ReadValue<Vector2>();
+        if (lookValue == Vector2.zero) return;
 
-        // float mouseX = lookValue.x * lookSensitivity;
-        // float mouseY = lookValue.y * lookSensitivity;
+        float mouseX = lookValue.x * lookSensitivity;
+        float mouseY = lookValue.y * lookSensitivity;
 
-        // transform.Rotate(Vector3.up * mouseX, Space.World);
+        transform.Rotate(Vector3.up * mouseX, Space.World);
 
-        // verticalRotation -= mouseY;
-        // verticalRotation = Mathf.Clamp(verticalRotation, -90f, 90f);
+        verticalRotation -= mouseY;
+        verticalRotation = Mathf.Clamp(verticalRotation, -90f, 90f);
 
-        // Vector3 currentEuler = transform.eulerAngles;
-        // transform.rotation = Quaternion.Euler(verticalRotation, currentEuler.y, 0f);
+        Vector3 currentEuler = transform.eulerAngles;
+        transform.rotation = Quaternion.Euler(verticalRotation, currentEuler.y, 0f);
     }    
 
     private void OnResetViewPerformed(InputAction.CallbackContext context)
     {
         ResetView();
-    }    
-
-    private void Update()
-    {
-        HandleContinuousZoom();
-        HandleContinuousRotation();
-    }
-
-    private void HandleContinuousRotation()
-    {
-        if (IsPointerOverUI()) return;
-
-        //Vector2 zoomValue = inputActions.Editor.Zoom.ReadValue<Vector2>();
-        Vector2 lookValue = inputActions.Editor.Look.ReadValue<Vector2>();
-        if (lookValue != Vector2.zero) {
-
-            float mouseX = lookValue.x * lookSensitivity;
-            float mouseY = lookValue.y * lookSensitivity;
-
-            transform.Rotate(Vector3.up * mouseX, Space.World);
-
-            verticalRotation -= mouseY;
-            verticalRotation = Mathf.Clamp(verticalRotation, -90f, 90f);
-
-            Vector3 currentEuler = transform.eulerAngles;
-            transform.rotation = Quaternion.Euler(verticalRotation, currentEuler.y, 0f);        
-        }
-    }
-
-    private void HandleContinuousZoom()
-    {
-        if (IsPointerOverUI()) return;
-
-        Vector2 zoomValue = inputActions.Editor.Zoom.ReadValue<Vector2>();
-        if (zoomValue != Vector2.zero)
-        {
-            Vector3 moveDirection = new Vector3(zoomValue.x, 0f, zoomValue.y);
-            transform.Translate(moveDirection * (zoomSpeed * 0.1f * Time.deltaTime), Space.Self);
-        }
-
-        Vector2 liftValue = inputActions.Editor.Lift.ReadValue<Vector2>();
-        if (liftValue != Vector2.zero)
-        {
-            Vector3 moveDirection = new Vector3(0f, liftValue.y, 0f);
-            transform.Translate(moveDirection * (zoomSpeed * 0.1f * Time.deltaTime), Space.Self);
-        }
     }    
 
     private void OnZoomPerformed(InputAction.CallbackContext context)

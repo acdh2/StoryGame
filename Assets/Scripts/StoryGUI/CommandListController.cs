@@ -74,10 +74,10 @@ public class CommandListController : UIControllerBase
             case "GOTO":
             case "CHAPTER": return new Color(0.6f, 0.4f, 0.2f);
             case "TELEPORT":
-            case "GIVE":
-            case "TAKE": return new Color(0.5f, 0.2f, 0.6f);
-            case "HAS":
-            case "HAS_NOT": return new Color(0.6f, 0.2f, 0.4f);
+            case "SET":
+            case "UNSET": return new Color(0.5f, 0.2f, 0.6f);
+            case "IS_SET":
+            case "IS_NOT_SET": return new Color(0.6f, 0.2f, 0.4f);
             default: return new Color(0.3f, 0.3f, 0.3f);
         }
     }

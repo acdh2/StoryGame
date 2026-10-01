@@ -1107,6 +1107,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Navigator
   runAtStartUp: 1
   defaultScreenName: 
+  objectSelector: {fileID: 330585548}
 --- !u!114 &1373448618
 MonoBehaviour:
   m_ObjectHideFlags: 0

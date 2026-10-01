@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -10,6 +11,8 @@ public class Navigator : UIControllerBase
     private readonly List<GameObject> screens = new List<GameObject>();
     private readonly List<UIDocumentLifecycle> screenLifecycles = new List<UIDocumentLifecycle>();
     private readonly List<(Button button, System.Action action)> registeredListeners = new List<(Button, System.Action)>();
+
+    [SerializeField] private ObjectSelector objectSelector;
 
     private void Start()
     {
@@ -118,6 +121,12 @@ public class Navigator : UIControllerBase
         if (undoRedoBox != null) undoRedoBox.style.display = isLastScreen ? DisplayStyle.None : DisplayStyle.Flex;
         if (leftSide != null) leftSide.style.display = isLastScreen ? DisplayStyle.None : DisplayStyle.Flex;
         if (rightSide != null) rightSide.style.display = isLastScreen ? DisplayStyle.None : DisplayStyle.Flex;
+
+        int screenIndex = screens.IndexOf(targetScreen);
+        if (objectSelector != null)
+        {
+            objectSelector.SetEnabled(screenIndex < 3);
+        }
 
         for (int i = 0; i < screens.Count; i++)
         {
