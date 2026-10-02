@@ -10,6 +10,7 @@ public class FileManager : UIControllerBase
 {
     [SerializeField] private SceneSaveSystem saveSystem;
     [SerializeField] private Transform sceneRoot;
+    [SerializeField] private EditorCameraController editorCameraController;
 
     private Button newBtn;
     private Button loadBtn;
@@ -63,6 +64,7 @@ public class FileManager : UIControllerBase
         if (saveSystem != null)
         {
             saveSystem.NewScene();
+            ResetView();
         }
     }
 
@@ -76,6 +78,7 @@ public class FileManager : UIControllerBase
                 if (saveSystem != null && sceneRoot != null)
                 {
                     saveSystem.LoadSceneFromJson(json);
+                    ResetView();
                 }
             }
         }, ".json");
@@ -92,6 +95,7 @@ public class FileManager : UIControllerBase
             if (saveSystem != null && sceneRoot != null)
             {
                 saveSystem.LoadSceneFromJson(json);
+                ResetView();
             }
         }
 #endif
@@ -117,5 +121,13 @@ public class FileManager : UIControllerBase
             File.WriteAllText(path, json);
         }
 #endif
+    }
+
+    private void ResetView()
+    {
+        if (editorCameraController != null)
+        {
+            editorCameraController.ResetView();
+        }
     }
 }

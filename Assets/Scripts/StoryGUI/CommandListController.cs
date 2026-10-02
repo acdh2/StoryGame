@@ -66,6 +66,7 @@ public class CommandListController : UIControllerBase
         string type = commandType?.Trim().ToUpperInvariant() ?? "";
         switch (type)
         {
+            case "TEXT":
             case "SAY": return new Color(0.2f, 0.4f, 0.6f);
             case "CHOICE": return new Color(0.2f, 0.6f, 0.4f);
             case "TOUCHED": return new Color(0.6f, 0.6f, 0.2f);
@@ -213,7 +214,7 @@ private void RebuildUI()
         footerContainer.Clear();
     }
 
-    List<string> commandOptions = dataStore.AvailableCommandTypes != null ? new List<string>(dataStore.AvailableCommandTypes) : new List<string> { "say" };
+    List<string> commandOptions = dataStore.AvailableCommandTypes != null ? new List<string>(dataStore.AvailableCommandTypes) : new List<string> { "text" };
     List<string> chapters = GetAvailableChapters();
     List<string> variables = GetAvailableVariables();
     List<string> objectNames = sceneManager != null ? sceneManager.GetUniqueObjectNames() : new List<string>();

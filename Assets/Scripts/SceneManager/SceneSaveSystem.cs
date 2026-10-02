@@ -6,6 +6,8 @@ using UnityEngine;
 [RequireComponent(typeof(StoryDataStore))]
 public class SceneSaveSystem : MonoBehaviour
 {
+    const string DEFAULT_MATERIAL_TAG = "&&&DEFAULT&&&";
+    
     [SerializeField] private LevelObjectPalette levelObjectPalette;
     [SerializeField] private MaterialPalette materialPalette;
     [SerializeField] private GameConfiguration gameConfiguration;
@@ -56,7 +58,12 @@ public class SceneSaveSystem : MonoBehaviour
         if (floorObject != null)
         {
             Renderer floorRenderer = floorObject.GetComponent<Renderer>();
-            data.floorMaterialName = floorRenderer != null && floorRenderer.sharedMaterial != null ? floorRenderer.sharedMaterial.name : "";
+            if (floorRenderer.sharedMaterial == defaultFloorMaterial)
+            {
+                data.floorMaterialName = DEFAULT_MATERIAL_TAG;
+            } else {
+                data.floorMaterialName = floorRenderer != null && floorRenderer.sharedMaterial != null ? floorRenderer.sharedMaterial.name : "";
+            }
         }
 
         foreach (Transform child in transform)
@@ -101,13 +108,19 @@ public class SceneSaveSystem : MonoBehaviour
         {
             Destroy(child.gameObject);
         }
-
+        
         SaveData data = JsonUtility.FromJson<SaveData>(json);
         if (data == null) return;
 
         if (floorObject != null && !string.IsNullOrEmpty(data.floorMaterialName))
         {
-            Material mat = FindMaterialByName(data.floorMaterialName);
+            Material mat;
+            if (data.floorMaterialName == DEFAULT_MATERIAL_TAG)
+            {
+                mat = defaultFloorMaterial;
+            } else {
+                mat = FindMaterialByName(data.floorMaterialName);
+            }
             if (mat != null)
             {
                 Renderer floorRenderer = floorObject.GetComponent<Renderer>();

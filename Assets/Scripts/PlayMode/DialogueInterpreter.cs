@@ -11,6 +11,7 @@ public class DialogueInterpreter : MonoBehaviour
     public event Action OnDialogueEnded;
     public event Action OnScreenShown;
     public event Action OnScreenHidden;
+    public event Action<bool> OnCameraChangeRequested;
 
     [Header("Script Input Source")]
     public StoryDataStore storyDataStore;
@@ -54,6 +55,7 @@ public class DialogueInterpreter : MonoBehaviour
         {
             rootElement.style.display = DisplayStyle.Flex;
             OnScreenShown?.Invoke();
+            //OnCameraChangeRequested?.Invoke(true);
         }
     }
 
@@ -63,6 +65,7 @@ public class DialogueInterpreter : MonoBehaviour
             rootElement.style.display != DisplayStyle.None)
         {
             rootElement.style.display = DisplayStyle.None;
+            //OnCameraChangeRequested?.Invoke(false);
             OnScreenHidden?.Invoke();
         }
     }
@@ -386,10 +389,11 @@ private IEnumerator RunDialogueRoutine()
     {
         Instruction instr =
             instructions[pc];
-
+            
         switch (instr.Type)
         {
             case "SAY":
+            case "TEXT":
 
                 if (dialogueTextLabel != null)
                     dialogueTextLabel.text =
@@ -400,9 +404,12 @@ private IEnumerator RunDialogueRoutine()
                         DisplayStyle.Flex;
 
                 advanceRequested = false;
+                if (instr.Type == "SAY") OnCameraChangeRequested?.Invoke(true);
 
                 yield return new WaitUntil(
                     () => advanceRequested);
+                if (instr.Type == "SAY") OnCameraChangeRequested?.Invoke(false);
+
 
                 if (continueButton != null)
                     continueButton.style.display =

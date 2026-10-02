@@ -6,12 +6,15 @@ using UnityEngine.UIElements;
 [RequireComponent(typeof(DialogueInterpreter))]
 public class PlayMode : UIControllerBase
 {
-    public GameObject editorCamera;
+    [SerializeField]private GameObject editorCamera;
 
-    public GameConfiguration gameConfiguration;
+    [SerializeField]private GameConfiguration gameConfiguration;
+
+    [SerializeField]private SceneManager sceneManager;
 
     private DialogueInterpreter dialogueInterpreter;
     private GameObject player;
+    private DynamicFaceFocus dynamicFaceFocus;
     
     protected override void Awake()
     {
@@ -26,17 +29,29 @@ public class PlayMode : UIControllerBase
         StartStory(root);
     }
 
+    protected override void OnUIDisabled()
+    {
+        EndStory();
+        EnableEditorCamera();
+        DestroyPlayer();
+    }
+
     private void StartStory(VisualElement root)
     {   
+        if (sceneManager != null)
+        {
+            sceneManager.PushSceneState();
+        }
         if (dialogueInterpreter != null) {
             dialogueInterpreter.StartDialogue(root);
         }        
     }
 
-    protected override void OnUIDisabled()
-    {
-        EnableEditorCamera();
-        DestroyPlayer();
+    private void EndStory() {
+        if (sceneManager != null)
+        {
+            sceneManager.PopSceneState();
+        }
     }
 
     private void DisableEditorCamera() 
@@ -59,8 +74,10 @@ public class PlayMode : UIControllerBase
             player = Instantiate(playerPrefab);
             dialogueInterpreter.OnScreenShown += HandleScreenShown;
             dialogueInterpreter.OnScreenHidden += HandleScreenHidden;
+            dialogueInterpreter.OnCameraChangeRequested += HandleCameraChange;
             if (gameConfiguration != null) gameConfiguration.Apply();
             AddCollisionDetector(player);
+            dynamicFaceFocus = player.AddComponent<DynamicFaceFocus>();
         }      
     }
 
@@ -77,6 +94,8 @@ public class PlayMode : UIControllerBase
     {
         if (player != null) {
             if (gameConfiguration != null) gameConfiguration.Unapply();
+            Destroy(dynamicFaceFocus);
+            dialogueInterpreter.OnCameraChangeRequested -= HandleCameraChange;
             dialogueInterpreter.OnScreenShown -= HandleScreenShown;
             dialogueInterpreter.OnScreenHidden -= HandleScreenHidden;
             Destroy(player);
@@ -98,6 +117,16 @@ public class PlayMode : UIControllerBase
             PlayerControlBlocker playerControlBlocker = player.GetComponentInChildren<PlayerControlBlocker>();
             playerControlBlocker?.SetControlsActive(true);
         }
+    }
+
+
+    private void HandleCameraChange(bool mode)
+    {
+        if (dynamicFaceFocus != null)
+        {
+            if (mode) dynamicFaceFocus.Apply();
+            else dynamicFaceFocus.Unapply();
+        }        
     }
 
 }

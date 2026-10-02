@@ -232,4 +232,27 @@ public class SceneManager : MonoBehaviour
         }
         return new List<string>(names);
     }    
+
+    private readonly Stack<string> tempStateStack = new Stack<string>();
+
+    public void PushSceneState()
+    {
+        if (saveSystem == null) return;
+        string json = saveSystem.SerializeScene();
+        tempStateStack.Push(json);
+    }
+
+    public void PopSceneState()
+    {
+        if (tempStateStack.Count == 0 || saveSystem == null) return;
+
+        if (objectSelector != null)
+        {
+            objectSelector.SelectObject(null);
+        }
+
+        string state = tempStateStack.Pop();
+        saveSystem.LoadSceneFromJson(state);
+        //SaveSceneInternal();
+    }    
 }

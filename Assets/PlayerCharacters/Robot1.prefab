@@ -301,7 +301,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RespawnBehaviour
   spawnPoint: {fileID: 0}
-  cinemachineCamera: {fileID: 0}
   fallThreshold: -10
 --- !u!114 &4831881815639854312 stripped
 MonoBehaviour:

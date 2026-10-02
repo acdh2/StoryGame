@@ -12,7 +12,7 @@ public class GameConfiguration : MonoBehaviour
     public List<AudioClip> musicTracks = new List<AudioClip>();
     public List<GameObject> playerModels = new List<GameObject>();
 
-    private int _selectedMusicIndex = 0;
+    private int _selectedMusicIndex = -1;
     public int selectedMusicIndex
     {
         get => _selectedMusicIndex;
@@ -40,7 +40,7 @@ public class GameConfiguration : MonoBehaviour
         }
     }
 
-    private bool _fogEnabled = true;
+    private bool _fogEnabled = false;
     public bool fogEnabled
     {
         get => _fogEnabled;
@@ -54,7 +54,7 @@ public class GameConfiguration : MonoBehaviour
         }
     }
 
-    private Color _fogColor = new Color(0.71f, 0.75f, 0.80f);
+    private Color _fogColor = Color.white;//new Color(0.71f, 0.75f, 0.80f);
     public Color fogColor
     {
         get => _fogColor;
@@ -68,7 +68,7 @@ public class GameConfiguration : MonoBehaviour
         }
     }
 
-    private float _fogDensity = 0.25f;
+    private float _fogDensity = 0.75f;
     public float fogDensity
     {
         get => _fogDensity;
@@ -82,7 +82,7 @@ public class GameConfiguration : MonoBehaviour
         }
     }
 
-    private float _timeHours = 6.0f;
+    private float _timeHours = 12.0f;
     public float timeHours
     {
         get => _timeHours;

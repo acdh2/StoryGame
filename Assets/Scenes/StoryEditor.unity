@@ -356,6 +356,9 @@ MonoBehaviour:
     - {fileID: 2100000, guid: 4460d7317f7454f37bafc20f3b9e135f, type: 2}
   - categoryName: Building
     materials:
+    - {fileID: 2100000, guid: c17f7ca4fafc14e29ba3add9a66ad1e2, type: 2}
+    - {fileID: 2100000, guid: eba0faca199534789892cb10c463eadf, type: 2}
+    - {fileID: 2100000, guid: a9f2c7bf5cf7249d0ad83ac423203bd8, type: 2}
     - {fileID: 2100000, guid: e0908cd33811e4365aed111fac004112, type: 2}
     - {fileID: 2100000, guid: ee8c29f8520364116a072a9c5ef74268, type: 2}
     - {fileID: 2100000, guid: d1396657188a840b192cefa2c3d61d7f, type: 2}
@@ -406,9 +409,6 @@ MonoBehaviour:
     - {fileID: 2100000, guid: 22fa2eda97cc84b48afbd40d3052714e, type: 2}
     - {fileID: 2100000, guid: d114ffa9530f64b229ef804a878007eb, type: 2}
     - {fileID: 2100000, guid: 258aad8be45d14b5b994cd51bc0b21d1, type: 2}
-    - {fileID: 2100000, guid: c17f7ca4fafc14e29ba3add9a66ad1e2, type: 2}
-    - {fileID: 2100000, guid: eba0faca199534789892cb10c463eadf, type: 2}
-    - {fileID: 2100000, guid: a9f2c7bf5cf7249d0ad83ac423203bd8, type: 2}
     - {fileID: 2100000, guid: 23afe7adb5f0641f1875fb681f71f113, type: 2}
   - categoryName: Nature
     materials:
@@ -1019,6 +1019,7 @@ MonoBehaviour:
   runAtStartUp: 0
   editorCamera: {fileID: 2000960781}
   gameConfiguration: {fileID: 5086135}
+  sceneManager: {fileID: 997034304}
 --- !u!114 &1361484488
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5398,6 +5399,7 @@ MonoBehaviour:
   runAtStartUp: 1
   saveSystem: {fileID: 997034305}
   sceneRoot: {fileID: 997034303}
+  editorCameraController: {fileID: 2000960783}
 --- !u!1 &2000960781
 GameObject:
   m_ObjectHideFlags: 0
