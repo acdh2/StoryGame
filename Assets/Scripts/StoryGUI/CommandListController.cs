@@ -37,6 +37,7 @@ public class CommandListController : UIControllerBase
         if (dataStore != null)
         {
             dataStore.OnDataChanged += RebuildUI;
+            dataStore.OnDataInvalidated += RebuildUI;
             RebuildUI();
         }
 
@@ -50,6 +51,7 @@ public class CommandListController : UIControllerBase
         if (dataStore != null)
         {
             dataStore.OnDataChanged -= RebuildUI;
+            dataStore.OnDataInvalidated -= RebuildUI;
         }
 
         scrollView = null;
@@ -74,13 +76,20 @@ public class CommandListController : UIControllerBase
             case "GOTO":
             case "CHAPTER": return new Color(0.6f, 0.4f, 0.2f);
             case "TELEPORT":
-            case "SET":
-            case "UNSET": return new Color(0.5f, 0.2f, 0.6f);
-            case "IS_SET":
-            case "IS_NOT_SET": return new Color(0.6f, 0.2f, 0.4f);
+            case "CREATE_VAR":
+            case "SET_VAR":
+            case "UNSET_VAR": return new Color(0.5f, 0.2f, 0.6f);
+            case "VAR_IS_SET":
+            case "VAR_IS_NOT_SET": return new Color(0.6f, 0.2f, 0.4f);
             default: return new Color(0.3f, 0.3f, 0.3f);
         }
     }
+
+    private bool NeedsVariableParameter(string commandType)
+    {
+        string type = commandType?.Trim().ToUpperInvariant() ?? "";
+        return type == "SET_VAR" || type == "UNSET_VAR" || type == "VAR_IS_SET" || type == "VAR_IS_NOT_SET";
+    }    
 
     private bool NeedsObjectParameter(string commandType)
     {
@@ -113,7 +122,58 @@ public class CommandListController : UIControllerBase
         return chapters;
     }
 
+    private List<string> GetAvailableVariables()
+    {
+        var variables = new List<string>();
+        if (dataStore == null || dataStore.Commands == null) return variables;
+
+        foreach (var cmd in dataStore.Commands)
+        {
+            if (cmd != null && (cmd.CommandType ?? "").Trim().ToUpperInvariant() == "CREATE_VAR")
+            {
+                string arg = (cmd.Argument ?? "").Trim();
+                if (!string.IsNullOrEmpty(arg) && !variables.Contains(arg))
+                {
+                    variables.Add(arg);
+                }
+            }
+        }
+        return variables;
+    }    
+
     private void UpdateCommandView(VisualElement itemRoot, string command)
+    {
+        TextField inputField = itemRoot.Q<TextField>("command-input");
+        DropdownField objectDropdown = itemRoot.Q<DropdownField>("item-dropdown");
+        DropdownField labelDropdown = itemRoot.Q<DropdownField>("label-dropdown") ?? itemRoot.Q<DropdownField>("chapter-dropdown");
+        DropdownField varDropdown = itemRoot.Q<DropdownField>("var-dropdown");
+
+        itemRoot.style.backgroundColor = GetColorForCommand(command);
+
+        if (inputField != null) inputField.style.display = DisplayStyle.None;
+        if (objectDropdown != null) objectDropdown.style.display = DisplayStyle.None;
+        if (labelDropdown != null) labelDropdown.style.display = DisplayStyle.None;
+        if (varDropdown != null) varDropdown.style.display = DisplayStyle.None;
+
+        if (NeedsObjectParameter(command))
+        {
+            if (objectDropdown != null) objectDropdown.style.display = DisplayStyle.Flex;
+        }
+        else if (NeedsLabelParameter(command))
+        {
+            if (labelDropdown != null) labelDropdown.style.display = DisplayStyle.Flex;
+        }
+        else if (NeedsVariableParameter(command))
+        {
+            if (varDropdown != null) varDropdown.style.display = DisplayStyle.Flex;
+        }
+        else
+        {
+            if (inputField != null) inputField.style.display = DisplayStyle.Flex;
+        }
+    }    
+
+    private void UpdateCommandViewOld(VisualElement itemRoot, string command)
     {
         TextField inputField = itemRoot.Q<TextField>("command-input");
         DropdownField objectDropdown = itemRoot.Q<DropdownField>("item-dropdown");
@@ -155,6 +215,7 @@ private void RebuildUI()
 
     List<string> commandOptions = dataStore.AvailableCommandTypes != null ? new List<string>(dataStore.AvailableCommandTypes) : new List<string> { "say" };
     List<string> chapters = GetAvailableChapters();
+    List<string> variables = GetAvailableVariables();
     List<string> objectNames = sceneManager != null ? sceneManager.GetUniqueObjectNames() : new List<string>();
 
     for (int i = 0; i < dataStore.Commands.Count; i++)
@@ -169,6 +230,7 @@ private void RebuildUI()
         TextField inputField = itemRoot.Q<TextField>("command-input");
         DropdownField objectDropdown = itemRoot.Q<DropdownField>("item-dropdown");
         DropdownField labelDropdown = itemRoot.Q<DropdownField>("label-dropdown") ?? itemRoot.Q<DropdownField>("chapter-dropdown");
+        DropdownField varDropdown = itemRoot.Q<DropdownField>("var-dropdown");
 
         string currentType = string.IsNullOrEmpty(data.CommandType) ? commandOptions[0] : data.CommandType;
 
@@ -191,7 +253,7 @@ private void RebuildUI()
                 else if (NeedsObjectParameter(newType))
                 {
                     targetArg = objectNames.Count > 0 ? objectNames[0] : "";
-                }
+                }      
                 else if (upperType == "KILL")
                 {
                     targetArg = "";
@@ -260,6 +322,35 @@ private void RebuildUI()
                 });
             }
         }
+        else if (NeedsVariableParameter(currentType))
+        {
+            if (varDropdown != null)
+            {
+                varDropdown.choices = variables;
+                if (variables.Count > 0)
+                {
+                    if (!string.IsNullOrEmpty(data.Argument) && variables.Contains(data.Argument))
+                    {
+                        varDropdown.value = data.Argument;
+                    }
+                    else
+                    {
+                        varDropdown.value = variables[0];
+                        dataStore.UpdateCommand(index, currentType, variables[0], true);
+                    }
+                }
+                else
+                {
+                    varDropdown.value = "";
+                }
+
+                varDropdown.RegisterValueChangedCallback(evt =>
+                {
+                    if (isRebuilding) return;
+                    dataStore.UpdateCommand(index, typeDropdown != null ? typeDropdown.value : currentType, evt.newValue, true);
+                });
+            }
+        }                  
         else
         {
             if (inputField != null)
@@ -383,10 +474,10 @@ private void RebuildUI()
             else
             {
                 int targetIndex = container.IndexOf(placeholder);
-                if (originalIndex < targetIndex)
-                {
-                    targetIndex--;
-                }
+                // if (originalIndex < targetIndex)
+                // {
+                //     targetIndex--;
+                // }
 
                 dataStore.MoveCommand(originalIndex, targetIndex);
             }

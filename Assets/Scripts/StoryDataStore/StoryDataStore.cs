@@ -14,10 +14,11 @@ public class StoryDataStore : MonoBehaviour
     private List<CommandData> commands = new List<CommandData>();
 
     public event Action OnDataChanged;
+    public event Action OnDataInvalidated;
 
     private static readonly List<string> availableCommands = new List<string>
     {
-        "say", "choice", "touched", "show", "hide", "goto", "chapter", "set", "unset", "is_set", "is_not_set", "teleport", "block", "unblock"
+        "say", "choice", "touched", "teleport", "show", "hide", "unblock", "chapter", "goto", "create_var", "set_var", "var_is_set", "var_is_not_set" // "unset", "block", 
     };
 
     public IEnumerable<string> AvailableCommandTypes => availableCommands;
@@ -89,7 +90,7 @@ public class StoryDataStore : MonoBehaviour
         if (wrapper != null && wrapper.Commands != null)
         {
             commands = wrapper.Commands;
-            //OnDataChanged?.Invoke();
+            OnDataInvalidated?.Invoke();
         }
     }
 }

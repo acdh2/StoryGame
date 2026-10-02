@@ -200,8 +200,8 @@ public class DialogueInterpreter : MonoBehaviour
                     nextIndent ++;
                     break;
 
-                case "is_set": 
-                case "is_not_set":
+                case "var_is_set": 
+                case "var_is_not_set":
                     nextIndent ++;
                     break;
 
@@ -501,7 +501,12 @@ private IEnumerator RunDialogueRoutine()
                 pc++;
                 break;
 
-            case "IS_SET":
+            case "CREATE_VAR":
+                pc++;
+
+                break;
+
+            case "VAR_IS_SET":
                 if (variables.Contains(
                     instr.Argument))
                 {
@@ -514,7 +519,7 @@ private IEnumerator RunDialogueRoutine()
 
                 break;
 
-            case "IS_NOT_SET":
+            case "VAR_IS_NOT_SET":
 
                 if (!variables.Contains(
                     instr.Argument))
@@ -528,7 +533,7 @@ private IEnumerator RunDialogueRoutine()
 
                 break;
 
-            case "SET":
+            case "SET_VAR":
             
                 variables.Add(
                     instr.Argument);
@@ -536,7 +541,7 @@ private IEnumerator RunDialogueRoutine()
                 pc++;
                 break;
 
-            case "UNSET":
+            case "UNSET_VAR":
 
                 variables.Remove(
                     instr.Argument);

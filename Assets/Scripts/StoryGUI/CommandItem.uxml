@@ -6,6 +6,7 @@
             <ui:TextField name="command-input" multiline="false" style="position: absolute; left: 0; right: 0; top: 0; bottom: 0; margin: auto;"/>
             <ui:DropdownField name="item-dropdown" style="position: absolute; left: 0; right: 0; top: 0; bottom: 0; margin: auto; margin-top: 4px; margin-right: 8px; margin-bottom: 5px; margin-left: 4px;"/>
             <ui:DropdownField name="label-dropdown" style="position: absolute; left: 0; right: 0; top: 0; bottom: 0; margin: auto; margin-top: 4px; margin-right: 8px; margin-bottom: 5px; margin-left: 4px;"/>
+            <ui:DropdownField name="var-dropdown" style="position: absolute; left: 0; right: 0; top: 0; bottom: 0; margin: auto; margin-top: 4px; margin-right: 8px; margin-bottom: 5px; margin-left: 4px;"/>
         </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>
