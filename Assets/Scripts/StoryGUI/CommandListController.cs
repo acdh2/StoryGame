@@ -383,7 +383,15 @@ private void RebuildUI()
         VisualElement addItemRoot = newItemTemplate.Instantiate();
         addItemRoot.RegisterCallback<ClickEvent>(evt =>
         {
+            //dataStore.AddCommand();
             dataStore.AddCommand();
+            scrollView.schedule.Execute(() =>
+            {
+                if (container.childCount > 0)
+                {
+                    scrollView.ScrollTo(container.ElementAt(container.childCount - 1));
+                }
+            }).ExecuteLater(50);
         });
 
         if (footerContainer != null)
@@ -456,6 +464,20 @@ private void RebuildUI()
                 }
             }
 
+            float mouseY = scrollView.WorldToLocal(evt.mousePosition).y;
+            float scrollerHeight = scrollView.resolvedStyle.height;
+            float scrollOffset = scrollView.scrollOffset.y;
+            float scrollSpeed = 5f;
+            float maxScroll = Mathf.Max(0, container.resolvedStyle.height - scrollerHeight);
+
+            if (mouseY < 30f)
+            {
+                scrollView.scrollOffset = new Vector2(scrollView.scrollOffset.x, Mathf.Max(0, scrollOffset - scrollSpeed));
+            }
+            else if (mouseY > scrollerHeight - 30f)
+            {
+                scrollView.scrollOffset = new Vector2(scrollView.scrollOffset.x, Mathf.Min(maxScroll, scrollOffset + scrollSpeed));
+            }
             evt.StopPropagation();
         });
 
