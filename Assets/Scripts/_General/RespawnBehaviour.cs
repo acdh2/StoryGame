@@ -31,7 +31,7 @@ public class RespawnBehaviour : MonoBehaviour
             var spawns = GameObject.FindGameObjectsWithTag("SpawnPoint");
             if (spawns.Length > 0)
             {
-                var id = Random.Range(0, spawns.Length);
+                var id = 0;// Random.Range(0, spawns.Length);
                 SetRespawnPoint(spawns[id]);
                 Respawn();
             }

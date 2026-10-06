@@ -183,6 +183,16 @@ MonoBehaviour:
   - {fileID: 2388659209182943489, guid: 977820d65ad7f4c588289a228974fbac, type: 3}
   - {fileID: 2388659209182943489, guid: d041b40f57eb142acad2b165f4eb533b, type: 3}
   - {fileID: 2388659209182943489, guid: 101b099c520f446ea9eb6d29ea88fabd, type: 3}
+  - {fileID: 2388659209182943489, guid: 08fb28ecdb7124b6e810a014c75a13e8, type: 3}
+  - {fileID: 2388659209182943489, guid: 73f8608f84b2041ceb8125d0d2311874, type: 3}
+  - {fileID: 2388659209182943489, guid: 7ce245bd35787477085140289299ce4d, type: 3}
+  - {fileID: 2388659209182943489, guid: 8a7580d5588634c9389f50e2a84a1a9f, type: 3}
+  - {fileID: 2388659209182943489, guid: 10467f0699be84a1d8c7155c5276d91e, type: 3}
+  - {fileID: 2388659209182943489, guid: 313cfe6f23b464184800f0ced1ee2c06, type: 3}
+  - {fileID: 2388659209182943489, guid: b130954acb1074ee1a38b9d82cfeb00d, type: 3}
+  - {fileID: 2388659209182943489, guid: 5d327147d460d43d68eb1515de381cd5, type: 3}
+  - {fileID: 2388659209182943489, guid: d31570bc16b524548be86dc22ea03191, type: 3}
+  - {fileID: 2388659209182943489, guid: 4c76fdb05f76b4e9a9079239fdb1ba2e, type: 3}
 --- !u!114 &5086136
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -320,6 +330,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 136
   sceneManager: {fileID: 997034304}
+  cameraController: {fileID: 2000960783}
   defaultIcon: {fileID: 2800000, guid: 3e7726553fe3a4f9b8fea2a9f1b4238b, type: 3}
   categories:
   - categoryName: Basic Materials
@@ -412,6 +423,9 @@ MonoBehaviour:
     - {fileID: 2100000, guid: 23afe7adb5f0641f1875fb681f71f113, type: 2}
   - categoryName: Nature
     materials:
+    - {fileID: 2100000, guid: 8bc80ba0c1d6d4616a3df6e36f0bb6f3, type: 2}
+    - {fileID: 2100000, guid: c7fd4929fc719476c98421e3e6af8b1f, type: 2}
+    - {fileID: 2100000, guid: 2f78c43b2d96c4b87b206a49fc3c982c, type: 2}
     - {fileID: 2100000, guid: c13966d3291674a48b42b269caef02f0, type: 2}
     - {fileID: 2100000, guid: d8d63e6cdfbbc4d2fac6e160d2d1aa7a, type: 2}
     - {fileID: 2100000, guid: 62a3b8b573d014b10a9e8c938fc004a4, type: 2}
@@ -441,9 +455,6 @@ MonoBehaviour:
     - {fileID: 2100000, guid: 5f82c3f517e9641939184cbb25fa107c, type: 2}
     - {fileID: 2100000, guid: 803348f2e44e84296b57561baf091b3f, type: 2}
     - {fileID: 2100000, guid: 71a959ab94046425eb1d29ff64b3a754, type: 2}
-    - {fileID: 2100000, guid: 8bc80ba0c1d6d4616a3df6e36f0bb6f3, type: 2}
-    - {fileID: 2100000, guid: c7fd4929fc719476c98421e3e6af8b1f, type: 2}
-    - {fileID: 2100000, guid: 2f78c43b2d96c4b87b206a49fc3c982c, type: 2}
   - categoryName: Triplanar
     materials:
     - {fileID: 2100000, guid: f040384c9311c47d6808053c4ab77986, type: 2}
@@ -709,6 +720,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   projectSettings: {fileID: 11400000, guid: 57799342849644d5a9fa5185182ef096, type: 2}
+  editorCameraController: {fileID: 2000960783}
 --- !u!1 &410087039
 GameObject:
   m_ObjectHideFlags: 0
@@ -1389,6 +1401,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::LevelObjectPalette
   runAtStartUp: 0
   sceneManager: {fileID: 997034304}
+  cameraController: {fileID: 2000960783}
   baseplateLayer:
     serializedVersion: 2
     m_Bits: 136
@@ -4195,6 +4208,38 @@ MonoBehaviour:
     - itemName: wreath
       thumbnail: {fileID: 2800000, guid: 1f217c5095a6040a99d1591ae6201394, type: 3}
       prefab: {fileID: 919132149155446097, guid: ac154e5fe5d9445b4b6dedca4f0433b9, type: 3}
+  - categoryName: Humans
+    items:
+    - itemName: Character 01
+      thumbnail: {fileID: 2800000, guid: 2650be82e029e4ee7a7eaf0a8002e013, type: 3}
+      prefab: {fileID: 6666370650198795433, guid: e9cfa2eb3ce864151b8fd1f81408309b, type: 3}
+    - itemName: Character 02
+      thumbnail: {fileID: 2800000, guid: 5736b2807bb2248a1949529ede99dfa4, type: 3}
+      prefab: {fileID: 1597729359011672831, guid: 77ffe2d169b4949dea0139803563cd15, type: 3}
+    - itemName: Character 03
+      thumbnail: {fileID: 2800000, guid: 70932893dd571465da2486f17cbd16e7, type: 3}
+      prefab: {fileID: 6415561937286359620, guid: f483355173d2c47a29f6038e0ca49f57, type: 3}
+    - itemName: Character 04
+      thumbnail: {fileID: 2800000, guid: c306f9a9fbceb4ecca16ded6a54c1013, type: 3}
+      prefab: {fileID: 3560489353750393262, guid: 645a380d7784b48ca8a434176476e2b0, type: 3}
+    - itemName: Character 05
+      thumbnail: {fileID: 2800000, guid: 7898a21ed64db4bcf9954e6392e96d3a, type: 3}
+      prefab: {fileID: 4324779109626998850, guid: 073de836de16744338835078ea2b4789, type: 3}
+    - itemName: Character 06
+      thumbnail: {fileID: 2800000, guid: 881694cd79eb94f85a6fd3a32e15ee65, type: 3}
+      prefab: {fileID: 6463178797277354336, guid: ee45b58b9bfb349bbbd522bde73e48db, type: 3}
+    - itemName: Character 07
+      thumbnail: {fileID: 2800000, guid: deee71e6b3edb4345ab06b4954f1b305, type: 3}
+      prefab: {fileID: 6971121201570370863, guid: d7d0e616c24694bc68c7827cbbd6ffe4, type: 3}
+    - itemName: Character 08
+      thumbnail: {fileID: 2800000, guid: ec4f17eed99154fffb3f462339c077dc, type: 3}
+      prefab: {fileID: 3927503875114477191, guid: 699fc6d35705a4d5e923069e29a41f59, type: 3}
+    - itemName: Character 09
+      thumbnail: {fileID: 2800000, guid: e2860e6491ef6463caa48a6a13950ea9, type: 3}
+      prefab: {fileID: 9092202679672275406, guid: b5fdf4542abe1465c97312d868e41eda, type: 3}
+    - itemName: Character 10
+      thumbnail: {fileID: 2800000, guid: 8bc9aed20e44345b89becb861332a638, type: 3}
+      prefab: {fileID: 1332946792230564792, guid: c17f85bf8e9fd4e8eb120b0c94205cae, type: 3}
   - categoryName: KayKit
     items:
     - itemName: BarrelBlue
@@ -4525,6 +4570,217 @@ MonoBehaviour:
     - itemName: tower-watch
       thumbnail: {fileID: 2800000, guid: 5e7a24e56774943a9872a4ed6b004677, type: 3}
       prefab: {fileID: 919132149155446097, guid: 4fee244a9c11442d99ee245f73d3cec1, type: 3}
+  - categoryName: Primitives
+    items:
+    - itemName: _Capsule
+      thumbnail: {fileID: 2800000, guid: 7ab7a165ce38e4ea1b969e12cea4695b, type: 3}
+      prefab: {fileID: 8359828872165579610, guid: 6b4cc38f5004943548629327cbc2ef67, type: 3}
+    - itemName: _cone
+      thumbnail: {fileID: 2800000, guid: e4dfdd22934934820bc41be4410f5b14, type: 3}
+      prefab: {fileID: 5926650115182419594, guid: 2eb375952b74848a8888b42db8be27ed, type: 3}
+    - itemName: _Cube
+      thumbnail: {fileID: 2800000, guid: d486d741412e64c1588f335bfb3ab938, type: 3}
+      prefab: {fileID: 7817575809272234762, guid: bef3202f069514cd18955ff99072407b, type: 3}
+    - itemName: _Cylinder
+      thumbnail: {fileID: 2800000, guid: ce48e183e1a0c43a287f0636451d9954, type: 3}
+      prefab: {fileID: 1810552868668421113, guid: 827d7fcecbd964b06aa2966d4e91e6cf, type: 3}
+    - itemName: _Plane
+      thumbnail: {fileID: 2800000, guid: 80423858c23a94790b64429579f7d768, type: 3}
+      prefab: {fileID: 6761810796778149021, guid: db7063c4dbbf24059acd0299b891e4eb, type: 3}
+    - itemName: _Pyramid
+      thumbnail: {fileID: 2800000, guid: 1221ec42eca264a41a137a3618aee6b0, type: 3}
+      prefab: {fileID: 6968356627152280941, guid: 44def4510302849b38797a8825999977, type: 3}
+    - itemName: _Quad
+      thumbnail: {fileID: 2800000, guid: 3a1e28ecab6914957b24209c329e93a1, type: 3}
+      prefab: {fileID: 469750068907149310, guid: b13239d29c69d4321acc83d842df5f94, type: 3}
+    - itemName: _Roof
+      thumbnail: {fileID: 2800000, guid: 40f4f85fdd67c40c5acefb8aa32f7210, type: 3}
+      prefab: {fileID: 632471381398979307, guid: 15a355f2406ab48ac95fac175299e377, type: 3}
+    - itemName: _Sphere
+      thumbnail: {fileID: 2800000, guid: d9951d99299af4689aab4ca1f16c95ad, type: 3}
+      prefab: {fileID: 351227811948500424, guid: 80d4a78ce05c34dab9d1e0210bdf4230, type: 3}
+    - itemName: _Torus
+      thumbnail: {fileID: 2800000, guid: 5e83a9d5393c64335a090734d1903e0b, type: 3}
+      prefab: {fileID: 3569022036223939220, guid: 0c9a7d7c14dd343ac8a2f30fc2ba5ba7, type: 3}
+    - itemName: _Wedge
+      thumbnail: {fileID: 2800000, guid: 6dcee6678aad048f1864ae135e0c9dd7, type: 3}
+      prefab: {fileID: 5278763605463100411, guid: c99941068919b45a9af16cda993f4648, type: 3}
+    - itemName: _Wide_Wedge
+      thumbnail: {fileID: 2800000, guid: 998746952cb3a40e88a1d631682e8076, type: 3}
+      prefab: {fileID: 9027994497180049107, guid: 8cf600b3860ec4dc88a1119854f1bd83, type: 3}
+  - categoryName: Space
+    items:
+    - itemName: basemodule_A
+      thumbnail: {fileID: 2800000, guid: 6ebf76e12b27b48f2974894cb204113b, type: 3}
+      prefab: {fileID: 919132149155446097, guid: f1b80dc9e6ad1440a9e03980fb7019b6, type: 3}
+    - itemName: basemodule_B
+      thumbnail: {fileID: 2800000, guid: 09de13bec4fa84277a3efe170a0728fc, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 0ad43b97f92524b568df8d3e50305f17, type: 3}
+    - itemName: basemodule_C
+      thumbnail: {fileID: 2800000, guid: 70ff5fef90afc4b7bb005575d0047008, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 89741a47ef0644ee5b60affd5bc960ae, type: 3}
+    - itemName: basemodule_D
+      thumbnail: {fileID: 2800000, guid: ea5078b8fedf74dfe9ba748c4babda0c, type: 3}
+      prefab: {fileID: 919132149155446097, guid: d747d401de46c4d6b9ac82c813057f43, type: 3}
+    - itemName: basemodule_E
+      thumbnail: {fileID: 2800000, guid: 4b8ff93fb98214022afb03b52273e449, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 9f065e7e434854ee89a4af0256c41f9c, type: 3}
+    - itemName: basemodule_garage
+      thumbnail: {fileID: 2800000, guid: d40630033de294c8eb8f8b2636354e76, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 4773de32c83514a28ad39c072b6364fe, type: 3}
+    - itemName: cargo_A
+      thumbnail: {fileID: 2800000, guid: 8d49112d15eee4518b51852db4697f60, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 6262d711a07c240579d302cf55720038, type: 3}
+    - itemName: cargo_A_packed
+      thumbnail: {fileID: 2800000, guid: 3d252a3f4448e46d091f42d4cca60138, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 4f0af067badf84264aa43a535cd81c2e, type: 3}
+    - itemName: cargo_A_stacked
+      thumbnail: {fileID: 2800000, guid: c535d176f991f4132acebd32258720eb, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 652fa30f695244cb9847f7e70259619e, type: 3}
+    - itemName: cargo_B
+      thumbnail: {fileID: 2800000, guid: ef63a1bac431a4613a6392ec9d405ca0, type: 3}
+      prefab: {fileID: 919132149155446097, guid: d35b5e20de4614c349399689970cfd8b, type: 3}
+    - itemName: cargo_B_packed
+      thumbnail: {fileID: 2800000, guid: eb3e2fa7630354afebea3c9b684894a4, type: 3}
+      prefab: {fileID: 919132149155446097, guid: a1bd5d12e59ec48dea71c3fd59eb3356, type: 3}
+    - itemName: cargo_B_stacked
+      thumbnail: {fileID: 2800000, guid: fddab082d6005448e8e259eb2798f765, type: 3}
+      prefab: {fileID: 919132149155446097, guid: d5c800d2ed48f4c43aaf2b9908339c50, type: 3}
+    - itemName: cargodepot_A
+      thumbnail: {fileID: 2800000, guid: 566a7768c6428447181ff4d8c5dbce8e, type: 3}
+      prefab: {fileID: 919132149155446097, guid: fff0e2146afcf4fff85ac6832ebf49f6, type: 3}
+    - itemName: cargodepot_B
+      thumbnail: {fileID: 2800000, guid: 0ac12e9fedcca4cbca33d318efb80574, type: 3}
+      prefab: {fileID: 919132149155446097, guid: d72eb27b19a274b7198730061ee11146, type: 3}
+    - itemName: cargodepot_C
+      thumbnail: {fileID: 2800000, guid: 953783f12fd4d47aab2a6fc99b54618f, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 6510bc145dc8e4f47b401795bb9eea7b, type: 3}
+    - itemName: containers_A
+      thumbnail: {fileID: 2800000, guid: 9dbe5c71be17e4d9ca2b37337361c8fb, type: 3}
+      prefab: {fileID: 919132149155446097, guid: dc2b406ac0d3c4b8f90259a9379752f6, type: 3}
+    - itemName: containers_B
+      thumbnail: {fileID: 2800000, guid: 5d16600accfee4706a9b9ed0861d4a4c, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 40396be93f46344c893dba1b0db8290a, type: 3}
+    - itemName: containers_C
+      thumbnail: {fileID: 2800000, guid: 2b6035f10815642c3b21704e45835ff6, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 4874f0d7f87f04433a2b62f0bd210a3e, type: 3}
+    - itemName: containers_D
+      thumbnail: {fileID: 2800000, guid: 5773ed2e439944aa2b5803d13d8e9131, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 88686813950054616897e25701ec5cbf, type: 3}
+    - itemName: drill_structure
+      thumbnail: {fileID: 2800000, guid: dd112840a81e64f8889f984960ffb383, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 9fb15dd5d74b6401a9c6d17003628b42, type: 3}
+    - itemName: lander_A
+      thumbnail: {fileID: 2800000, guid: 3af88078f0c4c4312979d622e7e910ed, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 2921df1816f12498c92d3c91e6714799, type: 3}
+    - itemName: lander_B
+      thumbnail: {fileID: 2800000, guid: 03798455e246d43d7948e87b9bfb2e5e, type: 3}
+      prefab: {fileID: 919132149155446097, guid: c04a6ed1e6fb04c47ac9f74aef690c3d, type: 3}
+    - itemName: lander_base
+      thumbnail: {fileID: 2800000, guid: 608c15e30bcba48e9b2fb3de6d480079, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 83c508aa2b0de4f17892dfcca4b1920c, type: 3}
+    - itemName: landingpad_large
+      thumbnail: {fileID: 2800000, guid: 1c282c25539ee481ca4eccb875d31b78, type: 3}
+      prefab: {fileID: 919132149155446097, guid: a29c230cef9e84391aa82851ecc799a1, type: 3}
+    - itemName: landingpad_small
+      thumbnail: {fileID: 2800000, guid: c0861af515f434f1bb8a19077cc3d943, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 79dda0153368648a693d32c7aabb4ee6, type: 3}
+    - itemName: lights
+      thumbnail: {fileID: 2800000, guid: 1e4089f1bdbc54100bf3108af1768403, type: 3}
+      prefab: {fileID: 919132149155446097, guid: ec0cde154398046a1ab5d3d30c005fd2, type: 3}
+    - itemName: rock_A
+      thumbnail: {fileID: 2800000, guid: a32cc9a141c6147a9a5b3db7ee6a36fd, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 249a18800ee8145f48e8b3653530fd30, type: 3}
+    - itemName: rock_B
+      thumbnail: {fileID: 2800000, guid: 4331df55029ac45c4a23bd8eb1b0bd02, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 1fe2f3e7193014e6db3411c9b5ba0741, type: 3}
+    - itemName: rocks_A
+      thumbnail: {fileID: 2800000, guid: d2969aee4820140b296155b753f76331, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 171ddf9f0250f4f5fb701ee855b094e6, type: 3}
+    - itemName: rocks_B
+      thumbnail: {fileID: 2800000, guid: 88d6a73c76f95455bb4167d7b73cadac, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 514e6cde456fb40c69bf96c52ef9939a, type: 3}
+    - itemName: roofmodule_base
+      thumbnail: {fileID: 2800000, guid: 464c4486a40fb42ec9ed84ba709496e3, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 2ecb16a66943244a8affe976566c26cd, type: 3}
+    - itemName: roofmodule_cargo_A
+      thumbnail: {fileID: 2800000, guid: 6faade7db884a4f4fadfad30dd2d37b2, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 4aea1344f2bce4b348d98eb91f7c77fd, type: 3}
+    - itemName: roofmodule_cargo_B
+      thumbnail: {fileID: 2800000, guid: d325925df474845a8a126845776fd8eb, type: 3}
+      prefab: {fileID: 919132149155446097, guid: fc41e334ba6b04373ab13ad8d56edd51, type: 3}
+    - itemName: roofmodule_cargo_C
+      thumbnail: {fileID: 2800000, guid: 2701548d59bd84770971b5502bd2a452, type: 3}
+      prefab: {fileID: 919132149155446097, guid: afac8eb884ca44c7f95f9ecd1ce228ae, type: 3}
+    - itemName: roofmodule_solarpanels
+      thumbnail: {fileID: 2800000, guid: 08556804353d2457ea2154200b6dde7a, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 3b04bb702627c4be78e9f25d190ec07e, type: 3}
+    - itemName: solarpanel
+      thumbnail: {fileID: 2800000, guid: 1e7038e7b615e4e93a6bd39db08b7d70, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 5bf625dc74e39485bb2dd695e3b00fcd, type: 3}
+    - itemName: spacetruck
+      thumbnail: {fileID: 2800000, guid: 5497199b4d5aa42febd51d2a4ff94d8e, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 7cc6dbbc825a8438eba525c437301fc9, type: 3}
+    - itemName: spacetruck_large
+      thumbnail: {fileID: 2800000, guid: 651142c3991bf4fad8503d2df8ab1899, type: 3}
+      prefab: {fileID: 919132149155446097, guid: ed515fcb91a2e4f748415288d12ae4f8, type: 3}
+    - itemName: spacetruck_trailer
+      thumbnail: {fileID: 2800000, guid: 525e9aa9bf20748409da472b2674f761, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 0cd6af3f3a8654c33b1aeb9696217fcd, type: 3}
+    - itemName: structure_low
+      thumbnail: {fileID: 2800000, guid: 73bffd60d6b614615a0546f534b1e1b6, type: 3}
+      prefab: {fileID: 919132149155446097, guid: dd08c0ecc733c498a9242881ac39a723, type: 3}
+    - itemName: structure_tall
+      thumbnail: {fileID: 2800000, guid: 13fe4de5e26c147d2bd295c5f1182874, type: 3}
+      prefab: {fileID: 919132149155446097, guid: e672251e727c0440286d9b8668c09d17, type: 3}
+    - itemName: terrain_low
+      thumbnail: {fileID: 2800000, guid: 73bfa1ae51fb8403baf15dbb47fafa15, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 02d9c83e87b3245479bb2ebeb899cc5b, type: 3}
+    - itemName: terrain_low_curved
+      thumbnail: {fileID: 2800000, guid: 78c61eeb60cc44527b4f676cea38065c, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 563f29cb72eba42af94631df955d6dee, type: 3}
+    - itemName: terrain_mining
+      thumbnail: {fileID: 2800000, guid: 19efeab5022c942c893ecd8c7f3e1f86, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 9c01c614732ff4c8397e7c53c25f04de, type: 3}
+    - itemName: terrain_slope
+      thumbnail: {fileID: 2800000, guid: 6f41102a7d3ce4d2f9302fd6c0af4a93, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 84ef63e62a45647b58d58eb4ae59f135, type: 3}
+    - itemName: terrain_slope_inner_corner
+      thumbnail: {fileID: 2800000, guid: 1601f2e80316e494aa0a93d056279b86, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 8748dd097348946f29457bf97ae89aef, type: 3}
+    - itemName: terrain_slope_outer_corner
+      thumbnail: {fileID: 2800000, guid: aa63ca0e2932d4bada8bed6258f987e0, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 13648726fab7441749eb9f005e048b39, type: 3}
+    - itemName: terrain_tall
+      thumbnail: {fileID: 2800000, guid: 8571e71e1a4904349a61e583d006856a, type: 3}
+      prefab: {fileID: 919132149155446097, guid: af3fe41cce0194ca3bd81e97958b42a2, type: 3}
+    - itemName: terrain_tall_curved
+      thumbnail: {fileID: 2800000, guid: 63ce8cdc9af604a8b9c4c1dc289fa112, type: 3}
+      prefab: {fileID: 919132149155446097, guid: b70ba18beba2f42de95103f4e30aa5b7, type: 3}
+    - itemName: tunnel_diagonal_long_A
+      thumbnail: {fileID: 2800000, guid: 51e00ee80104e4986bda8fefda45ec41, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 9cd6db2f4537440058e2c6bdc6969eef, type: 3}
+    - itemName: tunnel_diagonal_long_B
+      thumbnail: {fileID: 2800000, guid: 5a591b8fbcb584d62bbd48664239da1c, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 98977008540d2428ca71a90ac56334de, type: 3}
+    - itemName: tunnel_diagonal_short_A
+      thumbnail: {fileID: 2800000, guid: 22233fdbb91e9414f8944f8056fa287f, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 3f29a32a62c6944e881a65dd14924bef, type: 3}
+    - itemName: tunnel_diagonal_short_B
+      thumbnail: {fileID: 2800000, guid: 6865e6ee78fcc456881fe6f8e1ecdd78, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 4e647e7521886468783f8c02ad38aca4, type: 3}
+    - itemName: tunnel_straight_A
+      thumbnail: {fileID: 2800000, guid: 7fd8d2b7ac5d943408bf151aec151d7e, type: 3}
+      prefab: {fileID: 919132149155446097, guid: c50a867e72c9941f18c7e3efa510781f, type: 3}
+    - itemName: tunnel_straight_B
+      thumbnail: {fileID: 2800000, guid: 1fba2c59826da46adbe7abd5382d5585, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 3601b53de40584e22bae64b3668ed08c, type: 3}
+    - itemName: windturbine_low
+      thumbnail: {fileID: 2800000, guid: 15d6af868630f49769529287348c5a1b, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 1b1bf568bbeae42a1823b4d75206fe03, type: 3}
+    - itemName: windturbine_tall
+      thumbnail: {fileID: 2800000, guid: 2b7081b14898d46d2aa108fb288b40e5, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 02ae24fa8c30340f3b30accd8eb277cb, type: 3}
   - categoryName: Survival
     items:
     - itemName: barrel-open

@@ -11,12 +11,26 @@ public class ToolSelectorController : UIControllerBase
     private int currentToolState = 0;
     private Button toolSelectorBtn;
 
+    protected override void Awake()
+    {
+        base.Awake();
+
+        if (objectSelector != null)
+        {
+            objectSelector.OnSelectObject += () =>
+            {
+                SetCurrentTool(0);
+            };
+        }
+    }
+
+
     protected override void OnUIEnabled(VisualElement root)
     {
         toolSelectorBtn = root.Q<Button>("tool-selector");
         if (toolSelectorBtn != null)
         {
-            toolSelectorBtn.clicked += OnToolSelectorClicked;
+            toolSelectorBtn.clicked += SelectNextTool;
             UpdateToolButtonUI();
             ExecuteToolAction();
         }
@@ -26,16 +40,21 @@ public class ToolSelectorController : UIControllerBase
     {
         if (toolSelectorBtn != null)
         {
-            toolSelectorBtn.clicked -= OnToolSelectorClicked;
+            toolSelectorBtn.clicked -= SelectNextTool;
             toolSelectorBtn = null;
         }
     }
 
-    private void OnToolSelectorClicked()
+    private void SetCurrentTool(int tool) 
     {
-        currentToolState = (currentToolState + 1) % 3;
+        currentToolState = tool;
         UpdateToolButtonUI();
         ExecuteToolAction();
+    }
+
+    private void SelectNextTool()
+    {
+        SetCurrentTool((currentToolState + 1) % 3);
     }
 
     private void UpdateToolButtonUI()

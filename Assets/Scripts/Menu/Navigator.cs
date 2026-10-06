@@ -14,6 +14,8 @@ public class Navigator : UIControllerBase
 
     [SerializeField] private ObjectSelector objectSelector;
 
+    // private event Action OnEscapePressed;
+
     private void Start()
     {
         InitializeDefaultScreen();
@@ -33,9 +35,19 @@ public class Navigator : UIControllerBase
             registeredListeners.Add((closeButton, closeAction));
         }
 
+        // OnEscapePressed += () => SetScreenVisibility(root, screens[0]);
+
         BuildDynamicButtons(root);
         InitializeDefaultScreen();
     }
+
+    // void Update()
+    // {
+    //     if (Input.GetKeyDown(KeyCode.Escape))
+    //     {
+    //         OnEscapePressed?.Invoke();
+    //     }
+    // }
 
     protected override void OnUIDisabled()
     {

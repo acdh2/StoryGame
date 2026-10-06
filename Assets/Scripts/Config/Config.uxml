@@ -24,7 +24,7 @@
             </ui:VisualElement>
 
             <ui:Slider name="slider-fog-density" label="Fog Density" low-value="0.0" high-value="1.0" value="0.25" show-value-field="true" style="margin-bottom: 4px;" />
-            <ui:Slider name="slider-time" label="Time (Hours)" low-value="0.0" high-value="24.0" value="6.0" show-value-field="true" style="margin-bottom: 4px;" />
+            <ui:Toggle name="toggle-day" label="Day" style="margin-bottom: 2px;" />            
             <ui:DropdownField name="dropdown-music" label="Music Track" style="margin-bottom: 4px;" />
             <ui:DropdownField name="dropdown-player" label="Player Model" />
         </ui:GroupBox>

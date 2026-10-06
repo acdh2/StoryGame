@@ -82,15 +82,15 @@ public class GameConfiguration : MonoBehaviour
         }
     }
 
-    private float _timeHours = 12.0f;
-    public float timeHours
+    private bool _dayTime = true;
+    public bool dayTime
     {
-        get => _timeHours;
+        get => _dayTime;
         set
         {
-            if (!Mathf.Approximately(_timeHours, value))
+            if (_dayTime != value)
             {
-                _timeHours = value;
+                _dayTime = value;
                 OnSettingChanged?.Invoke();
             }
         }
@@ -146,7 +146,7 @@ public class GameConfiguration : MonoBehaviour
         _fogEnabled = defaultSettings.fogEnabled;
         _fogColor = new Color(defaultSettings.fogColorR, defaultSettings.fogColorG, defaultSettings.fogColorB, defaultSettings.fogColorA);
         _fogDensity = defaultSettings.fogDensity;
-        _timeHours = defaultSettings.timeHours;
+        _dayTime = true;
 
         OnInvalidateSettings?.Invoke();
     }
@@ -160,7 +160,7 @@ public class GameConfiguration : MonoBehaviour
             RenderSettings.fog = true;
             RenderSettings.fogMode = FogMode.ExponentialSquared;
             RenderSettings.fogColor = fogColor;
-            RenderSettings.fogDensity = fogDensity;
+            RenderSettings.fogDensity = fogDensity * 0.75f;
 
             Camera cam = Camera.main;
             if (cam != null)
@@ -173,6 +173,7 @@ public class GameConfiguration : MonoBehaviour
         Light dirLight = RenderSettings.sun;
         if (dirLight != null)
         {
+            float timeHours = dayTime?12:0;
             float rotationAngle = (timeHours / 24.0f) * 360.0f - 90.0f;
             previousRotation = dirLight.transform.rotation;
             dirLight.transform.rotation = Quaternion.Euler(rotationAngle, 45.0f, 0.0f);
@@ -231,7 +232,7 @@ public class GameConfiguration : MonoBehaviour
             fogColorB = fogColor.b,
             fogColorA = fogColor.a,
             fogDensity = fogDensity,
-            timeHours = timeHours
+            timeHours = dayTime?12:0
         };
 
         return JsonUtility.ToJson(data, true);
@@ -247,7 +248,7 @@ public class GameConfiguration : MonoBehaviour
             _fogEnabled = data.fogEnabled;
             _fogColor = new Color(data.fogColorR, data.fogColorG, data.fogColorB, data.fogColorA);
             _fogDensity = data.fogDensity;
-            _timeHours = data.timeHours;
+            _dayTime = (data.timeHours > 6f);
             
             OnInvalidateSettings?.Invoke();
         }

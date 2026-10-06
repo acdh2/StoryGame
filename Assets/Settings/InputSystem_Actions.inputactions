@@ -1068,7 +1068,7 @@
                 {
                     "name": "modifier",
                     "id": "47a0ff27-a7aa-4cf7-a3c1-041dfc6cbf48",
-                    "path": "<Mouse>/rightButton",
+                    "path": "<Mouse>/leftButton",
                     "interactions": "",
                     "processors": "",
                     "groups": ";Keyboard&Mouse",

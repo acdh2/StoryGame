@@ -109,13 +109,13 @@ public class FileManager : UIControllerBase
 
 #if UNITY_WEBGL && !UNITY_EDITOR
         byte[] bytes = System.Text.Encoding.UTF8.GetBytes(json);
-        WebFileBrowser.Download("scene.json", bytes);
+        WebFileBrowser.Download("game.json", bytes);
 #else
         var extensions = new[] {
             new ExtensionFilter("JSON Scene", "json"),
         };
 
-        var path = StandaloneFileBrowser.SaveFilePanel("Save Scene", "", "scene", extensions);
+        var path = StandaloneFileBrowser.SaveFilePanel("Save Game", "", "game", extensions);
         if (!string.IsNullOrEmpty(path))
         {
             File.WriteAllText(path, json);

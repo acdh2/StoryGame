@@ -8,12 +8,15 @@ public class MaterialDragManipulator : PointerManipulator
     private readonly MaterialPalette _palette;
     private bool _isDragging;
     private Vector2 _startPointerPosition;
+    private readonly EditorCameraController cameraController;
 
-    public MaterialDragManipulator(Material material, Texture2D thumbnail, MaterialPalette palette)
+
+    public MaterialDragManipulator(Material material, Texture2D thumbnail, MaterialPalette palette, EditorCameraController cameraController)
     {
         _material = material;
         _thumbnail = thumbnail;
         _palette = palette;
+        this.cameraController = cameraController;
     }
 
     protected override void RegisterCallbacksOnTarget()
@@ -35,6 +38,7 @@ public class MaterialDragManipulator : PointerManipulator
     private void OnPointerDown(PointerDownEvent evt)
     {
         if (evt.button != 0) return;
+        cameraController?.NotifyDragStart();
 
         _isDragging = false;
         _startPointerPosition = evt.localPosition;
@@ -65,6 +69,7 @@ public class MaterialDragManipulator : PointerManipulator
     private void OnPointerUp(PointerUpEvent evt)
     {
         if (!target.HasPointerCapture(evt.pointerId)) return;
+        cameraController?.NotifyDragEnd();
 
         target.ReleasePointer(evt.pointerId);
 
@@ -83,6 +88,7 @@ public class MaterialDragManipulator : PointerManipulator
 
     private void OnPointerCaptureOut(PointerCaptureOutEvent evt)
     {
+        cameraController?.NotifyDragEnd();
         if (_isDragging)
         {
             _isDragging = false;

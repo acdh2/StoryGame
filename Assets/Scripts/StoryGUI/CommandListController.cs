@@ -82,7 +82,8 @@ public class CommandListController : UIControllerBase
             case "UNSET_VAR": return new Color(0.5f, 0.2f, 0.6f);
             case "VAR_IS_SET":
             case "VAR_IS_NOT_SET": return new Color(0.6f, 0.2f, 0.4f);
-            default: return new Color(0.3f, 0.3f, 0.3f);
+            case "CODE": return new Color(0.3f, 0.3f, 0.3f);
+            default: return new Color(0.45f, 0.45f, 0.45f);
         }
     }
 

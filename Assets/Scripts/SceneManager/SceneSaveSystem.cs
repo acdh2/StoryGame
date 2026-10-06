@@ -201,6 +201,7 @@ public class SceneSaveSystem : MonoBehaviour
         if (storyDataStore != null)
         {
             storyDataStore.SetCommands(new List<CommandData>());
+            storyDataStore.AddCommand();
         }
 
         if (gameConfiguration != null)

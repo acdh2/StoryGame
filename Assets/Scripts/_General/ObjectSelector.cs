@@ -11,9 +11,11 @@ public class ObjectSelector : MonoBehaviour
 
     [SerializeField] private LayerMask selectableObjectsLayer;
     [SerializeField] private ProjectSettings projectSettings;
+    [SerializeField] private EditorCameraController editorCameraController;
 
     public event Action OnTransformComplete;
-
+    public event Action OnSelectObject;
+    
     private Handle _globalHandle;
     private Transform _currentTarget;
     private bool _isDraggingHandle;
@@ -48,7 +50,10 @@ public class ObjectSelector : MonoBehaviour
         isEnabled = enable;
     }
 
-    void Update() 
+    private float _lastClickTime;
+    private const float DoubleClickThreshold = 0.3f; // Maximale tijd in seconden tussen de klikken
+
+    void Update()
     {
         if (isEnabled) 
         {
@@ -56,12 +61,14 @@ public class ObjectSelector : MonoBehaviour
             {
                 ForceClearHandleTarget();
             }
-            if (Input.GetMouseButtonDown(0)) 
+
+            if (Input.GetMouseButtonDown(0))
             {
                 TrySelectObject();
+                _lastClickTime = Time.time;
             }
         }
-    }
+    }    
 
     private bool IsPointerOverUI()
     {
@@ -111,6 +118,8 @@ public class ObjectSelector : MonoBehaviour
 
     public void SelectObject(GameObject targetObject) 
     {
+        OnSelectObject?.Invoke();
+
         if (targetObject == null)
         {
             ClearHandleTarget();
@@ -154,6 +163,11 @@ public class ObjectSelector : MonoBehaviour
             
             if (_globalHandle != null)
             {
+                foreach (CapsuleCollider collider in _globalHandle.GetComponentsInChildren<CapsuleCollider>())
+                {
+                    collider.radius = 0.15f;
+                }
+
                 _globalHandle.OnInteractionStartEvent += OnHandleStartInteraction;
                 _globalHandle.OnInteractionEndEvent   += OnHandleEndInteraction;
             }
@@ -198,6 +212,10 @@ public class ObjectSelector : MonoBehaviour
     private void OnHandleStartInteraction(Handle handle)
     {
         _isDraggingHandle = true;
+        if (editorCameraController != null)
+        {
+            editorCameraController.NotifyDragStart();
+        }
         if (projectSettings != null) {
             _globalHandle.PositionSnap = projectSettings.PositionSnap;
             _globalHandle.RotationSnap = projectSettings.RotationSnap;
@@ -208,6 +226,10 @@ public class ObjectSelector : MonoBehaviour
     private void OnHandleEndInteraction(Handle handle)
     {
         _isDraggingHandle = false;
+        if (editorCameraController != null)
+        {
+            editorCameraController.NotifyDragEnd();
+        }
         if (_currentTarget != null)
         {
             OnTransformComplete?.Invoke();

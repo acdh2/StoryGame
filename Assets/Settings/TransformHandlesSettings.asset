@@ -28,4 +28,4 @@ MonoBehaviour:
   defaultHandleType: 6
   defaultSpace: 1
   defaultAxes: 6
-  autoScaleHandles: 1
+  autoScaleHandles: 0

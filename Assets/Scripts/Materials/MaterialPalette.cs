@@ -14,6 +14,7 @@ public class MaterialPalette : UIControllerBase
     [Header("UI Settings")]
     [SerializeField] private LayerMask targetLayerMask;
     [SerializeField] private SceneManager sceneManager;
+    [SerializeField] private EditorCameraController cameraController;
 
     private Vector2 itemSize = new Vector2(48, 48);
 
@@ -205,7 +206,7 @@ public class MaterialPalette : UIControllerBase
             }
 
             itemCard.tooltip = mat.name;
-            itemCard.AddManipulator(new MaterialDragManipulator(mat, thumbnail, this));
+            itemCard.AddManipulator(new MaterialDragManipulator(mat, thumbnail, this, cameraController));
 
             scrollView.Add(itemCard);
         }

@@ -1,9 +1,14 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
 
 public class EditorCameraController : MonoBehaviour
 {
+    private bool isDragging = false;
+    public void NotifyDragStart() { isDragging = true; }
+    public void NotifyDragEnd() { isDragging = false; }
+
     [SerializeField] private ObjectSelector objectSelector = null;
     [SerializeField] private InputSystem_Actions inputActions;
 
@@ -16,6 +21,7 @@ public class EditorCameraController : MonoBehaviour
     private Quaternion originalRotation = Quaternion.identity;
 
     private Vector3 velocity = Vector3.zero;
+    private float cooldown = 0f;
 
     private void Awake()
     {
@@ -78,6 +84,14 @@ public class EditorCameraController : MonoBehaviour
         velocity = new Vector3(moveInput.x, velocity.y, moveInput.y);
     }    
 
+    void Update()
+    {
+        if (cooldown > 0f)
+        {
+            cooldown -= Time.deltaTime;
+        }
+    }
+
     private void FixedUpdate()
     {
         if (velocity.magnitude > 0.01f) {
@@ -122,6 +136,8 @@ public class EditorCameraController : MonoBehaviour
 
     private bool IsPointerOverUI()
     {
+        if (isDragging) return true;
+
         Vector2 mousePos = Input.mousePosition;
         Vector2 pointerPosition = new Vector2(mousePos.x, Screen.height - mousePos.y);
 
@@ -146,24 +162,28 @@ public class EditorCameraController : MonoBehaviour
 
     public void ResetView()
     {
-        if (objectSelector != null)
+        if (objectSelector != null && cooldown < 0.1f)
         {
             GameObject selectedObject = objectSelector.SelectedObject;
-            if (selectedObject)
+            if (selectedObject != null)
             {
+                cooldown = 1f;
                 Renderer renderer = selectedObject.GetComponentInChildren<Renderer>();
                 Vector3 targetCenter = renderer != null ? renderer.bounds.center : selectedObject.transform.position;
                 float objectSize = renderer != null ? renderer.bounds.size.z : 2f;
                 float distance = Mathf.Max(objectSize * 2f, 3f);
                 
-                transform.position = targetCenter - transform.forward * distance;
+                Vector3 newPosition = targetCenter - transform.forward * distance;
+                if (newPosition.y < 0.5f) newPosition.y = 0.5f;
+                transform.position = newPosition;
+                transform.LookAt(selectedObject.transform);
                 return;
             }
         }
         
         transform.SetPositionAndRotation(originalPosition, originalRotation);
-
         verticalRotation = transform.rotation.eulerAngles.x;
+        cooldown = 0f;
     }    
 
 }

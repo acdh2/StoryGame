@@ -10,7 +10,7 @@ public class GameConfigurationSettingsUI : UIControllerBase
 
     private Toggle fogToggle;
     private Slider fogDensitySlider;
-    private Slider timeHoursSlider;
+    private Toggle dayToggle;
     private DropdownField musicDropdown;
     private DropdownField playerDropdown;
 
@@ -57,14 +57,15 @@ public class GameConfigurationSettingsUI : UIControllerBase
             });
         }
 
-        timeHoursSlider = root.Q<Slider>("slider-time");
-        if (timeHoursSlider != null)
+        dayToggle = root.Q<Toggle>("toggle-day");
+        if (dayToggle != null)
         {
-            var dragContainer = timeHoursSlider.Q("unity-drag-container");
-            dragContainer.RegisterCallback<PointerUpEvent>(evt =>
-            {
-                gameConfiguration.timeHours = timeHoursSlider.value;
-            });
+            dayToggle.RegisterValueChangedCallback(evt => gameConfiguration.dayTime = evt.newValue);
+            // var dragContainer = dayToggle.Q("unity-drag-container");
+            // dragContainer.RegisterCallback<PointerUpEvent>(evt =>
+            // {
+            //     gameConfiguration.timeHours = timeHoursSlider.value;
+            // });
         }
 
         musicDropdown = root.Q<DropdownField>("dropdown-music");
@@ -111,9 +112,9 @@ public class GameConfigurationSettingsUI : UIControllerBase
             fogDensitySlider.SetValueWithoutNotify(Mathf.Sqrt(gameConfiguration.fogDensity));
         }
 
-        if (timeHoursSlider != null)
+        if (dayToggle != null)
         {
-            timeHoursSlider.SetValueWithoutNotify(gameConfiguration.timeHours);
+            dayToggle.SetValueWithoutNotify(gameConfiguration.dayTime);
         }
 
         if (musicDropdown != null && musicDropdown.choices.Count > 0)
@@ -180,7 +181,7 @@ public class GameConfigurationSettingsUI : UIControllerBase
         }
         fogToggle = null;
         fogDensitySlider = null;
-        timeHoursSlider = null;
+        dayToggle = null;
         musicDropdown = null;
         playerDropdown = null;
         colorButtons.Clear();

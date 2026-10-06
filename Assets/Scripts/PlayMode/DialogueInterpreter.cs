@@ -1,9 +1,12 @@
 using System;
-using System.CodeDom.Compiler;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UIElements;
+
+using Lua;
+using Lua.Standard;
 
 public class DialogueInterpreter : MonoBehaviour
 {
@@ -48,6 +51,64 @@ public class DialogueInterpreter : MonoBehaviour
 
     private int autoLabelCounter = 0;
 
+    private LuaState state;
+
+
+    private void InvokeMatchingMethod(Type type, object instance, LuaFunctionExecutionContext context, string methodName)
+    {
+        var bindingFlags = System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic |
+                        (instance == null ? System.Reflection.BindingFlags.Static : System.Reflection.BindingFlags.Instance);
+
+        var methods = type.GetMethods(bindingFlags);
+        foreach (var method in methods)
+        {
+            if (method.Name == methodName)
+            {
+                var parameters = method.GetParameters();
+                var args = new object[parameters.Length];
+                for (int i = 0; i < parameters.Length; i++)
+                {
+                    args[i] = context.GetArgument<object>(i + 3);
+                }
+                method.Invoke(instance, args);
+                break;
+            }
+        }
+    }
+    // void Awake()
+    // {
+    //     var state = LuaState.Create();
+    //     state.Environment["call_unity"] = new LuaFunction((context, ct) =>
+    //     {
+    //         string objectName = context.GetArgument<string>(0);
+    //         string componentName = context.GetArgument<string>(1);
+    //         string methodName = context.GetArgument<string>(2);
+
+    //         var go = GameObject.Find(objectName);
+    //         if (go != null)
+    //         {
+    //             var comp = go.GetComponent(componentName);
+    //             if (comp != null)
+    //             {
+    //                 var method = comp.GetType().GetMethod(methodName);
+    //                 if (method != null)
+    //                 {
+    //                     var parameters = method.GetParameters();
+    //                     var args = new object[parameters.Length];
+    //                     for (int i = 0; i < parameters.Length; i++)
+    //                     {
+    //                         args[i] = context.GetArgument<object>(i + 3);
+    //                     }
+    //                     method.Invoke(comp, args);
+    //                 }
+    //             }
+    //         }
+    //         return new(context.Return());
+    //     });
+    //     state.OpenStandardLibraries();
+    //     state.DoStringAsync("call_unity('TestObject', 'TestComponent', 'TestMethod')");
+    // }
+
     private void ShowScreen()
     {
         if (rootElement != null &&
@@ -77,6 +138,8 @@ public class DialogueInterpreter : MonoBehaviour
         if (root == null)
             return;
 
+        StartLua();
+
         BindUIElements(rootElement);
 
         StopDialogue();
@@ -91,8 +154,61 @@ public class DialogueInterpreter : MonoBehaviour
         OnDialogueStarted?.Invoke();
     }
 
+    private void StartLua()
+    {
+        state = LuaState.Create();
+        
+        state.Environment["unity"] = new LuaFunction((context, ct) => {
+            string targetName = context.GetArgument<string>(0);
+            string componentName = context.GetArgument<string>(1);
+            string methodName = context.GetArgument<string>(2);
+
+            // Zoek alle game-objecten (inclusief inactieve)
+            var allObjects = FindObjectsByType<GameObject>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+            bool foundObject = false;
+
+            foreach (var go in allObjects)
+            {
+                if (go.name == targetName)
+                {
+                    var comp = go.GetComponent(componentName);
+                    if (comp != null)
+                    {
+                        InvokeMatchingMethod(comp.GetType(), comp, context, methodName);
+                        foundObject = true;
+                    }
+                }
+            }
+
+            // Fallback naar static/singleton klasse via Type
+            if (!foundObject)
+            {
+                Type type = Type.GetType(targetName) ?? Type.GetType($"{targetName}, Assembly-CSharp");
+                if (type != null)
+                {
+                    InvokeMatchingMethod(type, null, context, methodName);
+                }
+            }
+
+            return new(context.Return());
+        });
+
+        state.OpenStandardLibraries();
+        state.DoStringAsync("call_unity('TestObject', 'TestComponent', 'TestMethod')");
+    }
+
+    private void StopLua()
+    {
+        if (state != null) {
+            state.Dispose();
+            state = null;
+        }        
+    }
+
     public void StopDialogue()
     {
+        StopLua();
+
         if (activeDialogueCoroutine != null)
         {
             StopCoroutine(activeDialogueCoroutine);
@@ -194,18 +310,18 @@ public class DialogueInterpreter : MonoBehaviour
         {
             if (cmd == null) continue;
 
-            nextIndent = currentIndent;  
+            nextIndent = currentIndent;
 
             switch (cmd.CommandType)
             {
                 case "choice":
                     currentIndent = 0;
-                    nextIndent ++;
+                    nextIndent++;
                     break;
 
-                case "var_is_set": 
+                case "var_is_set":
                 case "var_is_not_set":
-                    nextIndent ++;
+                    nextIndent++;
                     break;
 
                 default:
@@ -221,7 +337,7 @@ public class DialogueInterpreter : MonoBehaviour
                     CommandType = cmd.CommandType,
                     Argument = NormalizeArgument(cmd.Argument)
                 }
-            });          
+            });
 
             currentIndent = nextIndent;
         }
@@ -230,115 +346,115 @@ public class DialogueInterpreter : MonoBehaviour
     }
 
 
-private List<CommandData> TransformPhase2(List<ParsedLine> phase1)
-{
-    List<CommandData> result = new List<CommandData>();
-    int i = 0;
-
-    while (i < phase1.Count)
+    private List<CommandData> TransformPhase2(List<ParsedLine> phase1)
     {
-        ParsedLine line = phase1[i];
-        string type = NormalizeType(line.Command.CommandType);
-
-        if (type != "CHOICE")
-        {
-            result.Add(line.Command);
-            i++;
-            continue;
-        }
-
-        List<(string optionText, List<CommandData> body)> options = new List<(string, List<CommandData>)>();
+        List<CommandData> result = new List<CommandData>();
+        int i = 0;
 
         while (i < phase1.Count)
         {
-            ParsedLine currentLine = phase1[i];
-            if (NormalizeType(currentLine.Command.CommandType) == "CHOICE")
+            ParsedLine line = phase1[i];
+            string type = NormalizeType(line.Command.CommandType);
+
+            if (type != "CHOICE")
             {
-                string optionText = currentLine.Command.Argument;
+                result.Add(line.Command);
                 i++;
+                continue;
+            }
 
-                List<CommandData> body = new List<CommandData>();
-                while (i < phase1.Count)
+            List<(string optionText, List<CommandData> body)> options = new List<(string, List<CommandData>)>();
+
+            while (i < phase1.Count)
+            {
+                ParsedLine currentLine = phase1[i];
+                if (NormalizeType(currentLine.Command.CommandType) == "CHOICE")
                 {
-                    ParsedLine nextLine = phase1[i];
-                    if (NormalizeType(nextLine.Command.CommandType) == "CHOICE")
-                    {
-                        break;
-                    }
-                    if (nextLine.Indentation == 0)
-                    {
-                        break;
-                    }
-
-                    body.Add(nextLine.Command);
+                    string optionText = currentLine.Command.Argument;
                     i++;
+
+                    List<CommandData> body = new List<CommandData>();
+                    while (i < phase1.Count)
+                    {
+                        ParsedLine nextLine = phase1[i];
+                        if (NormalizeType(nextLine.Command.CommandType) == "CHOICE")
+                        {
+                            break;
+                        }
+                        if (nextLine.Indentation == 0)
+                        {
+                            break;
+                        }
+
+                        body.Add(nextLine.Command);
+                        i++;
+                    }
+                    options.Add((optionText, body));
                 }
-                options.Add((optionText, body));
+                else
+                {
+                    break;
+                }
             }
-            else
+
+            foreach (var opt in options)
             {
-                break;
-            }
-        }
-
-        foreach (var opt in options)
-        {
-            result.Add(new CommandData
-            {
-                CommandType = "SHOWOPTION",
-                Argument = opt.optionText
-            });
-        }
-
-        result.Add(new CommandData
-        {
-            CommandType = "WAITFORCHOICE"
-        });
-
-        string endChoiceLabel = $"&&__autolabel_endchoice_{autoLabelCounter++}";
-
-        foreach (var opt in options)
-        {
-            string skipLabel = $"&&__autolabel_skip_{autoLabelCounter++}";
-
-            result.Add(new CommandData
-            {
-                CommandType = "IF_NOT_CHOSEN",
-                Argument = opt.optionText
-            });
-            result.Add(new CommandData
-            {
-                CommandType = "GOTO",
-                Argument = skipLabel
-            });
-
-            foreach (var cmd in opt.body)
-            {
-                result.Add(cmd);
+                result.Add(new CommandData
+                {
+                    CommandType = "SHOWOPTION",
+                    Argument = opt.optionText
+                });
             }
 
             result.Add(new CommandData
             {
-                CommandType = "GOTO",
-                Argument = endChoiceLabel
+                CommandType = "WAITFORCHOICE"
             });
+
+            string endChoiceLabel = $"&&__autolabel_endchoice_{autoLabelCounter++}";
+
+            foreach (var opt in options)
+            {
+                string skipLabel = $"&&__autolabel_skip_{autoLabelCounter++}";
+
+                result.Add(new CommandData
+                {
+                    CommandType = "IF_NOT_CHOSEN",
+                    Argument = opt.optionText
+                });
+                result.Add(new CommandData
+                {
+                    CommandType = "GOTO",
+                    Argument = skipLabel
+                });
+
+                foreach (var cmd in opt.body)
+                {
+                    result.Add(cmd);
+                }
+
+                result.Add(new CommandData
+                {
+                    CommandType = "GOTO",
+                    Argument = endChoiceLabel
+                });
+
+                result.Add(new CommandData
+                {
+                    CommandType = "CHAPTER",
+                    Argument = skipLabel
+                });
+            }
 
             result.Add(new CommandData
             {
                 CommandType = "CHAPTER",
-                Argument = skipLabel
+                Argument = endChoiceLabel
             });
         }
 
-        result.Add(new CommandData
-        {
-            CommandType = "CHAPTER",
-            Argument = endChoiceLabel
-        });
+        return result;
     }
-
-    return result;
-}
 
     private void CompileInstructions(List<CommandData> preparsed)
     {
@@ -375,236 +491,241 @@ private List<CommandData> TransformPhase2(List<ParsedLine> phase1)
         instructions.Add(instruction);
     }
 
-private IEnumerator RunDialogueRoutine()
-{
-    int pc = 0;
-
-    HashSet<string> variables =
-        new HashSet<string>(
-            StringComparer.OrdinalIgnoreCase);
-
-    List<string> optionsToDisplay = new List<string>();
-
-    while (pc < instructions.Count)
+    private string ProcessString(string input)
     {
-        Instruction instr =
-            instructions[pc];
-            
-        switch (instr.Type)
-        {
-            case "SAY":
-            case "TEXT":
-
-                if (dialogueTextLabel != null)
-                    dialogueTextLabel.text =
-                        instr.Argument;
-
-                if (continueButton != null)
-                    continueButton.style.display =
-                        DisplayStyle.Flex;
-
-                advanceRequested = false;
-                if (instr.Type == "SAY") OnCameraChangeRequested?.Invoke(true);
-
-                yield return new WaitUntil(
-                    () => advanceRequested);
-                if (instr.Type == "SAY") OnCameraChangeRequested?.Invoke(false);
-
-
-                if (continueButton != null)
-                    continueButton.style.display =
-                        DisplayStyle.None;
-
-                pc++;
-                break;
-
-            case "SHOWOPTION":
-                optionsToDisplay.Add(instr.Argument);
-                pc++;
-                break;
-
-            case "WAITFORCHOICE":
-
-                selectedOptionText = "";
-
-                ShowOptionsUI(optionsToDisplay);
-
-                yield return new WaitUntil(
-                    () =>
-                        !string.IsNullOrEmpty(
-                            selectedOptionText));
-
-                ClearOptionsUI();
-                optionsToDisplay.Clear();
-
-                pc++;
-                break;
-
-            case "IF_NOT_CHOSEN":
-
-                if (!string.Equals(
-                    instr.Argument,
-                    selectedOptionText,
-                    StringComparison.OrdinalIgnoreCase))
-                {
-                    pc++;
-                }
-                else
-                {
-                    pc += 2;
-                }
-
-                break;
-
-            case "TOUCHED":
-
-                touchedRequested = true;
-                lastTouchedItem =
-                    instr.Argument;
-
-                HideScreen();
-
-                yield return new WaitUntil(
-                    () => !touchedRequested);
-
-                ShowScreen();
-
-                pc++;
-                break;
-
-            case "BLOCK":
-
-                ToggleSceneObjectIsTrigger(
-                    instr.Argument,
-                    false);
-
-                pc++;
-                break;
-
-            case "UNBLOCK":
-
-                ToggleSceneObjectIsTrigger(
-                    instr.Argument,
-                    true);
-
-                pc++;
-                break;
-
-            case "SHOW":
-
-                ToggleSceneObjectVisibility(
-                    instr.Argument,
-                    true);
-
-                pc++;
-                break;
-
-            case "HIDE":
-
-                ToggleSceneObjectVisibility(
-                    instr.Argument,
-                    false);
-
-                pc++;
-                break;
-
-            case "CREATE_VAR":
-                pc++;
-
-                break;
-
-            case "VAR_IS_SET":
-                if (variables.Contains(
-                    instr.Argument))
-                {
-                    pc++;
-                }
-                else
-                {
-                    pc += 2;
-                }
-
-                break;
-
-            case "VAR_IS_NOT_SET":
-
-                if (!variables.Contains(
-                    instr.Argument))
-                {
-                    pc++;
-                }
-                else
-                {
-                    pc += 2;
-                }
-
-                break;
-
-            case "SET_VAR":
-            
-                variables.Add(
-                    instr.Argument);
-
-                pc++;
-                break;
-
-            case "UNSET_VAR":
-
-                variables.Remove(
-                    instr.Argument);
-
-                pc++;
-                break;
-
-            case "TELEPORT":
-
-                KillAllPlayers(instr.Argument);
-
-                pc++;
-                break;
-
-            case "CHAPTER":
-
-                pc++;
-                break;
-
-            case "GOTO":
-
-                if (labels.TryGetValue(
-                    instr.Argument,
-                    out int targetPc))
-                {
-                    pc = targetPc;
-                }
-                else
-                {
-                    Debug.LogWarning(
-                        $"Dialogue jump target not found: {instr.Argument}");
-
-                    pc++;
-                }
-
-                break;
-
-            case "NOP":
-
-                pc++;
-                break;
-
-            default:
-
-                print("?unknown command");
-                pc++;
-                break;
-        }
+        return System.Text.RegularExpressions.Regex.Unescape(input);
     }
 
-    HideScreen();
+    private IEnumerator RunDialogueRoutine()
+    {
+        int pc = 0;
 
-    activeDialogueCoroutine = null;
+        HashSet<string> variables =
+            new HashSet<string>(
+                StringComparer.OrdinalIgnoreCase);
 
-    OnDialogueEnded?.Invoke();
-}
+        List<string> optionsToDisplay = new List<string>();
+
+        while (pc < instructions.Count)
+        {
+            Instruction instr =
+                instructions[pc];
+
+            switch (instr.Type)
+            {
+                case "SAY":
+                case "TEXT":
+
+                    if (dialogueTextLabel != null)
+                        dialogueTextLabel.text =
+                            ProcessString(instr.Argument);
+
+                    if (continueButton != null)
+                        continueButton.style.display =
+                            DisplayStyle.Flex;
+
+                    advanceRequested = false;
+                    if (instr.Type == "SAY") OnCameraChangeRequested?.Invoke(true);
+
+                    yield return new WaitUntil(
+                        () => advanceRequested);
+                    if (instr.Type == "SAY") OnCameraChangeRequested?.Invoke(false);
+
+
+                    if (continueButton != null)
+                        continueButton.style.display =
+                            DisplayStyle.None;
+
+                    pc++;
+                    break;
+
+                case "SHOWOPTION":
+                    optionsToDisplay.Add(instr.Argument);
+                    pc++;
+                    break;
+
+                case "WAITFORCHOICE":
+
+                    selectedOptionText = "";
+
+                    ShowOptionsUI(optionsToDisplay);
+
+                    yield return new WaitUntil(
+                        () =>
+                            !string.IsNullOrEmpty(
+                                selectedOptionText));
+
+                    ClearOptionsUI();
+                    optionsToDisplay.Clear();
+
+                    pc++;
+                    break;
+
+                case "IF_NOT_CHOSEN":
+
+                    if (!string.Equals(
+                        instr.Argument,
+                        selectedOptionText,
+                        StringComparison.OrdinalIgnoreCase))
+                    {
+                        pc++;
+                    }
+                    else
+                    {
+                        pc += 2;
+                    }
+
+                    break;
+
+                case "TOUCHED":
+
+                    touchedRequested = true;
+                    lastTouchedItem =
+                        instr.Argument;
+
+                    HideScreen();
+
+                    yield return new WaitUntil(
+                        () => !touchedRequested);
+
+                    ShowScreen();
+
+                    pc++;
+                    break;
+
+                case "BLOCK":
+
+                    ToggleSceneObjectIsTrigger(
+                        instr.Argument,
+                        false);
+
+                    pc++;
+                    break;
+
+                case "UNBLOCK":
+
+                    ToggleSceneObjectIsTrigger(
+                        instr.Argument,
+                        true);
+
+                    pc++;
+                    break;
+
+                case "SHOW":
+
+                    ToggleSceneObjectVisibility(
+                        instr.Argument,
+                        true);
+
+                    pc++;
+                    break;
+
+                case "HIDE":
+
+                    ToggleSceneObjectVisibility(
+                        instr.Argument,
+                        false);
+
+                    pc++;
+                    break;
+
+                case "CREATE_VAR":
+                    pc++;
+
+                    break;
+
+                case "VAR_IS_SET":
+                    if (variables.Contains(
+                        instr.Argument))
+                    {
+                        pc++;
+                    }
+                    else
+                    {
+                        pc += 2;
+                    }
+
+                    break;
+
+                case "VAR_IS_NOT_SET":
+
+                    if (!variables.Contains(
+                        instr.Argument))
+                    {
+                        pc++;
+                    }
+                    else
+                    {
+                        pc += 2;
+                    }
+
+                    break;
+
+                case "SET_VAR":
+
+                    variables.Add(
+                        instr.Argument);
+
+                    pc++;
+                    break;
+
+                case "UNSET_VAR":
+
+                    variables.Remove(
+                        instr.Argument);
+
+                    pc++;
+                    break;
+
+                case "TELEPORT":
+
+                    KillAllPlayers(instr.Argument);
+
+                    pc++;
+                    break;
+
+                case "CHAPTER":
+
+                    pc++;
+                    break;
+
+                case "GOTO":
+
+                    if (labels.TryGetValue(
+                        instr.Argument,
+                        out int targetPc))
+                    {
+                        pc = targetPc;
+                    }
+                    else
+                    {
+                        Debug.LogWarning(
+                            $"Dialogue jump target not found: {instr.Argument}");
+
+                        pc++;
+                    }
+
+                    break;
+
+                case "NOP":
+
+                    pc++;
+                    break;
+
+                default:
+
+                    print("?unknown command");
+                    pc++;
+                    break;
+            }
+        }
+
+        HideScreen();
+
+        activeDialogueCoroutine = null;
+
+        OnDialogueEnded?.Invoke();
+    }
 
     private void ToggleSceneObjectIsTrigger(
         string objectName,
@@ -744,7 +865,7 @@ private IEnumerator RunDialogueRoutine()
     public void KillAllPlayers(string target)
     {
         RespawnBehaviour[] respawnBehaviours = FindObjectsByType<RespawnBehaviour>(FindObjectsSortMode.None);
-        
+
         foreach (RespawnBehaviour rb in respawnBehaviours)
         {
             if (rb != null)
@@ -752,7 +873,7 @@ private IEnumerator RunDialogueRoutine()
                 rb.TeleportByName(target);
             }
         }
-    }    
+    }
 
     private string NormalizeType(
         string value)
