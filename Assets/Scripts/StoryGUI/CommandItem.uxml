@@ -2,5 +2,11 @@
     <ui:VisualElement name="command-item-root" style="flex-direction: row; height: 44px; width: 100%; align-items: center; background-color: rgb(235, 235, 235); border-radius: 8px; border-width: 1px; border-color: rgb(200, 200, 200); margin-bottom: 4px; padding-left: 8px; padding-right: 8px;">
         <ui:Label name="drag-handle" text="|||" style="width: 24px; text-align: center; font-size: 14px; color: rgb(255, 255, 255); cursor: move; margin-right: 4px; -unity-font-style: bold;"/>
         <ui:DropdownField name="command-dropdown" style="width: 150px; margin-right: 8px;"/>
+        <ui:VisualElement style="flex-grow: 1; position: relative; height: 100%; justify-content: center;">
+            <ui:TextField name="command-input" multiline="false" style="position: absolute; left: 0; right: 0; top: 0; bottom: 0; margin: auto;"/>
+            <ui:DropdownField name="item-dropdown" style="position: absolute; left: 0; right: 0; top: 0; bottom: 0; margin: auto; margin-top: 4px; margin-right: 8px; margin-bottom: 5px; margin-left: 4px;"/>
+            <ui:DropdownField name="label-dropdown" style="position: absolute; left: 0; right: 0; top: 0; bottom: 0; margin: auto; margin-top: 4px; margin-right: 8px; margin-bottom: 5px; margin-left: 4px;"/>
+            <ui:DropdownField name="var-dropdown" style="position: absolute; left: 0; right: 0; top: 0; bottom: 0; margin: auto; margin-top: 4px; margin-right: 8px; margin-bottom: 5px; margin-left: 4px;"/>
+        </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>

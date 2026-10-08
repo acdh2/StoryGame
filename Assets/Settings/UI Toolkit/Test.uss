@@ -13,3 +13,36 @@
 }
 
 
+/* Container achtergrond en randen uitschakelen */
+.custom-toggle VisualElement {
+    background-color: transparent;
+    border-width: 0;
+}
+
+/* Basis / Uit-status op het checkmark element */
+.custom-toggle #unity-checkmark {
+    background-image: url('project:///Assets/AssetPacks/toggles.png#toggle_off');
+    -unity-background-image-tint-color: #DDDDDD;
+    background-color: transparent;
+    border-width: 0;
+    width: 54px;
+    height: 29px;
+}
+
+/* Mouseover op uit-status */
+.custom-toggle:hover #unity-checkmark {
+    background-image: url('project:///Assets/AssetPacks/toggles.png#toggle_off');
+    -unity-background-image-tint-color: #AAAAAA;
+}
+
+/* Aan-status */
+.custom-toggle:checked #unity-checkmark {
+    background-image: url('project:///Assets/AssetPacks/toggles.png#toggle_on');
+    -unity-background-image-tint-color: #DDDDDD;
+}
+
+/* Mouseover op aan-status */
+.custom-toggle:checked:hover #unity-checkmark {
+    background-image: url('project:///Assets/AssetPacks/toggles.png#toggle_on');
+    -unity-background-image-tint-color: #AAAAAA;
+}

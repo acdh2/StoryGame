@@ -73,7 +73,7 @@ public class MaterialDragManipulator : PointerManipulator
 
         target.ReleasePointer(evt.pointerId);
 
-        if (_isDragging)
+        if (_isDragging && (evt.localPosition.y < 0f))
         {
             _isDragging = false;
             _palette.EndDragAndApply(_material);

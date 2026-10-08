@@ -22,6 +22,7 @@ public class EditorCameraController : MonoBehaviour
 
     private Vector3 velocity = Vector3.zero;
     private float cooldown = 0f;
+    private bool isRotatingAllowed = false;
 
     private void Awake()
     {
@@ -35,6 +36,7 @@ public class EditorCameraController : MonoBehaviour
     private void OnEnable()
     {
         inputActions.Editor.Enable();
+        inputActions.Editor.MousePress.performed += OnMousePress;
         inputActions.Editor.Look.performed += OnLookPerformed;
         inputActions.Editor.Zoom.performed += OnZoomPerformed;
         inputActions.Editor.Move.performed += OnMovePerformed;
@@ -42,10 +44,14 @@ public class EditorCameraController : MonoBehaviour
         inputActions.Editor.Lift.performed += OnLiftPerformed;
         inputActions.Editor.Lift.canceled += OnLiftCanceled;
         inputActions.Editor.ResetView.performed += OnResetViewPerformed;
+        //inputActions.Editor.DeleteItem.performed += 
+        //inputActions.Editor.StopGame.performed += OnStopGamePerformed;
+        if (objectSelector != null) objectSelector.OnSelectObject += OnSelectObject;
     }
 
     private void OnDisable()
     {
+        inputActions.Editor.MousePress.performed -= OnMousePress;
         inputActions.Editor.Look.performed -= OnLookPerformed;
         inputActions.Editor.Zoom.performed -= OnZoomPerformed;
         inputActions.Editor.Move.performed -= OnMovePerformed;
@@ -53,6 +59,8 @@ public class EditorCameraController : MonoBehaviour
         inputActions.Editor.Lift.performed -= OnLiftPerformed;
         inputActions.Editor.Lift.canceled -= OnLiftCanceled;
         inputActions.Editor.ResetView.performed -= OnResetViewPerformed;
+        //inputActions.Editor.StopGame.performed -= OnStopGamePerformed;
+        if (objectSelector != null) objectSelector.OnSelectObject -= OnSelectObject;
         inputActions.Editor.Disable();
     }
 
@@ -84,6 +92,11 @@ public class EditorCameraController : MonoBehaviour
         velocity = new Vector3(moveInput.x, velocity.y, moveInput.y);
     }    
 
+    private void OnStopGamePerformed(InputAction.CallbackContext context)
+    {
+        
+    }
+
     void Update()
     {
         if (cooldown > 0f)
@@ -100,8 +113,20 @@ public class EditorCameraController : MonoBehaviour
         }
     }
 
+    private void OnSelectObject()
+    {
+        isRotatingAllowed = false;
+    }
+
+    private void OnMousePress(InputAction.CallbackContext context)
+    {
+        isRotatingAllowed = !IsPointerOverUI();
+    }
+
     private void OnLookPerformed(InputAction.CallbackContext context)
     {
+        // Als de actie boven UI begon, negeer alle vervolgbewegingen
+        if (!isRotatingAllowed) return;
         if (IsPointerOverUI()) return;
 
         Vector2 lookValue = context.ReadValue<Vector2>();

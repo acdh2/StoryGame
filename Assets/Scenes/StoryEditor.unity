@@ -168,13 +168,29 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameConfiguration
   musicTracks:
-  - {fileID: 8300000, guid: 340b0b5c0592a47e69a2857e30fc309e, type: 3}
   - {fileID: 8300000, guid: 2aa6457cc978c4f92b0f1fdf3b507b84, type: 3}
-  - {fileID: 8300000, guid: 7a8748d442aa04d22b695f0297a0aea7, type: 3}
+  - {fileID: 8300000, guid: 8588b44cac156482ea80e6386ab432cd, type: 3}
+  - {fileID: 8300000, guid: 340b0b5c0592a47e69a2857e30fc309e, type: 3}
+  - {fileID: 8300000, guid: 443024642b194477aaef51b40db296b9, type: 3}
+  - {fileID: 8300000, guid: 67db8a0eabaa74810b6bbf0cb7e8c383, type: 3}
+  - {fileID: 8300000, guid: 5182023ce3f8f4e78819e9f350660bcd, type: 3}
   - {fileID: 8300000, guid: 1d7be0f47a450426e9dd996d8c4208e1, type: 3}
-  - {fileID: 8300000, guid: cfe655aaa085c4f099d805b69bc930a3, type: 3}
+  - {fileID: 8300000, guid: bdefa6bcc63fe4c44ab664ed6cabfb9c, type: 3}
+  - {fileID: 8300000, guid: 40226d1bd9b9249afbc2b1e2942c84bd, type: 3}
+  - {fileID: 8300000, guid: 78becc800107548829529a2984196e39, type: 3}
+  - {fileID: 8300000, guid: 788b3570bc1444eba8b05680e6654f68, type: 3}
+  - {fileID: 8300000, guid: 6f6b6b7b9ef6244d6b573cec04cb4021, type: 3}
+  - {fileID: 8300000, guid: 608ae315dbdd64198be285e4320f187e, type: 3}
+  - {fileID: 8300000, guid: 66076a6dc422f43a3aa4e1977f29d004, type: 3}
   - {fileID: 8300000, guid: d376e700b0a584c7c895411d99abb3a1, type: 3}
+  - {fileID: 8300000, guid: 4b81e056605bf4df2b21f589e7c4461b, type: 3}
+  - {fileID: 8300000, guid: bd71b6fdccd304656a389b1a1d873295, type: 3}
+  - {fileID: 8300000, guid: cfe655aaa085c4f099d805b69bc930a3, type: 3}
+  - {fileID: 8300000, guid: 58ace65b0a1b14610b336d196d6d9b7e, type: 3}
   - {fileID: 8300000, guid: 72b807cf447d04ef491f9f8852f09675, type: 3}
+  - {fileID: 8300000, guid: 00d44a151af8d40bb98b66dc3a0f755a, type: 3}
+  - {fileID: 8300000, guid: c7be3ba98eac8444ebbb8587e72ab35a, type: 3}
+  - {fileID: 8300000, guid: 941aa5f1ec15648a686e1a0a68abf8ab, type: 3}
   playerModels:
   - {fileID: 2388659209182943489, guid: 1d5c5c9095f4d44a18063d55aa204b27, type: 3}
   - {fileID: 2388659209182943489, guid: dfb4ae36ef3d94ca6a6a1c3f0ee37d1e, type: 3}
@@ -367,9 +383,6 @@ MonoBehaviour:
     - {fileID: 2100000, guid: 4460d7317f7454f37bafc20f3b9e135f, type: 2}
   - categoryName: Building
     materials:
-    - {fileID: 2100000, guid: c17f7ca4fafc14e29ba3add9a66ad1e2, type: 2}
-    - {fileID: 2100000, guid: eba0faca199534789892cb10c463eadf, type: 2}
-    - {fileID: 2100000, guid: a9f2c7bf5cf7249d0ad83ac423203bd8, type: 2}
     - {fileID: 2100000, guid: e0908cd33811e4365aed111fac004112, type: 2}
     - {fileID: 2100000, guid: ee8c29f8520364116a072a9c5ef74268, type: 2}
     - {fileID: 2100000, guid: d1396657188a840b192cefa2c3d61d7f, type: 2}
@@ -423,6 +436,9 @@ MonoBehaviour:
     - {fileID: 2100000, guid: 23afe7adb5f0641f1875fb681f71f113, type: 2}
   - categoryName: Nature
     materials:
+    - {fileID: 2100000, guid: c17f7ca4fafc14e29ba3add9a66ad1e2, type: 2}
+    - {fileID: 2100000, guid: eba0faca199534789892cb10c463eadf, type: 2}
+    - {fileID: 2100000, guid: a9f2c7bf5cf7249d0ad83ac423203bd8, type: 2}
     - {fileID: 2100000, guid: 8bc80ba0c1d6d4616a3df6e36f0bb6f3, type: 2}
     - {fileID: 2100000, guid: c7fd4929fc719476c98421e3e6af8b1f, type: 2}
     - {fileID: 2100000, guid: 2f78c43b2d96c4b87b206a49fc3c982c, type: 2}
@@ -455,6 +471,7 @@ MonoBehaviour:
     - {fileID: 2100000, guid: 5f82c3f517e9641939184cbb25fa107c, type: 2}
     - {fileID: 2100000, guid: 803348f2e44e84296b57561baf091b3f, type: 2}
     - {fileID: 2100000, guid: 71a959ab94046425eb1d29ff64b3a754, type: 2}
+    - {fileID: 2100000, guid: b3f9d5dbee1bb4c71a927eadb1f82a7d, type: 2}
   - categoryName: Triplanar
     materials:
     - {fileID: 2100000, guid: f040384c9311c47d6808053c4ab77986, type: 2}
@@ -979,7 +996,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb8064b9d8166428da513794c7e7eb9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StoryDataStore
-  commands: []
+  commands:
+  - CommandType: text
+    Argument: Welcome to the story!
 --- !u!1 &1361484485
 GameObject:
   m_ObjectHideFlags: 0
@@ -1412,64 +1431,67 @@ MonoBehaviour:
     items:
     - itemName: _SpawnPoint
       thumbnail: {fileID: 2800000, guid: 03412b1dc557948edb96ff7a00000177, type: 3}
-      prefab: {fileID: 7591503139998270749, guid: 8b08f65f9d62846a5b065e80234da688, type: 3}
+      prefab: {fileID: 7591503139998270749, guid: 9604734217ef8491a8b60f9f842bfc18, type: 3}
+    - itemName: Capsule
+      thumbnail: {fileID: 2800000, guid: 2e3d641f9815148c6be350bbca712c62, type: 3}
+      prefab: {fileID: 8359828872165579610, guid: 6b4cc38f5004943548629327cbc2ef67, type: 3}
     - itemName: Cone
       thumbnail: {fileID: 2800000, guid: 2ce474fa2493d4e15ac1a9f49feadcef, type: 3}
-      prefab: {fileID: 919132149155446097, guid: 7d337c9c338ef4c3f9b5b82931cd63e4, type: 3}
+      prefab: {fileID: 5926650115182419594, guid: 2eb375952b74848a8888b42db8be27ed, type: 3}
     - itemName: Cube
       thumbnail: {fileID: 2800000, guid: 7e987857784b64d84ac38539f3318c11, type: 3}
-      prefab: {fileID: 919132149155446097, guid: 9a3a7880b38a84ca68f00ace38ded230, type: 3}
+      prefab: {fileID: 7817575809272234762, guid: bef3202f069514cd18955ff99072407b, type: 3}
     - itemName: Cylinder
       thumbnail: {fileID: 2800000, guid: afab0d58e3eb54fa8a3da5871e05eac4, type: 3}
-      prefab: {fileID: 919132149155446097, guid: 166451fd43c844a31931dce441c42d54, type: 3}
+      prefab: {fileID: 1810552868668421113, guid: 827d7fcecbd964b06aa2966d4e91e6cf, type: 3}
     - itemName: Diamond
       thumbnail: {fileID: 2800000, guid: 106450d75842f43b09461af956e4399d, type: 3}
-      prefab: {fileID: 919132149155446097, guid: 098f6184386924b34bc4d3ee3fc61095, type: 3}
+      prefab: {fileID: 919132149155446097, guid: ee7e4a445d7d4485887f194dd1e5e791, type: 3}
     - itemName: Egg
       thumbnail: {fileID: 2800000, guid: bed77ae7dc81943a189e196a78af29b7, type: 3}
-      prefab: {fileID: 919132149155446097, guid: 4c7e6660e0ba74b6e903e0e0c914f19c, type: 3}
+      prefab: {fileID: 919132149155446097, guid: f8086f1b1c2bb4d159e88bb45020f88b, type: 3}
+    - itemName: gem
+      thumbnail: {fileID: 2800000, guid: 5d2daa7f923a34a6ea1b2a36964c2900, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 6a1ba6a070ff94d3d80c48ea8034b674, type: 3}
     - itemName: Heptagon
       thumbnail: {fileID: 2800000, guid: 5caf920531c4643c2a778df53b405fff, type: 3}
-      prefab: {fileID: 919132149155446097, guid: 78726648f6342459d9d829c95cf26a43, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 7992e8caf671f47029761adeca7c07d6, type: 3}
     - itemName: Hexagon
       thumbnail: {fileID: 2800000, guid: a12b1644d41524617a54da7b85104f6a, type: 3}
-      prefab: {fileID: 919132149155446097, guid: 1b2db80eb350942e8a8e98b338299411, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 6cd936eab48fa4bd5911dc66ac6e1255, type: 3}
     - itemName: Icosphere
       thumbnail: {fileID: 2800000, guid: b81a15da41027433a83e5fecbca8e331, type: 3}
-      prefab: {fileID: 919132149155446097, guid: 0a3ccd28ee57f419e8e8e6ca89112fec, type: 3}
-    - itemName: Octagon
-      thumbnail: {fileID: 2800000, guid: c0d58c0a5812048febd3cc68e89d9cac, type: 3}
-      prefab: {fileID: 919132149155446097, guid: 2248665a2ee634e5ea046ed8c5bfe230, type: 3}
-    - itemName: Pentagon
-      thumbnail: {fileID: 2800000, guid: c7a5af0eaf3ce492ab743ed794f382c9, type: 3}
-      prefab: {fileID: 919132149155446097, guid: 362b0ffe90be64e0f9a0fcf0f3f6b003, type: 3}
+      prefab: {fileID: 919132149155446097, guid: c77e982e29f344530adfb986720c8cff, type: 3}
     - itemName: Plane
       thumbnail: {fileID: 2800000, guid: 4e78dc1c183f04424896012da1e62fe7, type: 3}
-      prefab: {fileID: 919132149155446097, guid: 227c1fbc8677240b8bc7c034397a3495, type: 3}
-    - itemName: Prism
-      thumbnail: {fileID: 2800000, guid: 974c1faf447eb4a19a4f5259b00b5430, type: 3}
-      prefab: {fileID: 919132149155446097, guid: 7abed8b1f00284907968a76c901f8702, type: 3}
+      prefab: {fileID: 6761810796778149021, guid: db7063c4dbbf24059acd0299b891e4eb, type: 3}
     - itemName: Pyramid
       thumbnail: {fileID: 2800000, guid: 99d7eae17e669435ea3e357697d99e85, type: 3}
-      prefab: {fileID: 919132149155446097, guid: f56251abe82974091a914851ce1f78d7, type: 3}
+      prefab: {fileID: 6968356627152280941, guid: 44def4510302849b38797a8825999977, type: 3}
+    - itemName: Quad
+      thumbnail: {fileID: 2800000, guid: 90b2fe06718ea43248c8ad6144166ccb, type: 3}
+      prefab: {fileID: 469750068907149310, guid: b13239d29c69d4321acc83d842df5f94, type: 3}
+    - itemName: Roof
+      thumbnail: {fileID: 2800000, guid: 5adab209245f845e5876e78bdf0bb8b5, type: 3}
+      prefab: {fileID: 632471381398979307, guid: 15a355f2406ab48ac95fac175299e377, type: 3}
     - itemName: Semisphere
       thumbnail: {fileID: 2800000, guid: 47461032a8e9e43e7a037571f17ae192, type: 3}
-      prefab: {fileID: 919132149155446097, guid: ccd8a20cc60b348bb89151eb97ea59d1, type: 3}
+      prefab: {fileID: 919132149155446097, guid: a218405ddd58e47658485dfbbc8d949d, type: 3}
     - itemName: Sphere
       thumbnail: {fileID: 2800000, guid: 0823069ae06e14b8791294bc82f4a692, type: 3}
-      prefab: {fileID: 919132149155446097, guid: eff38847fe7734092b048aaa6dc561e2, type: 3}
+      prefab: {fileID: 351227811948500424, guid: 80d4a78ce05c34dab9d1e0210bdf4230, type: 3}
     - itemName: Suzanne
       thumbnail: {fileID: 2800000, guid: dcee6a45e419d4c4e8fe9bd24b801721, type: 3}
-      prefab: {fileID: 919132149155446097, guid: 8f7497fc41d8b47c19f92e1d831536cf, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 98b6d91fa3e3e4ef0bb300c18c10544c, type: 3}
     - itemName: Torus
       thumbnail: {fileID: 2800000, guid: f5dff1e7862354c389bc7420047bf82f, type: 3}
-      prefab: {fileID: 919132149155446097, guid: ab333d3e5d0bc498cbd4614a2867192a, type: 3}
+      prefab: {fileID: 3569022036223939220, guid: 0c9a7d7c14dd343ac8a2f30fc2ba5ba7, type: 3}
     - itemName: Utah Teapot
       thumbnail: {fileID: 2800000, guid: f0f02ed5c4110408cb6814e87094c1c6, type: 3}
-      prefab: {fileID: 919132149155446097, guid: afc5e56946c1d463e8422bf35d178f1e, type: 3}
+      prefab: {fileID: 919132149155446097, guid: 90160cc34ab204aed81b2157d9ee42d3, type: 3}
     - itemName: Wedge
       thumbnail: {fileID: 2800000, guid: 76ea3229de6a74b30965729d5f22c218, type: 3}
-      prefab: {fileID: 919132149155446097, guid: 11a23a33515384de4ba0dc79d94a53ba, type: 3}
+      prefab: {fileID: 5278763605463100411, guid: c99941068919b45a9af16cda993f4648, type: 3}
   - categoryName: Bricks
     items:
     - itemName: bevel-hq-brick-1x1-round
@@ -4570,44 +4592,6 @@ MonoBehaviour:
     - itemName: tower-watch
       thumbnail: {fileID: 2800000, guid: 5e7a24e56774943a9872a4ed6b004677, type: 3}
       prefab: {fileID: 919132149155446097, guid: 4fee244a9c11442d99ee245f73d3cec1, type: 3}
-  - categoryName: Primitives
-    items:
-    - itemName: _Capsule
-      thumbnail: {fileID: 2800000, guid: 7ab7a165ce38e4ea1b969e12cea4695b, type: 3}
-      prefab: {fileID: 8359828872165579610, guid: 6b4cc38f5004943548629327cbc2ef67, type: 3}
-    - itemName: _cone
-      thumbnail: {fileID: 2800000, guid: e4dfdd22934934820bc41be4410f5b14, type: 3}
-      prefab: {fileID: 5926650115182419594, guid: 2eb375952b74848a8888b42db8be27ed, type: 3}
-    - itemName: _Cube
-      thumbnail: {fileID: 2800000, guid: d486d741412e64c1588f335bfb3ab938, type: 3}
-      prefab: {fileID: 7817575809272234762, guid: bef3202f069514cd18955ff99072407b, type: 3}
-    - itemName: _Cylinder
-      thumbnail: {fileID: 2800000, guid: ce48e183e1a0c43a287f0636451d9954, type: 3}
-      prefab: {fileID: 1810552868668421113, guid: 827d7fcecbd964b06aa2966d4e91e6cf, type: 3}
-    - itemName: _Plane
-      thumbnail: {fileID: 2800000, guid: 80423858c23a94790b64429579f7d768, type: 3}
-      prefab: {fileID: 6761810796778149021, guid: db7063c4dbbf24059acd0299b891e4eb, type: 3}
-    - itemName: _Pyramid
-      thumbnail: {fileID: 2800000, guid: 1221ec42eca264a41a137a3618aee6b0, type: 3}
-      prefab: {fileID: 6968356627152280941, guid: 44def4510302849b38797a8825999977, type: 3}
-    - itemName: _Quad
-      thumbnail: {fileID: 2800000, guid: 3a1e28ecab6914957b24209c329e93a1, type: 3}
-      prefab: {fileID: 469750068907149310, guid: b13239d29c69d4321acc83d842df5f94, type: 3}
-    - itemName: _Roof
-      thumbnail: {fileID: 2800000, guid: 40f4f85fdd67c40c5acefb8aa32f7210, type: 3}
-      prefab: {fileID: 632471381398979307, guid: 15a355f2406ab48ac95fac175299e377, type: 3}
-    - itemName: _Sphere
-      thumbnail: {fileID: 2800000, guid: d9951d99299af4689aab4ca1f16c95ad, type: 3}
-      prefab: {fileID: 351227811948500424, guid: 80d4a78ce05c34dab9d1e0210bdf4230, type: 3}
-    - itemName: _Torus
-      thumbnail: {fileID: 2800000, guid: 5e83a9d5393c64335a090734d1903e0b, type: 3}
-      prefab: {fileID: 3569022036223939220, guid: 0c9a7d7c14dd343ac8a2f30fc2ba5ba7, type: 3}
-    - itemName: _Wedge
-      thumbnail: {fileID: 2800000, guid: 6dcee6678aad048f1864ae135e0c9dd7, type: 3}
-      prefab: {fileID: 5278763605463100411, guid: c99941068919b45a9af16cda993f4648, type: 3}
-    - itemName: _Wide_Wedge
-      thumbnail: {fileID: 2800000, guid: 998746952cb3a40e88a1d631682e8076, type: 3}
-      prefab: {fileID: 9027994497180049107, guid: 8cf600b3860ec4dc88a1119854f1bd83, type: 3}
   - categoryName: Space
     items:
     - itemName: basemodule_A

@@ -516,9 +516,23 @@ public class DialogueInterpreter : MonoBehaviour
                 case "SAY":
                 case "TEXT":
 
+                    string text = ProcessString(instr.Argument);
+
+                    string speaker = string.Empty;
+                    string dialogue = text;
+
+                    int colonIndex = text.IndexOf(':');
+                    if (colonIndex != -1)
+                    {
+                        speaker = text.Substring(0, colonIndex).Trim();
+                        dialogue = text.Substring(colonIndex + 1).TrimStart();
+                    }
+
+                    if (characterNameLabel != null) 
+                        characterNameLabel.text = speaker;
+
                     if (dialogueTextLabel != null)
-                        dialogueTextLabel.text =
-                            ProcessString(instr.Argument);
+                        dialogueTextLabel.text = dialogue;
 
                     if (continueButton != null)
                         continueButton.style.display =
