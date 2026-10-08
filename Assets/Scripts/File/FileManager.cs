@@ -8,9 +8,9 @@ using SFB;
 
 public class FileManager : UIControllerBase
 {
-    [SerializeField] private SceneSaveSystem saveSystem;
     [SerializeField] private Transform sceneRoot;
     [SerializeField] private EditorCameraController editorCameraController;
+    [SerializeField] private SceneManager sceneManager;
 
     private Button newBtn;
     private Button loadBtn;
@@ -61,9 +61,10 @@ public class FileManager : UIControllerBase
 
     private void OnNewClicked()
     {
-        if (saveSystem != null)
+        if (sceneManager != null)
         {
-            saveSystem.NewScene();
+            if (newBtn != null) newBtn.SetEnabled(false);
+            sceneManager.NewScene();
             ResetView();
         }
     }
@@ -75,9 +76,9 @@ public class FileManager : UIControllerBase
             if (bytes != null)
             {
                 string json = System.Text.Encoding.UTF8.GetString(bytes);
-                if (saveSystem != null && sceneRoot != null)
+                if (sceneManager != null && sceneRoot != null)
                 {
-                    saveSystem.LoadSceneFromJson(json);
+                    sceneManager.LoadSceneFromJson(json);
                     ResetView();
                 }
             }
@@ -92,9 +93,9 @@ public class FileManager : UIControllerBase
         if (paths.Length > 0 && !string.IsNullOrEmpty(paths[0]))
         {
             string json = File.ReadAllText(paths[0]);
-            if (saveSystem != null && sceneRoot != null)
+            if (sceneManager != null && sceneRoot != null)
             {
-                saveSystem.LoadSceneFromJson(json);
+                sceneManager.LoadSceneFromJson(json);
                 ResetView();
             }
         }
@@ -103,9 +104,9 @@ public class FileManager : UIControllerBase
 
     private void OnSaveClicked()
     {
-        if (saveSystem == null || sceneRoot == null) return;
+        if (sceneManager == null || sceneRoot == null) return;
 
-        string json = saveSystem.SerializeScene();
+        string json = sceneManager.SerializeScene();
 
 #if UNITY_WEBGL && !UNITY_EDITOR
         byte[] bytes = System.Text.Encoding.UTF8.GetBytes(json);
@@ -128,6 +129,17 @@ public class FileManager : UIControllerBase
         if (editorCameraController != null)
         {
             editorCameraController.ResetView();
+        }
+    }
+
+    void Update()
+    {
+        if (sceneManager != null)
+        {
+            if (sceneManager.HasChanged && newBtn != null)
+            {
+                newBtn.SetEnabled(true);
+            }
         }
     }
 }

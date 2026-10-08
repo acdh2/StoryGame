@@ -934,33 +934,6 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "ResetView",
-                    "type": "Button",
-                    "id": "a86cdaaa-fa30-4c60-b133-79b7e74fdc9b",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "StopGame",
-                    "type": "Button",
-                    "id": "c9eba51d-e2ef-47c3-9da5-f60d4c930785",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "DeleteItem",
-                    "type": "Button",
-                    "id": "80f9c4a1-7721-4e9d-b2a1-9f83051c8bdd",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
                     "name": "MousePress",
                     "type": "Button",
                     "id": "68b12195-cc91-43fd-a6eb-184e18139eee",
@@ -1149,7 +1122,80 @@
                 },
                 {
                     "name": "",
-                    "id": "994ccd31-d005-4246-9415-c9c315131d9e",
+                    "id": "93028cec-3787-4280-a1b4-cf49d5044d35",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "Press",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "MousePress",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "KeyboardShortcuts",
+            "id": "0481c7c2-ab31-4656-8217-d730aa6bcff3",
+            "actions": [
+                {
+                    "name": "ResetView",
+                    "type": "Button",
+                    "id": "d8651855-c48e-4328-a4a8-025bdb80be9c",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "StopGame",
+                    "type": "Button",
+                    "id": "89de042f-5d47-4ecd-b248-773e825453e6",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "DeleteItem",
+                    "type": "Button",
+                    "id": "e0a75a0f-83cc-4372-ad86-4e4526fc5062",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "SelectNextTool",
+                    "type": "Button",
+                    "id": "d9c51495-e0b3-44d2-8b50-a21c9933544b",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Undo",
+                    "type": "Button",
+                    "id": "134c8b7f-548c-4b62-9d07-8c35cf23da82",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Redo",
+                    "type": "Button",
+                    "id": "61bf76d1-ff5f-4d37-afff-88b500a54448",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "b06cd352-b268-44a8-a950-d5792efc99a1",
                     "path": "<Keyboard>/f",
                     "interactions": "",
                     "processors": "",
@@ -1160,7 +1206,7 @@
                 },
                 {
                     "name": "",
-                    "id": "6b321cb4-f3b4-4d81-b201-c64435c1a75c",
+                    "id": "a35acbb5-d542-4f25-9b30-41d788a372ac",
                     "path": "<Keyboard>/escape",
                     "interactions": "",
                     "processors": "",
@@ -1171,7 +1217,7 @@
                 },
                 {
                     "name": "",
-                    "id": "4f32be39-177b-4214-9a2c-dc21dd129482",
+                    "id": "cf830b7a-3058-4d47-9859-7531f1354ea6",
                     "path": "<Keyboard>/backspace",
                     "interactions": "",
                     "processors": "",
@@ -1182,14 +1228,80 @@
                 },
                 {
                     "name": "",
-                    "id": "93028cec-3787-4280-a1b4-cf49d5044d35",
-                    "path": "<Mouse>/leftButton",
-                    "interactions": "Press",
+                    "id": "ae1dc8e2-8205-49a6-ae2a-89406ec751b7",
+                    "path": "<Keyboard>/tab",
+                    "interactions": "",
                     "processors": "",
                     "groups": ";Keyboard&Mouse",
-                    "action": "MousePress",
+                    "action": "SelectNextTool",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "One Modifier",
+                    "id": "661a570a-6b2c-4582-9ef7-466f43a8f8a1",
+                    "path": "OneModifier",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Undo",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "modifier",
+                    "id": "055d84e2-b96b-4672-936b-f515f33611d3",
+                    "path": "<Keyboard>/leftMeta",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Undo",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "binding",
+                    "id": "446dc423-e0ed-48b4-b1ba-3cf6af5c1d9c",
+                    "path": "<Keyboard>/z",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Undo",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "One Modifier",
+                    "id": "846333fd-5580-46a2-b71e-04ed8300307e",
+                    "path": "OneModifier",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Redo",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "modifier",
+                    "id": "2b605f7d-3552-40be-82d9-dced2ac5cf8f",
+                    "path": "<Keyboard>/leftMeta",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "Redo",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "binding",
+                    "id": "3c98e5d0-ae57-4b08-b4db-bc1d7843101f",
+                    "path": "<Keyboard>/y",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "Redo",
+                    "isComposite": false,
+                    "isPartOfComposite": true
                 }
             ]
         }

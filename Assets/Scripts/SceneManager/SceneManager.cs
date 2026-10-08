@@ -14,6 +14,8 @@ public class SceneManager : MonoBehaviour
     private readonly Stack<string> undoStack = new Stack<string>();
     private readonly Stack<string> redoStack = new Stack<string>();
 
+    public bool HasChanged { get; private set; }
+
     public bool CanUndo => undoStack.Count > 1;
     public bool CanRedo => redoStack.Count > 0;
 
@@ -33,6 +35,7 @@ public class SceneManager : MonoBehaviour
         {
             saveSystem.LoadSceneFromFile(saveFileName);
             RecordState();
+            HasChanged = false;
         }
 #endif
     }
@@ -97,6 +100,7 @@ public class SceneManager : MonoBehaviour
 
         undoStack.Push(json);
         redoStack.Clear();
+        HasChanged = true;
 
         if (undoStack.Count > maxUndoSteps)
         {
@@ -134,7 +138,23 @@ public class SceneManager : MonoBehaviour
     }
 
     public void ApplyMaterialToTarget(GameObject targetObject, Material material)
-    {
+    {        
+        if (targetObject == null || material == null) return;
+
+        Renderer[] renderers = targetObject.GetComponentsInChildren<Renderer>(true);
+        if (renderers.Length > 0)
+        {
+            foreach (Renderer r in renderers)
+            {
+                r.sharedMaterial = material;
+            }
+            RecordState();            
+            SaveSceneInternal();
+        }
+    }    
+
+    public void ApplyMaterialToTargetOld(GameObject targetObject, Material material)
+    {        
         if (targetObject == null || material == null) return;
 
         Renderer targetRenderer = targetObject.GetComponent<Renderer>();
@@ -187,6 +207,23 @@ public class SceneManager : MonoBehaviour
         }
     }
 
+    public void NewScene()
+    {
+        if (saveSystem != null) saveSystem.NewScene();
+        HasChanged = false;
+    }
+
+    public void LoadSceneFromJson(string json)
+    {
+        if (saveSystem != null) saveSystem.LoadSceneFromJson(json);
+    }
+
+    public string SerializeScene()
+    {
+        if (saveSystem != null) return saveSystem.SerializeScene();
+        return "";
+    }
+
     public void Undo()
     {
         if (undoStack.Count <= 1 || saveSystem == null) return;
@@ -203,8 +240,9 @@ public class SceneManager : MonoBehaviour
         saveSystem.LoadSceneFromJson(previousState);
 
         saveSystem.SaveSceneToFile(saveFileName);
+        HasChanged = true;
     }
-    
+
     public void Redo()
     {
         if (redoStack.Count == 0 || saveSystem == null) return;
@@ -220,6 +258,7 @@ public class SceneManager : MonoBehaviour
         saveSystem.LoadSceneFromJson(nextState);
 
         saveSystem.SaveSceneToFile(saveFileName);
+        HasChanged = true;
     }
 
     public List<string> GetUniqueObjectNames()

@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class ToolSelectorController : UIControllerBase
+public class ToolSelectorController : UIControllerBase, IKeyEventReceiver
 {
     [SerializeField] private ObjectSelector objectSelector;
 
@@ -56,6 +56,12 @@ public class ToolSelectorController : UIControllerBase
     {
         SetCurrentTool((currentToolState + 1) % 3);
     }
+
+    public void OnKeyEvent(string identifier)
+    {
+        if (identifier == "SelectNextTool") SelectNextTool();        
+    }
+
 
     private void UpdateToolButtonUI()
     {

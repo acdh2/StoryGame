@@ -1020,33 +1020,6 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": true
                 },
                 {
-                    ""name"": ""ResetView"",
-                    ""type"": ""Button"",
-                    ""id"": ""a86cdaaa-fa30-4c60-b133-79b7e74fdc9b"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""StopGame"",
-                    ""type"": ""Button"",
-                    ""id"": ""c9eba51d-e2ef-47c3-9da5-f60d4c930785"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""DeleteItem"",
-                    ""type"": ""Button"",
-                    ""id"": ""80f9c4a1-7721-4e9d-b2a1-9f83051c8bdd"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
                     ""name"": ""MousePress"",
                     ""type"": ""Button"",
                     ""id"": ""68b12195-cc91-43fd-a6eb-184e18139eee"",
@@ -1235,7 +1208,80 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""994ccd31-d005-4246-9415-c9c315131d9e"",
+                    ""id"": ""93028cec-3787-4280-a1b4-cf49d5044d35"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": ""Press"",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""MousePress"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""KeyboardShortcuts"",
+            ""id"": ""0481c7c2-ab31-4656-8217-d730aa6bcff3"",
+            ""actions"": [
+                {
+                    ""name"": ""ResetView"",
+                    ""type"": ""Button"",
+                    ""id"": ""d8651855-c48e-4328-a4a8-025bdb80be9c"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""StopGame"",
+                    ""type"": ""Button"",
+                    ""id"": ""89de042f-5d47-4ecd-b248-773e825453e6"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""DeleteItem"",
+                    ""type"": ""Button"",
+                    ""id"": ""e0a75a0f-83cc-4372-ad86-4e4526fc5062"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SelectNextTool"",
+                    ""type"": ""Button"",
+                    ""id"": ""d9c51495-e0b3-44d2-8b50-a21c9933544b"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Undo"",
+                    ""type"": ""Button"",
+                    ""id"": ""134c8b7f-548c-4b62-9d07-8c35cf23da82"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Redo"",
+                    ""type"": ""Button"",
+                    ""id"": ""61bf76d1-ff5f-4d37-afff-88b500a54448"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""b06cd352-b268-44a8-a950-d5792efc99a1"",
                     ""path"": ""<Keyboard>/f"",
                     ""interactions"": """",
                     ""processors"": """",
@@ -1246,7 +1292,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""6b321cb4-f3b4-4d81-b201-c64435c1a75c"",
+                    ""id"": ""a35acbb5-d542-4f25-9b30-41d788a372ac"",
                     ""path"": ""<Keyboard>/escape"",
                     ""interactions"": """",
                     ""processors"": """",
@@ -1257,7 +1303,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""4f32be39-177b-4214-9a2c-dc21dd129482"",
+                    ""id"": ""cf830b7a-3058-4d47-9859-7531f1354ea6"",
                     ""path"": ""<Keyboard>/backspace"",
                     ""interactions"": """",
                     ""processors"": """",
@@ -1268,14 +1314,80 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""93028cec-3787-4280-a1b4-cf49d5044d35"",
-                    ""path"": ""<Mouse>/leftButton"",
-                    ""interactions"": ""Press"",
+                    ""id"": ""ae1dc8e2-8205-49a6-ae2a-89406ec751b7"",
+                    ""path"": ""<Keyboard>/tab"",
+                    ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Keyboard&Mouse"",
-                    ""action"": ""MousePress"",
+                    ""action"": ""SelectNextTool"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""One Modifier"",
+                    ""id"": ""661a570a-6b2c-4582-9ef7-466f43a8f8a1"",
+                    ""path"": ""OneModifier"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Undo"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""modifier"",
+                    ""id"": ""055d84e2-b96b-4672-936b-f515f33611d3"",
+                    ""path"": ""<Keyboard>/leftMeta"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Undo"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""binding"",
+                    ""id"": ""446dc423-e0ed-48b4-b1ba-3cf6af5c1d9c"",
+                    ""path"": ""<Keyboard>/z"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Undo"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""One Modifier"",
+                    ""id"": ""846333fd-5580-46a2-b71e-04ed8300307e"",
+                    ""path"": ""OneModifier"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Redo"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""modifier"",
+                    ""id"": ""2b605f7d-3552-40be-82d9-dced2ac5cf8f"",
+                    ""path"": ""<Keyboard>/leftMeta"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""Redo"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""binding"",
+                    ""id"": ""3c98e5d0-ae57-4b08-b4db-bc1d7843101f"",
+                    ""path"": ""<Keyboard>/y"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""Redo"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         }
@@ -1372,10 +1484,15 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         m_Editor_Zoom = m_Editor.FindAction("Zoom", throwIfNotFound: true);
         m_Editor_Look = m_Editor.FindAction("Look", throwIfNotFound: true);
         m_Editor_Lift = m_Editor.FindAction("Lift", throwIfNotFound: true);
-        m_Editor_ResetView = m_Editor.FindAction("ResetView", throwIfNotFound: true);
-        m_Editor_StopGame = m_Editor.FindAction("StopGame", throwIfNotFound: true);
-        m_Editor_DeleteItem = m_Editor.FindAction("DeleteItem", throwIfNotFound: true);
         m_Editor_MousePress = m_Editor.FindAction("MousePress", throwIfNotFound: true);
+        // KeyboardShortcuts
+        m_KeyboardShortcuts = asset.FindActionMap("KeyboardShortcuts", throwIfNotFound: true);
+        m_KeyboardShortcuts_ResetView = m_KeyboardShortcuts.FindAction("ResetView", throwIfNotFound: true);
+        m_KeyboardShortcuts_StopGame = m_KeyboardShortcuts.FindAction("StopGame", throwIfNotFound: true);
+        m_KeyboardShortcuts_DeleteItem = m_KeyboardShortcuts.FindAction("DeleteItem", throwIfNotFound: true);
+        m_KeyboardShortcuts_SelectNextTool = m_KeyboardShortcuts.FindAction("SelectNextTool", throwIfNotFound: true);
+        m_KeyboardShortcuts_Undo = m_KeyboardShortcuts.FindAction("Undo", throwIfNotFound: true);
+        m_KeyboardShortcuts_Redo = m_KeyboardShortcuts.FindAction("Redo", throwIfNotFound: true);
     }
 
     ~@InputSystem_Actions()
@@ -1383,6 +1500,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         UnityEngine.Debug.Assert(!m_Player.enabled, "This will cause a leak and performance issues, InputSystem_Actions.Player.Disable() has not been called.");
         UnityEngine.Debug.Assert(!m_UI.enabled, "This will cause a leak and performance issues, InputSystem_Actions.UI.Disable() has not been called.");
         UnityEngine.Debug.Assert(!m_Editor.enabled, "This will cause a leak and performance issues, InputSystem_Actions.Editor.Disable() has not been called.");
+        UnityEngine.Debug.Assert(!m_KeyboardShortcuts.enabled, "This will cause a leak and performance issues, InputSystem_Actions.KeyboardShortcuts.Disable() has not been called.");
     }
 
     /// <summary>
@@ -1841,9 +1959,6 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Editor_Zoom;
     private readonly InputAction m_Editor_Look;
     private readonly InputAction m_Editor_Lift;
-    private readonly InputAction m_Editor_ResetView;
-    private readonly InputAction m_Editor_StopGame;
-    private readonly InputAction m_Editor_DeleteItem;
     private readonly InputAction m_Editor_MousePress;
     /// <summary>
     /// Provides access to input actions defined in input action map "Editor".
@@ -1872,18 +1987,6 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Editor/Lift".
         /// </summary>
         public InputAction @Lift => m_Wrapper.m_Editor_Lift;
-        /// <summary>
-        /// Provides access to the underlying input action "Editor/ResetView".
-        /// </summary>
-        public InputAction @ResetView => m_Wrapper.m_Editor_ResetView;
-        /// <summary>
-        /// Provides access to the underlying input action "Editor/StopGame".
-        /// </summary>
-        public InputAction @StopGame => m_Wrapper.m_Editor_StopGame;
-        /// <summary>
-        /// Provides access to the underlying input action "Editor/DeleteItem".
-        /// </summary>
-        public InputAction @DeleteItem => m_Wrapper.m_Editor_DeleteItem;
         /// <summary>
         /// Provides access to the underlying input action "Editor/MousePress".
         /// </summary>
@@ -1926,15 +2029,6 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @Lift.started += instance.OnLift;
             @Lift.performed += instance.OnLift;
             @Lift.canceled += instance.OnLift;
-            @ResetView.started += instance.OnResetView;
-            @ResetView.performed += instance.OnResetView;
-            @ResetView.canceled += instance.OnResetView;
-            @StopGame.started += instance.OnStopGame;
-            @StopGame.performed += instance.OnStopGame;
-            @StopGame.canceled += instance.OnStopGame;
-            @DeleteItem.started += instance.OnDeleteItem;
-            @DeleteItem.performed += instance.OnDeleteItem;
-            @DeleteItem.canceled += instance.OnDeleteItem;
             @MousePress.started += instance.OnMousePress;
             @MousePress.performed += instance.OnMousePress;
             @MousePress.canceled += instance.OnMousePress;
@@ -1961,15 +2055,6 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @Lift.started -= instance.OnLift;
             @Lift.performed -= instance.OnLift;
             @Lift.canceled -= instance.OnLift;
-            @ResetView.started -= instance.OnResetView;
-            @ResetView.performed -= instance.OnResetView;
-            @ResetView.canceled -= instance.OnResetView;
-            @StopGame.started -= instance.OnStopGame;
-            @StopGame.performed -= instance.OnStopGame;
-            @StopGame.canceled -= instance.OnStopGame;
-            @DeleteItem.started -= instance.OnDeleteItem;
-            @DeleteItem.performed -= instance.OnDeleteItem;
-            @DeleteItem.canceled -= instance.OnDeleteItem;
             @MousePress.started -= instance.OnMousePress;
             @MousePress.performed -= instance.OnMousePress;
             @MousePress.canceled -= instance.OnMousePress;
@@ -2006,6 +2091,157 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
     /// Provides a new <see cref="EditorActions" /> instance referencing this action map.
     /// </summary>
     public EditorActions @Editor => new EditorActions(this);
+
+    // KeyboardShortcuts
+    private readonly InputActionMap m_KeyboardShortcuts;
+    private List<IKeyboardShortcutsActions> m_KeyboardShortcutsActionsCallbackInterfaces = new List<IKeyboardShortcutsActions>();
+    private readonly InputAction m_KeyboardShortcuts_ResetView;
+    private readonly InputAction m_KeyboardShortcuts_StopGame;
+    private readonly InputAction m_KeyboardShortcuts_DeleteItem;
+    private readonly InputAction m_KeyboardShortcuts_SelectNextTool;
+    private readonly InputAction m_KeyboardShortcuts_Undo;
+    private readonly InputAction m_KeyboardShortcuts_Redo;
+    /// <summary>
+    /// Provides access to input actions defined in input action map "KeyboardShortcuts".
+    /// </summary>
+    public struct KeyboardShortcutsActions
+    {
+        private @InputSystem_Actions m_Wrapper;
+
+        /// <summary>
+        /// Construct a new instance of the input action map wrapper class.
+        /// </summary>
+        public KeyboardShortcutsActions(@InputSystem_Actions wrapper) { m_Wrapper = wrapper; }
+        /// <summary>
+        /// Provides access to the underlying input action "KeyboardShortcuts/ResetView".
+        /// </summary>
+        public InputAction @ResetView => m_Wrapper.m_KeyboardShortcuts_ResetView;
+        /// <summary>
+        /// Provides access to the underlying input action "KeyboardShortcuts/StopGame".
+        /// </summary>
+        public InputAction @StopGame => m_Wrapper.m_KeyboardShortcuts_StopGame;
+        /// <summary>
+        /// Provides access to the underlying input action "KeyboardShortcuts/DeleteItem".
+        /// </summary>
+        public InputAction @DeleteItem => m_Wrapper.m_KeyboardShortcuts_DeleteItem;
+        /// <summary>
+        /// Provides access to the underlying input action "KeyboardShortcuts/SelectNextTool".
+        /// </summary>
+        public InputAction @SelectNextTool => m_Wrapper.m_KeyboardShortcuts_SelectNextTool;
+        /// <summary>
+        /// Provides access to the underlying input action "KeyboardShortcuts/Undo".
+        /// </summary>
+        public InputAction @Undo => m_Wrapper.m_KeyboardShortcuts_Undo;
+        /// <summary>
+        /// Provides access to the underlying input action "KeyboardShortcuts/Redo".
+        /// </summary>
+        public InputAction @Redo => m_Wrapper.m_KeyboardShortcuts_Redo;
+        /// <summary>
+        /// Provides access to the underlying input action map instance.
+        /// </summary>
+        public InputActionMap Get() { return m_Wrapper.m_KeyboardShortcuts; }
+        /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.Enable()" />
+        public void Enable() { Get().Enable(); }
+        /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.Disable()" />
+        public void Disable() { Get().Disable(); }
+        /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.enabled" />
+        public bool enabled => Get().enabled;
+        /// <summary>
+        /// Implicitly converts an <see ref="KeyboardShortcutsActions" /> to an <see ref="InputActionMap" /> instance.
+        /// </summary>
+        public static implicit operator InputActionMap(KeyboardShortcutsActions set) { return set.Get(); }
+        /// <summary>
+        /// Adds <see cref="InputAction.started"/>, <see cref="InputAction.performed"/> and <see cref="InputAction.canceled"/> callbacks provided via <param cref="instance" /> on all input actions contained in this map.
+        /// </summary>
+        /// <param name="instance">Callback instance.</param>
+        /// <remarks>
+        /// If <paramref name="instance" /> is <c>null</c> or <paramref name="instance"/> have already been added this method does nothing.
+        /// </remarks>
+        /// <seealso cref="KeyboardShortcutsActions" />
+        public void AddCallbacks(IKeyboardShortcutsActions instance)
+        {
+            if (instance == null || m_Wrapper.m_KeyboardShortcutsActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_KeyboardShortcutsActionsCallbackInterfaces.Add(instance);
+            @ResetView.started += instance.OnResetView;
+            @ResetView.performed += instance.OnResetView;
+            @ResetView.canceled += instance.OnResetView;
+            @StopGame.started += instance.OnStopGame;
+            @StopGame.performed += instance.OnStopGame;
+            @StopGame.canceled += instance.OnStopGame;
+            @DeleteItem.started += instance.OnDeleteItem;
+            @DeleteItem.performed += instance.OnDeleteItem;
+            @DeleteItem.canceled += instance.OnDeleteItem;
+            @SelectNextTool.started += instance.OnSelectNextTool;
+            @SelectNextTool.performed += instance.OnSelectNextTool;
+            @SelectNextTool.canceled += instance.OnSelectNextTool;
+            @Undo.started += instance.OnUndo;
+            @Undo.performed += instance.OnUndo;
+            @Undo.canceled += instance.OnUndo;
+            @Redo.started += instance.OnRedo;
+            @Redo.performed += instance.OnRedo;
+            @Redo.canceled += instance.OnRedo;
+        }
+
+        /// <summary>
+        /// Removes <see cref="InputAction.started"/>, <see cref="InputAction.performed"/> and <see cref="InputAction.canceled"/> callbacks provided via <param cref="instance" /> on all input actions contained in this map.
+        /// </summary>
+        /// <remarks>
+        /// Calling this method when <paramref name="instance" /> have not previously been registered has no side-effects.
+        /// </remarks>
+        /// <seealso cref="KeyboardShortcutsActions" />
+        private void UnregisterCallbacks(IKeyboardShortcutsActions instance)
+        {
+            @ResetView.started -= instance.OnResetView;
+            @ResetView.performed -= instance.OnResetView;
+            @ResetView.canceled -= instance.OnResetView;
+            @StopGame.started -= instance.OnStopGame;
+            @StopGame.performed -= instance.OnStopGame;
+            @StopGame.canceled -= instance.OnStopGame;
+            @DeleteItem.started -= instance.OnDeleteItem;
+            @DeleteItem.performed -= instance.OnDeleteItem;
+            @DeleteItem.canceled -= instance.OnDeleteItem;
+            @SelectNextTool.started -= instance.OnSelectNextTool;
+            @SelectNextTool.performed -= instance.OnSelectNextTool;
+            @SelectNextTool.canceled -= instance.OnSelectNextTool;
+            @Undo.started -= instance.OnUndo;
+            @Undo.performed -= instance.OnUndo;
+            @Undo.canceled -= instance.OnUndo;
+            @Redo.started -= instance.OnRedo;
+            @Redo.performed -= instance.OnRedo;
+            @Redo.canceled -= instance.OnRedo;
+        }
+
+        /// <summary>
+        /// Unregisters <param cref="instance" /> and unregisters all input action callbacks via <see cref="KeyboardShortcutsActions.UnregisterCallbacks(IKeyboardShortcutsActions)" />.
+        /// </summary>
+        /// <seealso cref="KeyboardShortcutsActions.UnregisterCallbacks(IKeyboardShortcutsActions)" />
+        public void RemoveCallbacks(IKeyboardShortcutsActions instance)
+        {
+            if (m_Wrapper.m_KeyboardShortcutsActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        /// <summary>
+        /// Replaces all existing callback instances and previously registered input action callbacks associated with them with callbacks provided via <param cref="instance" />.
+        /// </summary>
+        /// <remarks>
+        /// If <paramref name="instance" /> is <c>null</c>, calling this method will only unregister all existing callbacks but not register any new callbacks.
+        /// </remarks>
+        /// <seealso cref="KeyboardShortcutsActions.AddCallbacks(IKeyboardShortcutsActions)" />
+        /// <seealso cref="KeyboardShortcutsActions.RemoveCallbacks(IKeyboardShortcutsActions)" />
+        /// <seealso cref="KeyboardShortcutsActions.UnregisterCallbacks(IKeyboardShortcutsActions)" />
+        public void SetCallbacks(IKeyboardShortcutsActions instance)
+        {
+            foreach (var item in m_Wrapper.m_KeyboardShortcutsActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_KeyboardShortcutsActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    /// <summary>
+    /// Provides a new <see cref="KeyboardShortcutsActions" /> instance referencing this action map.
+    /// </summary>
+    public KeyboardShortcutsActions @KeyboardShortcuts => new KeyboardShortcutsActions(this);
     private int m_KeyboardMouseSchemeIndex = -1;
     /// <summary>
     /// Provides access to the input control scheme.
@@ -2256,6 +2492,21 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnLift(InputAction.CallbackContext context);
         /// <summary>
+        /// Method invoked when associated input action "MousePress" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnMousePress(InputAction.CallbackContext context);
+    }
+    /// <summary>
+    /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "KeyboardShortcuts" which allows adding and removing callbacks.
+    /// </summary>
+    /// <seealso cref="KeyboardShortcutsActions.AddCallbacks(IKeyboardShortcutsActions)" />
+    /// <seealso cref="KeyboardShortcutsActions.RemoveCallbacks(IKeyboardShortcutsActions)" />
+    public interface IKeyboardShortcutsActions
+    {
+        /// <summary>
         /// Method invoked when associated input action "ResetView" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
@@ -2277,11 +2528,25 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnDeleteItem(InputAction.CallbackContext context);
         /// <summary>
-        /// Method invoked when associated input action "MousePress" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// Method invoked when associated input action "SelectNextTool" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnMousePress(InputAction.CallbackContext context);
+        void OnSelectNextTool(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Undo" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnUndo(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Redo" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnRedo(InputAction.CallbackContext context);
     }
 }

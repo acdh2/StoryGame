@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
 
-public class EditorCameraController : MonoBehaviour
+public class EditorCameraController : MonoBehaviour, IKeyEventReceiver
 {
     private bool isDragging = false;
     public void NotifyDragStart() { isDragging = true; }
@@ -43,9 +43,6 @@ public class EditorCameraController : MonoBehaviour
         inputActions.Editor.Move.canceled += OnMoveCanceled;
         inputActions.Editor.Lift.performed += OnLiftPerformed;
         inputActions.Editor.Lift.canceled += OnLiftCanceled;
-        inputActions.Editor.ResetView.performed += OnResetViewPerformed;
-        //inputActions.Editor.DeleteItem.performed += 
-        //inputActions.Editor.StopGame.performed += OnStopGamePerformed;
         if (objectSelector != null) objectSelector.OnSelectObject += OnSelectObject;
     }
 
@@ -58,8 +55,6 @@ public class EditorCameraController : MonoBehaviour
         inputActions.Editor.Move.canceled -= OnMoveCanceled;
         inputActions.Editor.Lift.performed -= OnLiftPerformed;
         inputActions.Editor.Lift.canceled -= OnLiftCanceled;
-        inputActions.Editor.ResetView.performed -= OnResetViewPerformed;
-        //inputActions.Editor.StopGame.performed -= OnStopGamePerformed;
         if (objectSelector != null) objectSelector.OnSelectObject -= OnSelectObject;
         inputActions.Editor.Disable();
     }
@@ -92,10 +87,16 @@ public class EditorCameraController : MonoBehaviour
         velocity = new Vector3(moveInput.x, velocity.y, moveInput.y);
     }    
 
-    private void OnStopGamePerformed(InputAction.CallbackContext context)
+    public void OnKeyEvent(string identifier)
     {
+        if (!gameObject.activeSelf) return;
         
+        if (identifier == "ResetView")
+        {
+            ResetView();
+        }
     }
+
 
     void Update()
     {
@@ -142,11 +143,6 @@ public class EditorCameraController : MonoBehaviour
 
         Vector3 currentEuler = transform.eulerAngles;
         transform.rotation = Quaternion.Euler(verticalRotation, currentEuler.y, 0f);
-    }    
-
-    private void OnResetViewPerformed(InputAction.CallbackContext context)
-    {
-        ResetView();
     }    
 
     private void OnZoomPerformed(InputAction.CallbackContext context)

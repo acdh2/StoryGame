@@ -68,7 +68,7 @@ public class GameConfiguration : MonoBehaviour
         }
     }
 
-    private float _fogDensity = 0.75f;
+    private float _fogDensity = 0.5f;
     public float fogDensity
     {
         get => _fogDensity;

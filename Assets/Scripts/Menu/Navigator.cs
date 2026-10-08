@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class Navigator : UIControllerBase
+public class Navigator : UIControllerBase, IKeyEventReceiver
 {
     [Tooltip("De naam van het GameObject dat bij de start als enige zichtbaar moet zijn.")]
     public string defaultScreenName;
@@ -13,8 +13,6 @@ public class Navigator : UIControllerBase
     private readonly List<(Button button, System.Action action)> registeredListeners = new List<(Button, System.Action)>();
 
     [SerializeField] private ObjectSelector objectSelector;
-
-    // private event Action OnEscapePressed;
 
     private void Start()
     {
@@ -35,22 +33,13 @@ public class Navigator : UIControllerBase
             registeredListeners.Add((closeButton, closeAction));
         }
 
-        // OnEscapePressed += () => SetScreenVisibility(root, screens[0]);
-
         BuildDynamicButtons(root);
         InitializeDefaultScreen();
     }
 
-    // void Update()
-    // {
-    //     if (Input.GetKeyDown(KeyCode.Escape))
-    //     {
-    //         OnEscapePressed?.Invoke();
-    //     }
-    // }
 
     protected override void OnUIDisabled()
-    {
+    {        
         UnregisterListeners();
     }
 
@@ -121,6 +110,9 @@ public class Navigator : UIControllerBase
     private void SetScreenVisibility(VisualElement root, GameObject targetScreen)
     {
         bool isLastScreen = (targetScreen == screens[screens.Count - 1]);
+        
+        int screenIndex = screens.IndexOf(targetScreen);
+        bool isEditScreen = (screenIndex < 3);
 
         var navGroupBox = root.Q<VisualElement>("NavigationBox");
         var closeBtn = root.Q<Button>("close");
@@ -131,13 +123,12 @@ public class Navigator : UIControllerBase
         if (navGroupBox != null) navGroupBox.style.display = isLastScreen ? DisplayStyle.None : DisplayStyle.Flex;
         if (closeBtn != null) closeBtn.style.display = isLastScreen ? DisplayStyle.Flex : DisplayStyle.None;
         if (undoRedoBox != null) undoRedoBox.style.display = isLastScreen ? DisplayStyle.None : DisplayStyle.Flex;
-        if (leftSide != null) leftSide.style.display = isLastScreen ? DisplayStyle.None : DisplayStyle.Flex;
-        if (rightSide != null) rightSide.style.display = isLastScreen ? DisplayStyle.None : DisplayStyle.Flex;
+        if (leftSide != null) leftSide.style.display = isEditScreen ? DisplayStyle.Flex : DisplayStyle.None;
+        if (rightSide != null) rightSide.style.display = isEditScreen ? DisplayStyle.Flex : DisplayStyle.None;
 
-        int screenIndex = screens.IndexOf(targetScreen);
         if (objectSelector != null)
         {
-            objectSelector.SetEnabled(screenIndex < 3);
+            objectSelector.SetEnabled(isEditScreen);
         }
 
         for (int i = 0; i < screens.Count; i++)
@@ -212,5 +203,19 @@ public class Navigator : UIControllerBase
         root.RegisterCallback<NavigationMoveEvent>(evt => evt.StopPropagation(), TrickleDown.TrickleDown);
         root.RegisterCallback<NavigationSubmitEvent>(evt => evt.StopPropagation(), TrickleDown.TrickleDown);
         root.RegisterCallback<NavigationCancelEvent>(evt => evt.StopPropagation(), TrickleDown.TrickleDown);
+    }
+
+    public void OnKeyEvent(string identifier)
+    {
+        if (identifier == "StopGame") {
+        if (RootElement != null) {
+            var closeBtn = RootElement.Q<Button>("close");
+            if (closeBtn != null && closeBtn.style.display == DisplayStyle.Flex)
+            {
+                SetScreenVisibility(RootElement, screens[0]);
+                UnityEngine.Cursor.lockState = CursorLockMode.None;
+            }
+        }
+        }
     }
 }
