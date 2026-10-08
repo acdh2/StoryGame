@@ -14,7 +14,6 @@ public class SceneSaveSystem : MonoBehaviour
     [SerializeField] private GameObject floorObject;
 
     private Material defaultFloorMaterial;
-
     private StoryDataStore storyDataStore;
 
     [System.Serializable]
@@ -58,21 +57,37 @@ public class SceneSaveSystem : MonoBehaviour
         if (floorObject != null)
         {
             Renderer floorRenderer = floorObject.GetComponent<Renderer>();
-            if (floorRenderer.sharedMaterial == defaultFloorMaterial)
+            if (floorRenderer != null)
             {
-                data.floorMaterialName = DEFAULT_MATERIAL_TAG;
-            } else {
-                data.floorMaterialName = floorRenderer != null && floorRenderer.sharedMaterial != null ? floorRenderer.sharedMaterial.name : "";
+                if (floorRenderer.sharedMaterial == defaultFloorMaterial)
+                {
+                    data.floorMaterialName = DEFAULT_MATERIAL_TAG;
+                }
+                else
+                {
+                    data.floorMaterialName = floorRenderer.sharedMaterial != null ? floorRenderer.sharedMaterial.name : "";
+                }
             }
         }
 
         foreach (Transform child in transform)
         {
-            Renderer renderer = child.GetComponent<Renderer>();
+            if (child.CompareTag("SpawnPoint")) continue;
+
+            // Zoek de renderer in de child-hiërarchie (LODs)
+            Renderer renderer = child.GetComponentInChildren<Renderer>(true);
             string matName = renderer != null && renderer.sharedMaterial != null ? renderer.sharedMaterial.name : "";
 
             ObjectIdentifier identifier = child.GetComponent<ObjectIdentifier>();
-            string id = identifier != null ? identifier.PrefabId : child.name;
+            if (identifier == null) identifier = child.GetComponentInChildren<ObjectIdentifier>();
+
+            string id = identifier != null && !string.IsNullOrEmpty(identifier.PrefabId) ? identifier.PrefabId : child.name;
+
+            // Als er een expliciete materialId is opgeslagen op het ObjectIdentifier component, gebruik die
+            if (identifier != null && !string.IsNullOrEmpty(identifier.MaterialId))
+            {
+                matName = identifier.MaterialId;
+            }
 
             ObjectSaveData objData = new ObjectSaveData
             {
@@ -104,23 +119,17 @@ public class SceneSaveSystem : MonoBehaviour
     {
         if (string.IsNullOrEmpty(json)) return;
 
-        foreach (Transform child in transform)
-        {
-            Destroy(child.gameObject);
-        }
-        
+        ClearChildren();
+
         SaveData data = JsonUtility.FromJson<SaveData>(json);
         if (data == null) return;
 
         if (floorObject != null && !string.IsNullOrEmpty(data.floorMaterialName))
         {
-            Material mat;
-            if (data.floorMaterialName == DEFAULT_MATERIAL_TAG)
-            {
-                mat = defaultFloorMaterial;
-            } else {
-                mat = FindMaterialByName(data.floorMaterialName);
-            }
+            Material mat = (data.floorMaterialName == DEFAULT_MATERIAL_TAG) 
+                ? defaultFloorMaterial 
+                : FindMaterialByName(data.floorMaterialName);
+
             if (mat != null)
             {
                 Renderer floorRenderer = floorObject.GetComponent<Renderer>();
@@ -137,21 +146,19 @@ public class SceneSaveSystem : MonoBehaviour
             {
                 string lookupKey = !string.IsNullOrEmpty(objData.prefabId) ? objData.prefabId : objData.customName;
                 LevelObjectPalette.LevelItemData itemData = FindItemDataByName(lookupKey);
-                
+
                 if (itemData.prefab != null)
                 {
                     GameObject spawned = Instantiate(itemData.prefab, objData.position, objData.rotation);
                     spawned.transform.parent = transform;
                     spawned.transform.localScale = objData.scale;
-                    
                     spawned.name = !string.IsNullOrEmpty(objData.customName) ? objData.customName : itemData.itemName;
-                    
+
                     ObjectIdentifier identifier = spawned.GetComponent<ObjectIdentifier>();
-                    if (identifier == null)
-                    {
-                        identifier = spawned.AddComponent<ObjectIdentifier>();
-                    }
+                    if (identifier == null) identifier = spawned.AddComponent<ObjectIdentifier>();
+                    
                     identifier.SetPrefabId(itemData.itemName);
+                    identifier.SetMaterialId(objData.materialName);
 
                     SetLayerRecursively(spawned, LayerMask.NameToLayer("SelectableObjects"));
 
@@ -160,10 +167,11 @@ public class SceneSaveSystem : MonoBehaviour
                         Material mat = FindMaterialByName(objData.materialName);
                         if (mat != null)
                         {
-                            Renderer targetRenderer = spawned.GetComponent<Renderer>();
-                            if (targetRenderer != null)
+                            // Pas toe op ALLE renderers in de hiërarchie (voor LODs)
+                            Renderer[] renderers = spawned.GetComponentsInChildren<Renderer>(true);
+                            foreach (Renderer r in renderers)
                             {
-                                targetRenderer.sharedMaterial = mat;
+                                r.sharedMaterial = mat;
                             }
                         }
                     }
@@ -184,10 +192,7 @@ public class SceneSaveSystem : MonoBehaviour
 
     public void NewScene()
     {
-        foreach (Transform child in transform)
-        {
-            Destroy(child.gameObject);
-        }
+        ClearChildren();
 
         if (floorObject != null && defaultFloorMaterial != null)
         {
@@ -208,7 +213,21 @@ public class SceneSaveSystem : MonoBehaviour
         {
             gameConfiguration.Reset();
         }
+    }
 
+    private void ClearChildren()
+    {
+        // Gebruik DestroyImmediate in editor / runtime opruimen om vervuiling in dezelfde frame te voorkomen
+        List<GameObject> children = new List<GameObject>();
+        foreach (Transform child in transform)
+        {
+            children.Add(child.gameObject);
+        }
+        
+        foreach (GameObject child in children)
+        {
+            DestroyImmediate(child);
+        }
     }
 
     public void SaveSceneToFile(string fileName = "scene.json")

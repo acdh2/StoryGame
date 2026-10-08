@@ -5650,9 +5650,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FileManager
   runAtStartUp: 1
-  saveSystem: {fileID: 997034305}
   sceneRoot: {fileID: 997034303}
   editorCameraController: {fileID: 2000960783}
+  sceneManager: {fileID: 997034304}
 --- !u!1 &2000960781
 GameObject:
   m_ObjectHideFlags: 0

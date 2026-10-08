@@ -91,7 +91,7 @@ public class SceneManager : MonoBehaviour
         SaveSceneInternal();
     }
 
-    public void RecordState()
+    private void RecordState()
     {
         if (saveSystem == null) return;
         string json = saveSystem.SerializeScene();
@@ -120,7 +120,7 @@ public class SceneManager : MonoBehaviour
 
         GameObject newObject = Instantiate(itemData.prefab, spawnPosition, Quaternion.identity);
         newObject.transform.parent = transform;
-        newObject.name = "default";//itemData.itemName;
+        newObject.name = "default";
         SetLayerRecursively(newObject, LayerMask.NameToLayer("SelectableObjects"));
 
         ObjectIdentifier identifier = newObject.GetComponent<ObjectIdentifier>();
@@ -129,6 +129,7 @@ public class SceneManager : MonoBehaviour
             identifier = newObject.AddComponent<ObjectIdentifier>();
         }
         identifier.SetPrefabId(itemData.itemName);
+        identifier.SetMaterialId("");
 
         objectSelector?.SelectObject(newObject);
 
@@ -141,6 +142,12 @@ public class SceneManager : MonoBehaviour
     {        
         if (targetObject == null || material == null) return;
 
+        ObjectIdentifier objectId = targetObject.GetComponentInChildren<ObjectIdentifier>();
+        if (objectId != null)
+        {
+            objectId.SetMaterialId(material.name);
+        }
+
         Renderer[] renderers = targetObject.GetComponentsInChildren<Renderer>(true);
         if (renderers.Length > 0)
         {
@@ -148,19 +155,6 @@ public class SceneManager : MonoBehaviour
             {
                 r.sharedMaterial = material;
             }
-            RecordState();            
-            SaveSceneInternal();
-        }
-    }    
-
-    public void ApplyMaterialToTargetOld(GameObject targetObject, Material material)
-    {        
-        if (targetObject == null || material == null) return;
-
-        Renderer targetRenderer = targetObject.GetComponent<Renderer>();
-        if (targetRenderer != null)
-        {
-            targetRenderer.sharedMaterial = material;
             RecordState();            
             SaveSceneInternal();
         }
@@ -209,13 +203,31 @@ public class SceneManager : MonoBehaviour
 
     public void NewScene()
     {
-        if (saveSystem != null) saveSystem.NewScene();
+        if (saveSystem == null) return;
+
+        // 1. Zorg dat de huidige staat vaststaat op de stack
+        RecordState();
+
+        // 2. Wis de scene inhoud
+        saveSystem.NewScene();
+
+        // 3. Sla exact 1 schone lege staat op
+        RecordState();
+        SaveSceneInternal();
         HasChanged = false;
     }
 
     public void LoadSceneFromJson(string json)
     {
-        if (saveSystem != null) saveSystem.LoadSceneFromJson(json);
+        if (saveSystem == null) return;
+
+        saveSystem.LoadSceneFromJson(json);
+        
+        undoStack.Clear();
+        redoStack.Clear();
+        
+        RecordState();
+        HasChanged = false;
     }
 
     public string SerializeScene()
@@ -292,6 +304,5 @@ public class SceneManager : MonoBehaviour
 
         string state = tempStateStack.Pop();
         saveSystem.LoadSceneFromJson(state);
-        //SaveSceneInternal();
     }    
 }
