@@ -108,43 +108,13 @@ namespace StarterAssets
             else DisableControls();
         }
 
-        private bool IsPointerOverUI()
-        {
-            Vector2 mousePos = Input.mousePosition;
-            Vector2 pointerPosition = new Vector2(mousePos.x, Screen.height - mousePos.y);
-
-            UIDocument[] uiDocuments = FindObjectsByType<UIDocument>(FindObjectsSortMode.None);
-            foreach (var uiDoc in uiDocuments)
-            {
-                if (uiDoc != null && uiDoc.rootVisualElement != null)
-                {
-                    if (uiDoc.rootVisualElement.style.display != DisplayStyle.None)
-                    {
-                        Vector2 panelPosition = RuntimePanelUtils.ScreenToPanel(uiDoc.rootVisualElement.panel, pointerPosition);
-                        VisualElement picked = uiDoc.rootVisualElement.panel.Pick(panelPosition);
-                        if (picked != null && picked != uiDoc.rootVisualElement)
-                        {
-                            return true;
-                        }
-                    }
-                }
-            }
-            return false;
-        }      
-
 #if UNITY_WEBGL && !UNITY_EDITOR
         void Update()
         {
             UnityEngine.Cursor.visible = (UnityEngine.Cursor.lockState == CursorLockMode.None);
         }
 #elif UNITY_WEBGL && UNITY_EDITOR
-        void Update()
-        {
-            if (Input.GetKeyDown(KeyCode.Escape))
-            {
-                SetControlsActive(false);
-            }
-        }
+
 #endif
 
     }

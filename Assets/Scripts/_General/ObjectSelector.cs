@@ -62,7 +62,7 @@ public class ObjectSelector : MonoBehaviour
                 ForceClearHandleTarget();
             }
 
-            if (Input.GetMouseButtonDown(0))
+            if (UIToolkitHelper.GetMouseButtonDown())
             {
                 TrySelectObject();
                 _lastClickTime = Time.time;
@@ -70,36 +70,12 @@ public class ObjectSelector : MonoBehaviour
         }
     }    
 
-    private bool IsPointerOverUI()
-    {
-        Vector2 mousePos = Input.mousePosition;
-        Vector2 pointerPosition = new Vector2(mousePos.x, Screen.height - mousePos.y);
-
-        UIDocument[] uiDocuments = FindObjectsByType<UIDocument>(FindObjectsSortMode.None);
-        foreach (var uiDoc in uiDocuments)
-        {
-            if (uiDoc != null && uiDoc.rootVisualElement != null)
-            {
-                if (uiDoc.rootVisualElement.style.display != DisplayStyle.None)
-                {
-                    Vector2 panelPosition = RuntimePanelUtils.ScreenToPanel(uiDoc.rootVisualElement.panel, pointerPosition);
-                    VisualElement picked = uiDoc.rootVisualElement.panel.Pick(panelPosition);
-                    if (picked != null && picked != uiDoc.rootVisualElement)
-                    {
-                        return true;
-                    }
-                }
-            }
-        }
-        return false;
-    }
-
     private void TrySelectObject()
     {
         if (_isDraggingHandle) return;
-        if (IsPointerOverUI()) return;
+        if (UIToolkitHelper.IsPointerOverUI()) return;
 
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        Ray ray = Camera.main.ScreenPointToRay(UIToolkitHelper.GetMousePosition());
 
         if (_handleLayer != 0 && Physics.Raycast(ray, Mathf.Infinity, _handleLayer))
         {
@@ -165,7 +141,7 @@ public class ObjectSelector : MonoBehaviour
             {
                 foreach (CapsuleCollider collider in _globalHandle.GetComponentsInChildren<CapsuleCollider>())
                 {
-                    collider.radius = 0.15f;
+                    collider.radius = 0.08f;
                 }
 
                 _globalHandle.OnInteractionStartEvent += OnHandleStartInteraction;

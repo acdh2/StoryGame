@@ -149,6 +149,13 @@ public class Navigator : UIControllerBase, IKeyEventReceiver
         }
     }
 
+    public void StartGame()
+    {
+        if (RootElement != null) {
+            SetScreenVisibility(RootElement, screens[screens.Count - 1]);
+        }
+    }
+
     private void InitializeDefaultScreen()
     {
         if (screens.Count == 0) return;

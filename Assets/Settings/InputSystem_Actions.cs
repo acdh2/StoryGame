@@ -1326,7 +1326,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                 {
                     ""name"": ""One Modifier"",
                     ""id"": ""661a570a-6b2c-4582-9ef7-466f43a8f8a1"",
-                    ""path"": ""OneModifier"",
+                    ""path"": ""OneModifier(overrideModifiersNeedToBePressedFirst=true)"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -1340,7 +1340,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""path"": ""<Keyboard>/leftMeta"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": "";Keyboard&Mouse"",
                     ""action"": ""Undo"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -1351,7 +1351,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""path"": ""<Keyboard>/z"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": "";Keyboard&Mouse"",
                     ""action"": ""Undo"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -1359,7 +1359,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                 {
                     ""name"": ""One Modifier"",
                     ""id"": ""846333fd-5580-46a2-b71e-04ed8300307e"",
-                    ""path"": ""OneModifier"",
+                    ""path"": ""OneModifier(overrideModifiersNeedToBePressedFirst=true)"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",

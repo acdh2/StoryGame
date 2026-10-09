@@ -2,6 +2,7 @@ using System.IO;
 using UnityEngine;
 using UnityEngine.UIElements;
 using SFB;
+using System.Collections;
 #if UNITY_WEBGL && !UNITY_EDITOR
     using Assets.SimpleFileBrowserForWebGL;
 #endif
@@ -65,7 +66,7 @@ public class FileManager : UIControllerBase
         {
             if (newBtn != null) newBtn.SetEnabled(false);
             sceneManager.NewScene();
-            ResetView();
+            ResetViewNew();
         }
     }
 
@@ -79,7 +80,7 @@ public class FileManager : UIControllerBase
                 if (sceneManager != null && sceneRoot != null)
                 {
                     sceneManager.LoadSceneFromJson(json);
-                    ResetView();
+                    ResetViewNew();
                 }
             }
         }, ".json");
@@ -96,7 +97,7 @@ public class FileManager : UIControllerBase
             if (sceneManager != null && sceneRoot != null)
             {
                 sceneManager.LoadSceneFromJson(json);
-                ResetView();
+                ResetViewNew();
             }
         }
 #endif
@@ -124,12 +125,19 @@ public class FileManager : UIControllerBase
 #endif
     }
 
-    private void ResetView()
+    private IEnumerator ImmediateResetView()
     {
+        yield return null;
+
         if (editorCameraController != null)
         {
             editorCameraController.ResetView();
         }
+    }
+
+    private void ResetViewNew()
+    {
+        StartCoroutine(ImmediateResetView());
     }
 
     void Update()

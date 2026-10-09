@@ -236,7 +236,7 @@ public class MaterialPalette : UIControllerBase
     public void EndDragAndApply(Material material)
     {
         if (dragPreview != null) dragPreview.style.display = DisplayStyle.None;
-        TryApplyMaterial(material, Input.mousePosition);
+        TryApplyMaterial(material, UIToolkitHelper.GetMousePosition());
     }
 
     public void CancelDragPreview()

@@ -118,17 +118,17 @@ public class EditorCameraController : MonoBehaviour, IKeyEventReceiver
     {
         isRotatingAllowed = false;
     }
-
+    
     private void OnMousePress(InputAction.CallbackContext context)
     {
-        isRotatingAllowed = !IsPointerOverUI();
+        isRotatingAllowed = !(isDragging || UIToolkitHelper.IsPointerOverUI());
     }
 
     private void OnLookPerformed(InputAction.CallbackContext context)
     {
         // Als de actie boven UI begon, negeer alle vervolgbewegingen
         if (!isRotatingAllowed) return;
-        if (IsPointerOverUI()) return;
+        if (isDragging || UIToolkitHelper.IsPointerOverUI()) return;
 
         Vector2 lookValue = context.ReadValue<Vector2>();
         if (lookValue == Vector2.zero) return;
@@ -147,39 +147,13 @@ public class EditorCameraController : MonoBehaviour, IKeyEventReceiver
 
     private void OnZoomPerformed(InputAction.CallbackContext context)
     {
-        if (IsPointerOverUI()) return;
+        if (isDragging || UIToolkitHelper.IsPointerOverUI()) return;
 
         Vector2 zoomValue = context.ReadValue<Vector2>();
         Vector3 moveDirection = new Vector3(zoomValue.x, 0f, zoomValue.y);
 
         transform.Translate(moveDirection * (zoomSpeed * Time.deltaTime), Space.Self);
     }    
-
-    private bool IsPointerOverUI()
-    {
-        if (isDragging) return true;
-
-        Vector2 mousePos = Input.mousePosition;
-        Vector2 pointerPosition = new Vector2(mousePos.x, Screen.height - mousePos.y);
-
-        UIDocument[] uiDocuments = FindObjectsByType<UIDocument>(FindObjectsSortMode.None);
-        foreach (var uiDoc in uiDocuments)
-        {
-            if (uiDoc != null && uiDoc.rootVisualElement != null)
-            {
-                if (uiDoc.rootVisualElement.style.display != DisplayStyle.None)
-                {
-                    Vector2 panelPosition = RuntimePanelUtils.ScreenToPanel(uiDoc.rootVisualElement.panel, pointerPosition);
-                    VisualElement picked = uiDoc.rootVisualElement.panel.Pick(panelPosition);
-                    if (picked != null && picked != uiDoc.rootVisualElement)
-                    {
-                        return true;
-                    }
-                }
-            }
-        }
-        return false;
-    }
 
     public void ResetView()
     {
