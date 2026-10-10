@@ -34,10 +34,10 @@ public class SceneManager : MonoBehaviour
         if (saveSystem != null)
         {
             saveSystem.LoadSceneFromFile(saveFileName);
-            RecordState();
-            HasChanged = false;
         }
 #endif
+        RecordState();
+        HasChanged = false;
     }
 
     private void OnApplicationQuit()
@@ -155,9 +155,10 @@ public class SceneManager : MonoBehaviour
             {
                 r.sharedMaterial = material;
             }
-            RecordState();            
-            SaveSceneInternal();
         }
+
+        RecordState();            
+        SaveSceneInternal();
     }
 
     public void RenameObject(GameObject targetObject, string newName)

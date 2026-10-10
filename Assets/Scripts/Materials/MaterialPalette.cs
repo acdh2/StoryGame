@@ -121,6 +121,7 @@ public class MaterialPalette : UIControllerBase
             categoryBtn.style.borderTopRightRadius = 6;
             categoryBtn.style.borderBottomLeftRadius = 6;
             categoryBtn.style.borderBottomRightRadius = 6;
+            categoryBtn.style.flexShrink = 0;
 
             if (defaultIcon != null)
             {
@@ -177,6 +178,7 @@ public class MaterialPalette : UIControllerBase
             itemCard.style.marginLeft = 6;
             itemCard.style.marginRight = 6;
             itemCard.style.backgroundColor = new StyleColor(new Color(0.95f, 0.95f, 0.95f));
+            itemCard.style.flexShrink = 0;
             
             itemCard.style.borderTopLeftRadius = 12;
             itemCard.style.borderTopRightRadius = 12;
@@ -209,6 +211,20 @@ public class MaterialPalette : UIControllerBase
             itemCard.AddManipulator(new MaterialDragManipulator(mat, thumbnail, this, cameraController));
 
             scrollView.Add(itemCard);
+        }
+        scrollView.scrollOffset = Vector2.zero;
+        scrollView.RegisterCallback<GeometryChangedEvent>(OnScrollViewGeometryChanged);
+        scrollView.MarkDirtyRepaint();
+        scrollView.contentContainer.style.paddingRight = 16;
+    }
+
+    private void OnScrollViewGeometryChanged(GeometryChangedEvent evt)
+    {
+        var target = evt.target as ScrollView;
+        if (target != null)
+        {
+            target.UnregisterCallback<GeometryChangedEvent>(OnScrollViewGeometryChanged);
+            target.MarkDirtyRepaint();
         }
     }
 

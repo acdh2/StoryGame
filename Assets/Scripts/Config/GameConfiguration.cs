@@ -132,7 +132,7 @@ public class GameConfiguration : MonoBehaviour
             fogColorG = 1,
             fogColorB = 1,
             fogColorA = 1,
-            fogDensity = 0.75f,
+            fogDensity = 0.5f,
             timeHours = 12
         };
     }
@@ -160,7 +160,7 @@ public class GameConfiguration : MonoBehaviour
             RenderSettings.fog = true;
             RenderSettings.fogMode = FogMode.ExponentialSquared;
             RenderSettings.fogColor = fogColor;
-            RenderSettings.fogDensity = fogDensity * 0.75f;
+            RenderSettings.fogDensity = fogDensity * fogDensity * 0.75f;
 
             Camera cam = Camera.main;
             if (cam != null)

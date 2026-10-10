@@ -72,7 +72,7 @@ public class SceneSaveSystem : MonoBehaviour
 
         foreach (Transform child in transform)
         {
-            if (child.CompareTag("SpawnPoint")) continue;
+            //if (child.CompareTag("SpawnPoint")) continue;
 
             // Zoek de renderer in de child-hiërarchie (LODs)
             Renderer renderer = child.GetComponentInChildren<Renderer>(true);

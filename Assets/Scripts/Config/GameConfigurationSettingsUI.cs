@@ -53,7 +53,7 @@ public class GameConfigurationSettingsUI : UIControllerBase
             var dragContainer = fogDensitySlider.Q("unity-drag-container");
             dragContainer.RegisterCallback<PointerUpEvent>(evt =>
             {
-                gameConfiguration.fogDensity = fogDensitySlider.value * fogDensitySlider.value;
+                gameConfiguration.fogDensity = fogDensitySlider.value;
             });
         }
 
@@ -109,7 +109,7 @@ public class GameConfigurationSettingsUI : UIControllerBase
 
         if (fogDensitySlider != null)
         {
-            fogDensitySlider.SetValueWithoutNotify(Mathf.Sqrt(gameConfiguration.fogDensity));
+            fogDensitySlider.SetValueWithoutNotify(gameConfiguration.fogDensity);
         }
 
         if (dayToggle != null)

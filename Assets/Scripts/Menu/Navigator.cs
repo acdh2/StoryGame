@@ -215,14 +215,15 @@ public class Navigator : UIControllerBase, IKeyEventReceiver
     public void OnKeyEvent(string identifier)
     {
         if (identifier == "StopGame") {
-        if (RootElement != null) {
-            var closeBtn = RootElement.Q<Button>("close");
-            if (closeBtn != null && closeBtn.style.display == DisplayStyle.Flex)
-            {
-                SetScreenVisibility(RootElement, screens[0]);
-                UnityEngine.Cursor.lockState = CursorLockMode.None;
+            UnityEngine.Cursor.lockState = CursorLockMode.None;
+            UnityEngine.Cursor.visible = true;
+            if (RootElement != null) {
+                var closeBtn = RootElement.Q<Button>("close");
+                if (closeBtn != null && closeBtn.style.display == DisplayStyle.Flex)
+                {
+                    SetScreenVisibility(RootElement, screens[0]);
+                }
             }
-        }
         }
     }
 }
