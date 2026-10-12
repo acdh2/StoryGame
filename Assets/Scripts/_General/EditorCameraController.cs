@@ -40,11 +40,12 @@ public class EditorCameraController : MonoBehaviour, IKeyEventReceiver
         inputActions.Editor.MousePress.performed += OnMousePress;
         inputActions.Editor.Look.performed += OnLookPerformed;
         inputActions.Editor.Zoom.performed += OnZoomPerformed;
+        inputActions.Editor.Move.started += OnMovePerformed;
         inputActions.Editor.Move.performed += OnMovePerformed;
         inputActions.Editor.Move.canceled += OnMoveCanceled;
-        inputActions.Editor.Lift.performed += OnLiftPerformed;
+        inputActions.Editor.Lift.started += OnLiftPerformed;
         inputActions.Editor.Lift.canceled += OnLiftCanceled;
-        inputActions.Editor.Turn.performed += OnTurnPerformed;
+        inputActions.Editor.Turn.started += OnTurnPerformed;
         inputActions.Editor.Turn.canceled += OnTurnCanceled;
         if (objectSelector != null) objectSelector.OnSelectObject += OnSelectObject;
     }
@@ -66,10 +67,10 @@ public class EditorCameraController : MonoBehaviour, IKeyEventReceiver
 
     private void OnApplicationFocus(bool hasFocus)
     {
-        if (!hasFocus)
-        {
+        //if (!hasFocus)
+        //{
             ResetAllInputs();
-        }
+        //}
     }
 
     private void OnApplicationPause(bool pauseStatus)
@@ -106,7 +107,7 @@ public class EditorCameraController : MonoBehaviour, IKeyEventReceiver
 
     private void OnLiftCanceled(InputAction.CallbackContext context)
     {
-        Vector2 moveInput = context.ReadValue<Vector2>();
+        Vector2 moveInput = Vector2.zero;// context.ReadValue<Vector2>();
         velocity = new Vector3(velocity.x, moveInput.y, velocity.z);
     }
 
@@ -118,7 +119,7 @@ public class EditorCameraController : MonoBehaviour, IKeyEventReceiver
 
     private void OnMoveCanceled(InputAction.CallbackContext context)
     {
-        Vector2 moveInput = context.ReadValue<Vector2>();
+        Vector2 moveInput = Vector2.zero;//context.ReadValue<Vector2>();
         velocity = new Vector3(moveInput.x, velocity.y, moveInput.y);
     }
 
