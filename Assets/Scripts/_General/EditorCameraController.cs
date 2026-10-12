@@ -21,6 +21,7 @@ public class EditorCameraController : MonoBehaviour, IKeyEventReceiver
     private Quaternion originalRotation = Quaternion.identity;
 
     private Vector3 velocity = Vector3.zero;
+    private float angularVelocity = 0f;
     private float cooldown = 0f;
     private bool isRotatingAllowed = false;
 
@@ -43,6 +44,8 @@ public class EditorCameraController : MonoBehaviour, IKeyEventReceiver
         inputActions.Editor.Move.canceled += OnMoveCanceled;
         inputActions.Editor.Lift.performed += OnLiftPerformed;
         inputActions.Editor.Lift.canceled += OnLiftCanceled;
+        inputActions.Editor.Turn.performed += OnTurnPerformed;
+        inputActions.Editor.Turn.canceled += OnTurnCanceled;
         if (objectSelector != null) objectSelector.OnSelectObject += OnSelectObject;
     }
 
@@ -55,12 +58,44 @@ public class EditorCameraController : MonoBehaviour, IKeyEventReceiver
         inputActions.Editor.Move.canceled -= OnMoveCanceled;
         inputActions.Editor.Lift.performed -= OnLiftPerformed;
         inputActions.Editor.Lift.canceled -= OnLiftCanceled;
+        inputActions.Editor.Turn.performed -= OnTurnPerformed;
+        inputActions.Editor.Turn.canceled -= OnTurnCanceled;
         if (objectSelector != null) objectSelector.OnSelectObject -= OnSelectObject;
         inputActions.Editor.Disable();
     }
 
-    private void Start()
+    private void OnApplicationFocus(bool hasFocus)
     {
+        if (!hasFocus)
+        {
+            ResetAllInputs();
+        }
+    }
+
+    private void OnApplicationPause(bool pauseStatus)
+    {
+        if (pauseStatus)
+        {
+            ResetAllInputs();
+        }
+    }
+
+    private void ResetAllInputs()
+    {
+        velocity = Vector3.zero;
+        angularVelocity = 0f;
+        isRotatingAllowed = false;
+    }
+
+    private void OnTurnPerformed(InputAction.CallbackContext context)
+    {
+        Vector2 moveInput = context.ReadValue<Vector2>();
+        angularVelocity = moveInput.x;
+    }
+
+    private void OnTurnCanceled(InputAction.CallbackContext context)
+    {
+        angularVelocity = 0f;
     }
 
     private void OnLiftPerformed(InputAction.CallbackContext context)
@@ -85,7 +120,7 @@ public class EditorCameraController : MonoBehaviour, IKeyEventReceiver
     {
         Vector2 moveInput = context.ReadValue<Vector2>();
         velocity = new Vector3(moveInput.x, velocity.y, moveInput.y);
-    }    
+    }
 
     public void OnKeyEvent(string identifier)
     {
@@ -97,7 +132,6 @@ public class EditorCameraController : MonoBehaviour, IKeyEventReceiver
         }
     }
 
-
     void Update()
     {
         if (cooldown > 0f)
@@ -108,10 +142,13 @@ public class EditorCameraController : MonoBehaviour, IKeyEventReceiver
 
     private void FixedUpdate()
     {
-        if (velocity.magnitude > 0.01f) {
-            transform.Translate(velocity, Space.Self);
-            //velocity *= 0.9f;
+        if (velocity.magnitude > 0.01f)
+        {
+            Vector3 xyz = transform.TransformDirection(velocity);
+            xyz.y = velocity.y;
+            transform.Translate(xyz, Space.World);
         }
+        transform.Rotate(0, angularVelocity, 0, Space.World);
     }
 
     private void OnSelectObject()
@@ -126,7 +163,6 @@ public class EditorCameraController : MonoBehaviour, IKeyEventReceiver
 
     private void OnLookPerformed(InputAction.CallbackContext context)
     {
-        // Als de actie boven UI begon, negeer alle vervolgbewegingen
         if (!isRotatingAllowed) return;
         if (isDragging || UIToolkitHelper.IsPointerOverUI()) return;
 
@@ -143,7 +179,7 @@ public class EditorCameraController : MonoBehaviour, IKeyEventReceiver
 
         Vector3 currentEuler = transform.eulerAngles;
         transform.rotation = Quaternion.Euler(verticalRotation, currentEuler.y, 0f);
-    }    
+    }
 
     private void OnZoomPerformed(InputAction.CallbackContext context)
     {
@@ -153,7 +189,7 @@ public class EditorCameraController : MonoBehaviour, IKeyEventReceiver
         Vector3 moveDirection = new Vector3(zoomValue.x, 0f, zoomValue.y);
 
         transform.Translate(moveDirection * (zoomSpeed * Time.deltaTime), Space.Self);
-    }    
+    }
 
     public void ResetView()
     {
@@ -179,6 +215,5 @@ public class EditorCameraController : MonoBehaviour, IKeyEventReceiver
         transform.SetPositionAndRotation(originalPosition, originalRotation);
         verticalRotation = transform.rotation.eulerAngles.x;
         cooldown = 0f;
-    }    
-
+    }
 }

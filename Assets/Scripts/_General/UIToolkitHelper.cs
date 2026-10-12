@@ -4,6 +4,12 @@ using UnityEngine.InputSystem;
 
 public class UIToolkitHelper : MonoBehaviour
 {
+    public static bool IsPointerOutsideScreen() 
+    {
+        Vector2 mousePos = GetMousePosition();
+        return mousePos.x < 0 || mousePos.x > Screen.width || mousePos.y < 0 || mousePos.y > Screen.height;
+    }
+
     public static bool IsPointerOverUI()
     {
         Vector2 mousePos = GetMousePosition();
@@ -27,6 +33,21 @@ public class UIToolkitHelper : MonoBehaviour
         }
         return false;
     }
+
+    public static bool IsAnyTextFieldFocused()
+    {
+        var uiDocuments = Object.FindObjectsByType<UIDocument>(FindObjectsSortMode.None);
+        
+        foreach (var doc in uiDocuments)
+        {
+            if (doc.rootVisualElement?.panel?.focusController?.focusedElement is TextField)
+            {
+                return true;
+            }
+        }
+        
+        return false;
+    }    
 
     public static Vector2 GetMousePosition()
     {

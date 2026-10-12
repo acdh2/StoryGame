@@ -15,13 +15,13 @@ public class ToolSelectorController : UIControllerBase, IKeyEventReceiver
     {
         base.Awake();
 
-        if (objectSelector != null)
-        {
-            objectSelector.OnSelectObject += () =>
-            {
-                SetCurrentTool(0);
-            };
-        }
+        // if (objectSelector != null)
+        // {
+        //     objectSelector.OnSelectObject += () =>
+        //     {
+        //         SetCurrentTool(0);
+        //     };
+        // }
     }
 
 
@@ -59,6 +59,7 @@ public class ToolSelectorController : UIControllerBase, IKeyEventReceiver
 
     public void OnKeyEvent(string identifier)
     {
+        if (!gameObject.activeSelf) return;
         if (identifier == "SelectNextTool") SelectNextTool();        
     }
 

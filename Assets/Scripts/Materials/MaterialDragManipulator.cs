@@ -6,10 +6,14 @@ public class MaterialDragManipulator : PointerManipulator
     private readonly Material _material;
     private readonly Texture2D _thumbnail;
     private readonly MaterialPalette _palette;
-    private bool _isDragging;
-    private Vector2 _startPointerPosition;
     private readonly EditorCameraController cameraController;
 
+    private bool _isDragging;
+    private Vector3 _startPointerPosition;
+    private Vector3 _lastPointerPosition;
+    private ScrollView _scrollView;
+    private VisualElement _panelRoot;
+    private int _pointerId = -1;
 
     public MaterialDragManipulator(Material material, Texture2D thumbnail, MaterialPalette palette, EditorCameraController cameraController)
     {
@@ -17,82 +21,133 @@ public class MaterialDragManipulator : PointerManipulator
         _thumbnail = thumbnail;
         _palette = palette;
         this.cameraController = cameraController;
+        activators.Add(new ManipulatorActivationFilter { button = MouseButton.LeftMouse });
     }
 
     protected override void RegisterCallbacksOnTarget()
     {
         target.RegisterCallback<PointerDownEvent>(OnPointerDown);
-        target.RegisterCallback<PointerMoveEvent>(OnPointerMove);
-        target.RegisterCallback<PointerUpEvent>(OnPointerUp);
-        target.RegisterCallback<PointerCaptureOutEvent>(OnPointerCaptureOut);
     }
 
     protected override void UnregisterCallbacksFromTarget()
     {
         target.UnregisterCallback<PointerDownEvent>(OnPointerDown);
-        target.UnregisterCallback<PointerMoveEvent>(OnPointerMove);
-        target.UnregisterCallback<PointerUpEvent>(OnPointerUp);
-        target.UnregisterCallback<PointerCaptureOutEvent>(OnPointerCaptureOut);
+        UnregisterRootCallbacks();
     }
 
     private void OnPointerDown(PointerDownEvent evt)
     {
-        if (evt.button != 0) return;
+        if (_pointerId != -1 || !CanStartManipulation(evt)) return;
         cameraController?.NotifyDragStart();
 
+        _pointerId = evt.pointerId;
         _isDragging = false;
-        _startPointerPosition = evt.localPosition;
-        target.CapturePointer(evt.pointerId);
-        evt.StopPropagation();
+        _startPointerPosition = evt.position;
+        _lastPointerPosition = evt.position;
+
+        _panelRoot = target.panel?.visualTree;
+        if (_panelRoot == null) return;
+
+        _scrollView = target.GetFirstAncestorOfType<ScrollView>();
+
+        _panelRoot.RegisterCallback<PointerMoveEvent>(OnPointerMove);
+        _panelRoot.RegisterCallback<PointerUpEvent>(OnPointerUp);
+        _panelRoot.RegisterCallback<PointerCaptureOutEvent>(OnPointerCaptureOut);
     }
 
     private void OnPointerMove(PointerMoveEvent evt)
     {
-        if (!target.HasPointerCapture(evt.pointerId)) return;
+        if (evt.pointerId != _pointerId) return;
 
-        if (!_isDragging && (evt.localPosition.y < 0f))
+        VisualElement scrollContainer = _scrollView != null ? (VisualElement)_scrollView : target.parent;
+        Rect bounds = scrollContainer.worldBound;
+        bool isOutsideContainer = evt.position.y < bounds.y;
+
+        if (!_isDragging)
         {
-            if (Vector2.Distance(_startPointerPosition, evt.localPosition) > 5f)
+            if (isOutsideContainer)
             {
                 _isDragging = true;
-                _palette.StartDragPreview(_thumbnail, evt.localPosition, target);
+                evt.StopPropagation();
+
+                _panelRoot.CapturePointer(_pointerId);
+                _palette.StartDragPreview(_thumbnail, evt.position);
             }
-        }
-        else
-        {
-            _palette.UpdateDragPreview(evt.localPosition, target);
+            else if (_scrollView != null)
+            {
+                Vector3 delta = evt.position - _lastPointerPosition;
+                _scrollView.scrollOffset -= new Vector2(delta.x, delta.y);
+                evt.StopPropagation();
+            }
+
+            _lastPointerPosition = evt.position;
+            return;
         }
 
         evt.StopPropagation();
+        _palette.UpdateDragPreview(evt.position);
+        _lastPointerPosition = evt.position;
     }
 
     private void OnPointerUp(PointerUpEvent evt)
     {
-        if (!target.HasPointerCapture(evt.pointerId)) return;
+        if (evt.pointerId != _pointerId) return;
         cameraController?.NotifyDragEnd();
 
-        target.ReleasePointer(evt.pointerId);
+        VisualElement scrollContainer = _scrollView != null ? (VisualElement)_scrollView : target.parent;
+        Rect bounds = scrollContainer.worldBound;
+        bool isOutsideContainer = evt.position.y < bounds.y;
 
-        if (_isDragging && (evt.localPosition.y < 0f))
+        if (_isDragging)
         {
-            _isDragging = false;
-            _palette.EndDragAndApply(_material);
-        }
-        else
-        {
-            _palette.CancelDragPreview();
+            evt.StopPropagation();
+
+            if (_panelRoot != null && _panelRoot.HasPointerCapture(_pointerId))
+            {
+                _panelRoot.ReleasePointer(_pointerId);
+            }
+
+            if (isOutsideContainer)
+            {
+                _palette.EndDragAndApply(_material);
+            }
+            else
+            {
+                _palette.CancelDragPreview();
+            }
         }
 
-        evt.StopPropagation();
+        CleanupAndStop();
     }
 
     private void OnPointerCaptureOut(PointerCaptureOutEvent evt)
     {
+        if (evt.pointerId != _pointerId) return;
         cameraController?.NotifyDragEnd();
+
         if (_isDragging)
         {
-            _isDragging = false;
             _palette.CancelDragPreview();
         }
+
+        CleanupAndStop();
+    }
+
+    private void CleanupAndStop()
+    {
+        _isDragging = false;
+        UnregisterRootCallbacks();
+        _pointerId = -1;
+        _scrollView = null;
+    }
+
+    private void UnregisterRootCallbacks()
+    {
+        if (_panelRoot == null) return;
+
+        _panelRoot.UnregisterCallback<PointerMoveEvent>(OnPointerMove);
+        _panelRoot.UnregisterCallback<PointerUpEvent>(OnPointerUp);
+        _panelRoot.UnregisterCallback<PointerCaptureOutEvent>(OnPointerCaptureOut);
+        _panelRoot = null;
     }
 }

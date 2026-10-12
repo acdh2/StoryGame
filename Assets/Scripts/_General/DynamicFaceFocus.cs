@@ -15,10 +15,12 @@ public class DynamicFaceFocus : MonoBehaviour
 
     private bool isApplied = false;
 
-    public void Apply()
+    public void Apply(string speaker)
     {
         if (isApplied) return;
         isApplied = true;
+
+        print($"speaker requested {speaker}");
 
         foreach (Transform t in transform.root.GetComponentsInChildren<Transform>())
         {
@@ -68,7 +70,7 @@ public class DynamicFaceFocus : MonoBehaviour
         }
     }
 
-    public void Unapply()
+    public void Unapply(string speaker)
     {
         if (!isApplied) return;
 

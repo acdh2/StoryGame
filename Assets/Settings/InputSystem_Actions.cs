@@ -1027,6 +1027,15 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Turn"",
+                    ""type"": ""Button"",
+                    ""id"": ""123caf54-eaff-4d79-98e0-8ac0b28dbac4"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -1097,31 +1106,9 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": true
                 },
                 {
-                    ""name"": ""left"",
-                    ""id"": ""cc8968a3-96a1-405e-b824-64b0485e8925"",
-                    ""path"": ""<Keyboard>/leftArrow"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": "";Keyboard&Mouse"",
-                    ""action"": ""Move"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
                     ""name"": ""right"",
                     ""id"": ""7762eb9d-cf0e-4621-b003-090168522aa0"",
                     ""path"": ""<Keyboard>/d"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": "";Keyboard&Mouse"",
-                    ""action"": ""Move"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""right"",
-                    ""id"": ""e44393d0-8ba9-4f85-9ffb-36b3cb99b3a2"",
-                    ""path"": ""<Keyboard>/rightArrow"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Keyboard&Mouse"",
@@ -1216,6 +1203,39 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""action"": ""MousePress"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""2D Vector"",
+                    ""id"": ""37df6d8b-a2e6-4083-b011-5cbd6d8bdb51"",
+                    ""path"": ""2DVector"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Turn"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""8fc71c8d-30ce-4101-bf0a-ae060bb6f2fd"",
+                    ""path"": ""<Keyboard>/leftArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Turn"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""372f02e4-996e-448a-98cf-554387a6787b"",
+                    ""path"": ""<Keyboard>/rightArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Turn"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         },
@@ -1485,6 +1505,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         m_Editor_Look = m_Editor.FindAction("Look", throwIfNotFound: true);
         m_Editor_Lift = m_Editor.FindAction("Lift", throwIfNotFound: true);
         m_Editor_MousePress = m_Editor.FindAction("MousePress", throwIfNotFound: true);
+        m_Editor_Turn = m_Editor.FindAction("Turn", throwIfNotFound: true);
         // KeyboardShortcuts
         m_KeyboardShortcuts = asset.FindActionMap("KeyboardShortcuts", throwIfNotFound: true);
         m_KeyboardShortcuts_ResetView = m_KeyboardShortcuts.FindAction("ResetView", throwIfNotFound: true);
@@ -1960,6 +1981,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Editor_Look;
     private readonly InputAction m_Editor_Lift;
     private readonly InputAction m_Editor_MousePress;
+    private readonly InputAction m_Editor_Turn;
     /// <summary>
     /// Provides access to input actions defined in input action map "Editor".
     /// </summary>
@@ -1991,6 +2013,10 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Editor/MousePress".
         /// </summary>
         public InputAction @MousePress => m_Wrapper.m_Editor_MousePress;
+        /// <summary>
+        /// Provides access to the underlying input action "Editor/Turn".
+        /// </summary>
+        public InputAction @Turn => m_Wrapper.m_Editor_Turn;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -2032,6 +2058,9 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @MousePress.started += instance.OnMousePress;
             @MousePress.performed += instance.OnMousePress;
             @MousePress.canceled += instance.OnMousePress;
+            @Turn.started += instance.OnTurn;
+            @Turn.performed += instance.OnTurn;
+            @Turn.canceled += instance.OnTurn;
         }
 
         /// <summary>
@@ -2058,6 +2087,9 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @MousePress.started -= instance.OnMousePress;
             @MousePress.performed -= instance.OnMousePress;
             @MousePress.canceled -= instance.OnMousePress;
+            @Turn.started -= instance.OnTurn;
+            @Turn.performed -= instance.OnTurn;
+            @Turn.canceled -= instance.OnTurn;
         }
 
         /// <summary>
@@ -2498,6 +2530,13 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnMousePress(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Turn" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnTurn(InputAction.CallbackContext context);
     }
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "KeyboardShortcuts" which allows adding and removing callbacks.

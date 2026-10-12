@@ -1,7 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Threading.Tasks;
+using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -14,7 +14,7 @@ public class DialogueInterpreter : MonoBehaviour
     public event Action OnDialogueEnded;
     public event Action OnScreenShown;
     public event Action OnScreenHidden;
-    public event Action<bool> OnCameraChangeRequested;
+    public event Action<bool, string> OnCameraChangeRequested;
 
     [Header("Script Input Source")]
     public StoryDataStore storyDataStore;
@@ -116,7 +116,6 @@ public class DialogueInterpreter : MonoBehaviour
         {
             rootElement.style.display = DisplayStyle.Flex;
             OnScreenShown?.Invoke();
-            //OnCameraChangeRequested?.Invoke(true);
         }
     }
 
@@ -126,7 +125,6 @@ public class DialogueInterpreter : MonoBehaviour
             rootElement.style.display != DisplayStyle.None)
         {
             rootElement.style.display = DisplayStyle.None;
-            //OnCameraChangeRequested?.Invoke(false);
             OnScreenHidden?.Invoke();
         }
     }
@@ -515,44 +513,62 @@ public class DialogueInterpreter : MonoBehaviour
             {
                 case "SAY":
                 case "TEXT":
-
+                {
                     string text = ProcessString(instr.Argument);
+                    MatchCollection matches = Regex.Matches(text, @"\[(.*?)\]([^\[]+)");
 
-                    string speaker = string.Empty;
-                    string dialogue = text;
+                    List<(string speaker, string dialogue)> dialogueList = new List<(string, string)>();
 
-                    int colonIndex = text.IndexOf(':');
-                    if (colonIndex != -1)
+                    if (matches.Count > 0)
                     {
-                        speaker = text.Substring(0, colonIndex).Trim();
-                        dialogue = text.Substring(colonIndex + 1).TrimStart();
+                        foreach (Match match in matches)
+                        {
+                            string speaker = match.Groups[1].Value.Trim();
+                            string dialogue = match.Groups[2].Value.Trim();
+                            dialogueList.Add((speaker, dialogue));
+                        }
+                    }
+                    else
+                    {
+                        dialogueList.Add(("", text.Trim()));
                     }
 
-                    if (characterNameLabel != null) 
-                        characterNameLabel.text = speaker;
+                    foreach (var item in dialogueList)
+                    {
+                        string speaker = item.speaker;
+                        string dialogue = item.dialogue;
 
-                    if (dialogueTextLabel != null)
-                        dialogueTextLabel.text = dialogue;
+                        if (characterNameLabel != null)
+                        {
+                            characterNameLabel.text = speaker;
+                            characterNameLabel.style.display = string.IsNullOrEmpty(speaker) ? DisplayStyle.None : DisplayStyle.Flex;
+                        }
 
-                    if (continueButton != null)
-                        continueButton.style.display =
-                            DisplayStyle.Flex;
+                        if (dialogueTextLabel != null)
+                            dialogueTextLabel.text = dialogue;
 
-                    advanceRequested = false;
-                    if (instr.Type == "SAY") OnCameraChangeRequested?.Invoke(true);
+                        if (instr.Type == "SAY") OnCameraChangeRequested?.Invoke(true, speaker);
 
-                    yield return new WaitUntil(
-                        () => advanceRequested);
-                    if (instr.Type == "SAY") OnCameraChangeRequested?.Invoke(false);
+                        if (continueButton != null) continueButton.style.display = DisplayStyle.Flex;
+                        advanceRequested = false;
 
+                        float timer = 0f;
+                        float duration = 2f;
 
-                    if (continueButton != null)
-                        continueButton.style.display =
-                            DisplayStyle.None;
+                        while (timer < duration && !advanceRequested)
+                        {
+                            timer += Time.deltaTime;
+                            yield return null;
+                        }
+
+                        if (continueButton != null) continueButton.style.display = DisplayStyle.None;
+                        if (instr.Type == "SAY") OnCameraChangeRequested?.Invoke(false, speaker);
+                    }
 
                     pc++;
                     break;
-
+                }
+                
                 case "SHOWOPTION":
                     optionsToDisplay.Add(instr.Argument);
                     pc++;

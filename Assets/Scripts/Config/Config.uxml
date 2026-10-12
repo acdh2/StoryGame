@@ -1,6 +1,6 @@
 <ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <ui:VisualElement style="position: absolute; bottom: 0; left: 0; right: 0; top: 0; align-items: center; justify-content: flex-end; padding-bottom: 10px;">
-        <ui:GroupBox style="width: 340px; background-color: rgba(220, 220, 220, 0.85); border-top-left-radius: 12px; border-top-right-radius: 12px; border-bottom-left-radius: 12px; border-bottom-right-radius: 12px; padding: 12px;">
+        <ui:GroupBox style="width: 480px; background-color: rgba(220, 220, 220, 0.85); border-top-left-radius: 12px; border-top-right-radius: 12px; border-bottom-left-radius: 12px; border-bottom-right-radius: 12px; padding: 12px;">
             <ui:Toggle name="toggle-fog" label="Fog" class="custom-toggle" style="margin-bottom: 2px;"/>
             <ui:VisualElement style="flex-direction: row; flex-wrap: wrap; justify-content: flex-start; margin-bottom: 4px;">
 <ui:Button name="color-black" style="width: 28px; height: 28px; background-color: rgb(34, 37, 42); border-radius: 4px; margin: 2px;"/>

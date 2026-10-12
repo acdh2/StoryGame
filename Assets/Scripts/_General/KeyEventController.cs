@@ -40,9 +40,11 @@ public class KeyEventController : MonoBehaviour
 
     private void OnActionPerformed(InputAction.CallbackContext context)
     {
-        for (int i = 0; i < receivers.Length; i++)
-        {            
-            receivers[i].OnKeyEvent(context.action.name);
+        if (!UIToolkitHelper.IsAnyTextFieldFocused()) {
+            for (int i = 0; i < receivers.Length; i++)
+            {            
+                receivers[i].OnKeyEvent(context.action.name);
+            }
         }
     }
 }

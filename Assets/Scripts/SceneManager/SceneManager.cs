@@ -180,8 +180,23 @@ public class SceneManager : MonoBehaviour
             objectSelector.SelectObject(null);
         }
 
-        Destroy(targetObject);
+        DestroyImmediate(targetObject);
         RecordState();
+        SaveSceneInternal();
+
+    }    
+
+    public void DeleteObjectOld(GameObject targetObject)
+    {
+        if (targetObject == null) return;
+
+        if (objectSelector != null && objectSelector.SelectedObject == targetObject)
+        {
+            objectSelector.SelectObject(null);
+        }
+
+        Destroy(targetObject);
+        RecordState();            
         SaveSceneInternal();
     }
 

@@ -25,20 +25,6 @@ public class UndoRedoController : UIControllerBase, IKeyEventReceiver
         }
     }
 
-    private void OnKeyDown(KeyDownEvent evt)
-    {
-        if (evt.actionKey && evt.keyCode == KeyCode.Z)
-        {
-            if (sceneManager != null) sceneManager.Undo();
-            evt.StopPropagation();
-        }
-        if (evt.actionKey && evt.keyCode == KeyCode.Y)
-        {
-            if (sceneManager != null) sceneManager.Redo();
-            evt.StopPropagation();
-        }
-    }    
-
     protected override void OnUIDisabled()
     {
         if (undoButton != null && sceneManager != null)

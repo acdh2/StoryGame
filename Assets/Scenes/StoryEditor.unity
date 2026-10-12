@@ -209,6 +209,13 @@ MonoBehaviour:
   - {fileID: 2388659209182943489, guid: 5d327147d460d43d68eb1515de381cd5, type: 3}
   - {fileID: 2388659209182943489, guid: d31570bc16b524548be86dc22ea03191, type: 3}
   - {fileID: 2388659209182943489, guid: 4c76fdb05f76b4e9a9079239fdb1ba2e, type: 3}
+  - {fileID: 2388659209182943489, guid: 1430d762672de4a71ad028b5dd9c2e29, type: 3}
+  - {fileID: 2388659209182943489, guid: 1159aa7994c0e4ae6ba4de8f84b972c0, type: 3}
+  - {fileID: 2388659209182943489, guid: 4b3d5ad9ce65646c3bb6b6a4e5e03a42, type: 3}
+  - {fileID: 2388659209182943489, guid: 76204300ee9884ba3ac66aeedfdf54a4, type: 3}
+  - {fileID: 2388659209182943489, guid: 9f02ed93a26d246f89f8c81268a9f2b6, type: 3}
+  - {fileID: 2388659209182943489, guid: 63edb11b2351948239b534971b787309, type: 3}
+  - {fileID: 2388659209182943489, guid: 8e34bb137e772470f8fd5529dc73bc4c, type: 3}
 --- !u!114 &5086136
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1786,6 +1793,36 @@ MonoBehaviour:
     - itemName: Barbarian
       thumbnail: {fileID: 2800000, guid: 77045147079fe4da2a3ec91d42e39960, type: 3}
       prefab: {fileID: 919132149155446097, guid: 0fcf8770248e5461fa6cbb9a495fedb1, type: 3}
+    - itemName: Character 01
+      thumbnail: {fileID: 2800000, guid: 2650be82e029e4ee7a7eaf0a8002e013, type: 3}
+      prefab: {fileID: 6666370650198795433, guid: e9cfa2eb3ce864151b8fd1f81408309b, type: 3}
+    - itemName: Character 02
+      thumbnail: {fileID: 2800000, guid: 5736b2807bb2248a1949529ede99dfa4, type: 3}
+      prefab: {fileID: 1597729359011672831, guid: 77ffe2d169b4949dea0139803563cd15, type: 3}
+    - itemName: Character 03
+      thumbnail: {fileID: 2800000, guid: 70932893dd571465da2486f17cbd16e7, type: 3}
+      prefab: {fileID: 6415561937286359620, guid: f483355173d2c47a29f6038e0ca49f57, type: 3}
+    - itemName: Character 04
+      thumbnail: {fileID: 2800000, guid: c306f9a9fbceb4ecca16ded6a54c1013, type: 3}
+      prefab: {fileID: 3560489353750393262, guid: 645a380d7784b48ca8a434176476e2b0, type: 3}
+    - itemName: Character 05
+      thumbnail: {fileID: 2800000, guid: 7898a21ed64db4bcf9954e6392e96d3a, type: 3}
+      prefab: {fileID: 4324779109626998850, guid: 073de836de16744338835078ea2b4789, type: 3}
+    - itemName: Character 06
+      thumbnail: {fileID: 2800000, guid: 881694cd79eb94f85a6fd3a32e15ee65, type: 3}
+      prefab: {fileID: 6463178797277354336, guid: ee45b58b9bfb349bbbd522bde73e48db, type: 3}
+    - itemName: Character 07
+      thumbnail: {fileID: 2800000, guid: deee71e6b3edb4345ab06b4954f1b305, type: 3}
+      prefab: {fileID: 6971121201570370863, guid: d7d0e616c24694bc68c7827cbbd6ffe4, type: 3}
+    - itemName: Character 08
+      thumbnail: {fileID: 2800000, guid: ec4f17eed99154fffb3f462339c077dc, type: 3}
+      prefab: {fileID: 3927503875114477191, guid: 699fc6d35705a4d5e923069e29a41f59, type: 3}
+    - itemName: Character 09
+      thumbnail: {fileID: 2800000, guid: e2860e6491ef6463caa48a6a13950ea9, type: 3}
+      prefab: {fileID: 9092202679672275406, guid: b5fdf4542abe1465c97312d868e41eda, type: 3}
+    - itemName: Character 10
+      thumbnail: {fileID: 2800000, guid: 8bc9aed20e44345b89becb861332a638, type: 3}
+      prefab: {fileID: 1332946792230564792, guid: c17f85bf8e9fd4e8eb120b0c94205cae, type: 3}
     - itemName: Knight
       thumbnail: {fileID: 2800000, guid: b59eae1cebb7a4c38b5142921f598bed, type: 3}
       prefab: {fileID: 919132149155446097, guid: 1144e8122a1394e1a9a84653405da36c, type: 3}
@@ -3402,38 +3439,6 @@ MonoBehaviour:
     - itemName: wreath
       thumbnail: {fileID: 2800000, guid: 1f217c5095a6040a99d1591ae6201394, type: 3}
       prefab: {fileID: 919132149155446097, guid: ac154e5fe5d9445b4b6dedca4f0433b9, type: 3}
-  - categoryName: Humans
-    items:
-    - itemName: Character 01
-      thumbnail: {fileID: 2800000, guid: 2650be82e029e4ee7a7eaf0a8002e013, type: 3}
-      prefab: {fileID: 6666370650198795433, guid: e9cfa2eb3ce864151b8fd1f81408309b, type: 3}
-    - itemName: Character 02
-      thumbnail: {fileID: 2800000, guid: 5736b2807bb2248a1949529ede99dfa4, type: 3}
-      prefab: {fileID: 1597729359011672831, guid: 77ffe2d169b4949dea0139803563cd15, type: 3}
-    - itemName: Character 03
-      thumbnail: {fileID: 2800000, guid: 70932893dd571465da2486f17cbd16e7, type: 3}
-      prefab: {fileID: 6415561937286359620, guid: f483355173d2c47a29f6038e0ca49f57, type: 3}
-    - itemName: Character 04
-      thumbnail: {fileID: 2800000, guid: c306f9a9fbceb4ecca16ded6a54c1013, type: 3}
-      prefab: {fileID: 3560489353750393262, guid: 645a380d7784b48ca8a434176476e2b0, type: 3}
-    - itemName: Character 05
-      thumbnail: {fileID: 2800000, guid: 7898a21ed64db4bcf9954e6392e96d3a, type: 3}
-      prefab: {fileID: 4324779109626998850, guid: 073de836de16744338835078ea2b4789, type: 3}
-    - itemName: Character 06
-      thumbnail: {fileID: 2800000, guid: 881694cd79eb94f85a6fd3a32e15ee65, type: 3}
-      prefab: {fileID: 6463178797277354336, guid: ee45b58b9bfb349bbbd522bde73e48db, type: 3}
-    - itemName: Character 07
-      thumbnail: {fileID: 2800000, guid: deee71e6b3edb4345ab06b4954f1b305, type: 3}
-      prefab: {fileID: 6971121201570370863, guid: d7d0e616c24694bc68c7827cbbd6ffe4, type: 3}
-    - itemName: Character 08
-      thumbnail: {fileID: 2800000, guid: ec4f17eed99154fffb3f462339c077dc, type: 3}
-      prefab: {fileID: 3927503875114477191, guid: 699fc6d35705a4d5e923069e29a41f59, type: 3}
-    - itemName: Character 09
-      thumbnail: {fileID: 2800000, guid: e2860e6491ef6463caa48a6a13950ea9, type: 3}
-      prefab: {fileID: 9092202679672275406, guid: b5fdf4542abe1465c97312d868e41eda, type: 3}
-    - itemName: Character 10
-      thumbnail: {fileID: 2800000, guid: 8bc9aed20e44345b89becb861332a638, type: 3}
-      prefab: {fileID: 1332946792230564792, guid: c17f85bf8e9fd4e8eb120b0c94205cae, type: 3}
   - categoryName: KayKit
     items:
     - itemName: BarrelBlue

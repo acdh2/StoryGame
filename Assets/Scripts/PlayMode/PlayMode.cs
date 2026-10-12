@@ -120,12 +120,12 @@ public class PlayMode : UIControllerBase
     }
 
 
-    private void HandleCameraChange(bool mode)
+    private void HandleCameraChange(bool mode, string speaker)
     {
         if (dynamicFaceFocus != null)
         {
-            if (mode) dynamicFaceFocus.Apply();
-            else dynamicFaceFocus.Unapply();
+            if (mode) dynamicFaceFocus.Apply(speaker);
+            else dynamicFaceFocus.Unapply(speaker);
         }        
     }
 
