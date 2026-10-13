@@ -1,7 +1,14 @@
 fileFormatVersion: 2
 guid: 53984777d1e7351489828adc47a45b26
+AssetOrigin:
+  serializedVersion: 1
+  productId: 290681
+  packageName: KayKit - Free Sample Pack (for Unity)
+  packageVersion: 1.1.1
+  assetPath: Assets/KayKit/Characters/Animations/Source_FBX/Animations_Source_FBX/Rig_Medium/Rig_Medium_Tools.fbx
+  uploadId: 832008
 ModelImporter:
-  serializedVersion: 22200
+  serializedVersion: 24200
   internalIDToNameTable: []
   externalObjects: {}
   materials:
@@ -16,8 +23,6 @@ ModelImporter:
     optimizeGameObjects: 0
     removeConstantScaleCurves: 0
     motionNodeName: 
-    rigImportErrors: 
-    rigImportWarnings: 
     animationImportErrors: 
     animationImportWarnings: 
     animationRetargetingWarnings: 
@@ -2671,7 +2676,7 @@ ModelImporter:
       maskType: 1
       maskSource: {fileID: 31900000, guid: 3ca4288a7b0eb694bad3d27bccb9a467, type: 2}
       additiveReferencePoseFrame: 0
-    isReadable: 0
+    isReadable: 1
   meshes:
     lODScreenPercentages: []
     globalScale: 1
@@ -2697,6 +2702,9 @@ ModelImporter:
     maxBonesPerVertex: 4
     minBoneWeight: 0.001
     optimizeBones: 1
+    generateMeshLods: 0
+    meshLodGenerationFlags: 0
+    maximumMeshLod: -1
     meshOptimizationFlags: -1
     indexFormat: 0
     secondaryUVAngleDistortion: 8
@@ -3033,8 +3041,7 @@ ModelImporter:
     hasTranslationDoF: 0
     hasExtraRoot: 1
     skeletonHasParents: 1
-  lastHumanDescriptionAvatarSource: {fileID: 9000000, guid: b29b2128ad71ad649baeac918d2d5a2e,
-    type: 2}
+  lastHumanDescriptionAvatarSource: {fileID: 9000000, guid: b29b2128ad71ad649baeac918d2d5a2e, type: 2}
   autoGenerateAvatarMappingIfUnspecified: 1
   animationType: 3
   humanoidOversampling: 1
@@ -3046,10 +3053,3 @@ ModelImporter:
   userData: 
   assetBundleName: 
   assetBundleVariant: 
-AssetOrigin:
-  serializedVersion: 1
-  productId: 290681
-  packageName: KayKit - Free Sample Pack (for Unity)
-  packageVersion: 1.1.1
-  assetPath: Assets/KayKit/Characters/Animations/Source_FBX/Animations_Source_FBX/Rig_Medium/Rig_Medium_Tools.fbx
-  uploadId: 832008

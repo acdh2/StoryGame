@@ -1,7 +1,15 @@
 fileFormatVersion: 2
 guid: 6c6be17a4272b4c4f85c6bbfcdea0574
+AssetOrigin:
+  serializedVersion: 1
+  productId: 388758
+  packageName: Low Poly Character Collection 3
+  packageVersion: 1.1
+  assetPath: Assets/Hodaart/HodaartLowPolyCharacterCollection3/Models/Character 10/Character
+    10 T-Pose.fbx
+  uploadId: 946460
 ModelImporter:
-  serializedVersion: 22200
+  serializedVersion: 24200
   internalIDToNameTable: []
   externalObjects:
   - first:
@@ -35,7 +43,7 @@ ModelImporter:
     extraExposedTransformPaths: []
     extraUserProperties: []
     clipAnimations: []
-    isReadable: 0
+    isReadable: 1
   meshes:
     lODScreenPercentages: []
     globalScale: 1
@@ -61,6 +69,9 @@ ModelImporter:
     maxBonesPerVertex: 4
     minBoneWeight: 0.001
     optimizeBones: 1
+    generateMeshLods: 0
+    meshLodGenerationFlags: 0
+    maximumMeshLod: -1
     meshOptimizationFlags: -1
     indexFormat: 0
     secondaryUVAngleDistortion: 8
@@ -393,8 +404,7 @@ ModelImporter:
     - name: mixamorig:LeftHandIndex4
       parentName: mixamorig:LeftHandIndex3
       position: {x: -0.0062718517, y: 0.04732306, z: -0.023601703}
-      rotation: {x: 0.000000037252896, y: 0.0000000149011585, z: 0.000000016763806,
-        w: 1}
+      rotation: {x: 0.000000037252896, y: 0.0000000149011585, z: 0.000000016763806, w: 1}
       scale: {x: 1, y: 1.0000001, z: 1.0000002}
     - name: mixamorig:RightShoulder
       parentName: mixamorig:Spine2
@@ -434,8 +444,7 @@ ModelImporter:
     - name: mixamorig:RightHandIndex4
       parentName: mixamorig:RightHandIndex3
       position: {x: 0.0014857962, y: 0.038716365, z: -0.03552691}
-      rotation: {x: 0.000000050291423, y: -0.000000088941306, z: 0.000000021420423,
-        w: 1}
+      rotation: {x: 0.000000050291423, y: -0.000000088941306, z: 0.000000021420423, w: 1}
       scale: {x: 0.99999994, y: 0.9999998, z: 1.0000001}
     - name: mixamorig:LeftUpLeg
       parentName: mixamorig:Hips
@@ -460,8 +469,7 @@ ModelImporter:
     - name: mixamorig:LeftToe_End
       parentName: mixamorig:LeftToeBase
       position: {x: 0.0000000055142664, y: 0.054457754, z: 1.1641532e-10}
-      rotation: {x: 0.000000008265488, y: 0.00000019989966, z: -0.00000019654179,
-        w: 1}
+      rotation: {x: 0.000000008265488, y: 0.00000019989966, z: -0.00000019654179, w: 1}
       scale: {x: 1.0000001, y: 1, z: 0.99999994}
     - name: mixamorig:RightUpLeg
       parentName: mixamorig:Hips
@@ -486,8 +494,7 @@ ModelImporter:
     - name: mixamorig:RightToe_End
       parentName: mixamorig:RightToeBase
       position: {x: 0.000000004507683, y: 0.05269655, z: -1.2732926e-10}
-      rotation: {x: 0.000000045460187, y: -0.0000000041618478, z: 0.0000000029540392,
-        w: 1}
+      rotation: {x: 0.000000045460187, y: -0.0000000041618478, z: 0.0000000029540392, w: 1}
       scale: {x: 0.99999994, y: 0.9999999, z: 1}
     - name: Character 10
       parentName: Character 10 T-Pose(Clone)
@@ -518,11 +525,3 @@ ModelImporter:
   userData: 
   assetBundleName: 
   assetBundleVariant: 
-AssetOrigin:
-  serializedVersion: 1
-  productId: 388758
-  packageName: Low Poly Character Collection 3
-  packageVersion: 1.1
-  assetPath: Assets/Hodaart/HodaartLowPolyCharacterCollection3/Models/Character 10/Character
-    10 T-Pose.fbx
-  uploadId: 946460

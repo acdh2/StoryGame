@@ -119,12 +119,14 @@ public class Navigator : UIControllerBase, IKeyEventReceiver
         var undoRedoBox = root.Q<VisualElement>("undo-redo-box");
         var leftSide = root.Q<VisualElement>("LeftSide");
         var rightSide = root.Q<VisualElement>("RightSide");
+        var PropertiesWindow = root.Q<GroupBox>("PropertiesWindow");
 
         if (navGroupBox != null) navGroupBox.style.display = isLastScreen ? DisplayStyle.None : DisplayStyle.Flex;
         if (closeBtn != null) closeBtn.style.display = isLastScreen ? DisplayStyle.Flex : DisplayStyle.None;
         if (undoRedoBox != null) undoRedoBox.style.display = isLastScreen ? DisplayStyle.None : DisplayStyle.Flex;
         if (leftSide != null) leftSide.style.display = isEditScreen ? DisplayStyle.Flex : DisplayStyle.None;
         if (rightSide != null) rightSide.style.display = isEditScreen ? DisplayStyle.Flex : DisplayStyle.None;
+        if (PropertiesWindow != null) PropertiesWindow.style.display = DisplayStyle.None;
 
         if (objectSelector != null)
         {

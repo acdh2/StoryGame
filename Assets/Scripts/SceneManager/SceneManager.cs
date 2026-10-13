@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,6 +10,8 @@ public class SceneManager : MonoBehaviour
     [SerializeField] private StoryDataStore storyDataStore;
     [SerializeField] private string saveFileName = "current.json";
     [SerializeField] private int maxUndoSteps = 50;
+
+    public event Action OnInvalidateScene = null;
 
     private SceneSaveSystem saveSystem;
     private readonly Stack<string> undoStack = new Stack<string>();
@@ -88,7 +91,7 @@ public class SceneManager : MonoBehaviour
     private void InvalidateScene()
     {
         RecordState();
-        SaveSceneInternal();
+        SaveSceneInternal();        
     }
 
     private void RecordState()
@@ -206,6 +209,7 @@ public class SceneManager : MonoBehaviour
         {
             saveSystem.SaveSceneToFile(saveFileName);
         }
+        OnInvalidateScene?.Invoke();
     }
 
     private static void SetLayerRecursively(GameObject obj, int layer)
@@ -244,6 +248,7 @@ public class SceneManager : MonoBehaviour
         
         RecordState();
         HasChanged = false;
+        OnInvalidateScene?.Invoke();
     }
 
     public string SerializeScene()
@@ -269,6 +274,7 @@ public class SceneManager : MonoBehaviour
 
         saveSystem.SaveSceneToFile(saveFileName);
         HasChanged = true;
+        OnInvalidateScene?.Invoke();
     }
 
     public void Redo()
@@ -287,6 +293,7 @@ public class SceneManager : MonoBehaviour
 
         saveSystem.SaveSceneToFile(saveFileName);
         HasChanged = true;
+        OnInvalidateScene?.Invoke();
     }
 
     public List<string> GetUniqueObjectNames()
@@ -320,5 +327,6 @@ public class SceneManager : MonoBehaviour
 
         string state = tempStateStack.Pop();
         saveSystem.LoadSceneFromJson(state);
+        OnInvalidateScene?.Invoke();
     }    
 }
