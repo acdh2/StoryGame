@@ -4,8 +4,7 @@ using UnityEngine.AI;
 
 [RequireComponent(typeof(NavMeshAgent))]
 [RequireComponent(typeof(Animator))]
-[RequireComponent(typeof(CapsuleCollider))]
-public class ZombieBehavior : MonoBehaviour
+public class ZombieBehaviour : MonoBehaviour
 {
     private Transform player;
 
@@ -19,38 +18,104 @@ public class ZombieBehavior : MonoBehaviour
     private RespawnBehaviour respawnBehaviour;
 
     private float searchCooldown = 0f;
+    private int hits = 0;
+
+    private Vector3 velocity = Vector3.zero;
+    private bool shouldMove = false;
+
+    private float cooldown = 0f;
+    private float playerDiedCooldown = 0f;
+
+    private Vector3 spawn = Vector3.zero;
 
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
         searchCooldown = Random.value;
+
+        spawn = transform.position;
     }
 
-    private void OnFootstep(AnimationEvent animationEvent)
+    void FixedUpdate()
     {
+        if (cooldown > 0f) cooldown -= Time.deltaTime;
+
+        if (shouldMove) {
+            transform.position += velocity;
+            velocity *= 0.9f;
+            if (velocity.magnitude < 0.01f) shouldMove = false;
+        }
+    }
+
+    public void ApplyDamage()
+    {
+        velocity = -transform.forward * 0.1f;
+        shouldMove = true;
+
+        hits ++;
+        if (hits < 3) {
+        } else {
+            Collider collider = GetComponent<Collider>();
+            if (collider != null) Destroy(collider);
+            if (animator != null) animator.SetTrigger("Die");
+            agent.isStopped = true;
+            Destroy(this);
+        }
     }
 
     void HandleFindPlayer()
     {
         if (searchCooldown > 0f) {
             searchCooldown -= Time.deltaTime;
+        } else {
             ThirdPersonController controller = FindAnyObjectByType<ThirdPersonController>();
             if (controller) {
                 player = controller.transform;
                 respawnBehaviour = player.GetComponent<RespawnBehaviour>();
             }
-        } else
-        {
             searchCooldown = 2f;
         }
+    }
+
+    void DoPlayerDamage()
+    {
+        if (cooldown > 0f) return;
+        cooldown = 1f;
+
+        if (respawnBehaviour != null) respawnBehaviour.DoDamage(40);        
+    }
+
+    void NavigateTo(Vector3 target)
+    {
+        agent.isStopped = false;
+
+        if (NavMesh.SamplePosition(target, out NavMeshHit hit, maxSampleDistance, NavMesh.AllAreas))
+        {
+            agent.SetDestination(hit.position);
+        }
+
+        animator.SetFloat("Speed", agent.velocity.magnitude);
+        animator.ResetTrigger("Attack");        
+    }
+
+    public void OnPlayerDied()
+    {
+        playerDiedCooldown = 7f;
     }
 
     void Update()
     {
         if (!gameObject.activeSelf) return;
+
+        if (playerDiedCooldown > 0f) {
+            playerDiedCooldown -= Time.deltaTime;
+            NavigateTo(spawn);
+            return;
+        }
         
         if (player == null) {
+            NavigateTo(spawn);
             HandleFindPlayer();
             return;
         }
@@ -62,21 +127,13 @@ public class ZombieBehavior : MonoBehaviour
             agent.isStopped = true;
             animator.SetFloat("Speed", 0f);
             animator.SetTrigger("Attack");   
-            if (respawnBehaviour != null) respawnBehaviour.DoDamage(20);
+            DoPlayerDamage();
             if (distance > 0.01f)
                 transform.forward = new Vector3(player.position.x - transform.position.x, 0f, player.position.z - transform.position.z).normalized;
         }
         else if (distance <= detectionRadius)
         {
-            agent.isStopped = false;
-
-            if (NavMesh.SamplePosition(player.position, out NavMeshHit hit, maxSampleDistance, NavMesh.AllAreas))
-            {
-                agent.SetDestination(hit.position);
-            }
-
-            animator.SetFloat("Speed", agent.velocity.magnitude);
-            animator.ResetTrigger("Attack");
+            NavigateTo(player.position);
         }
         else
         {

@@ -9,16 +9,15 @@ public class KeyEventController : MonoBehaviour
 
     private void Awake()
     {
-        inputActions = new InputSystem_Actions();
-        //receivers = GetComponents<IKeyEventReceiver>();
         receivers = Object.FindObjectsByType<MonoBehaviour>(FindObjectsSortMode.None)
                   .OfType<IKeyEventReceiver>()
-                  .ToArray();        
+                  .ToArray();
     }
 
     private void OnEnable()
     {
-        inputActions.KeyboardShortcuts.Enable();
+        inputActions = InputManager.Instance.Actions;
+        InputManager.Instance.EnableMap("KeyboardShortcuts");
 
         var map = inputActions.asset.FindActionMap("KeyboardShortcuts");
         foreach (var action in map.actions)
@@ -35,14 +34,14 @@ public class KeyEventController : MonoBehaviour
             action.performed -= OnActionPerformed;
         }
 
-        inputActions.KeyboardShortcuts.Disable();
+        InputManager.Instance?.DisableMap("KeyboardShortcuts");
     }
 
     private void OnActionPerformed(InputAction.CallbackContext context)
     {
         if (!UIToolkitHelper.IsAnyTextFieldFocused()) {
             for (int i = 0; i < receivers.Length; i++)
-            {            
+            {
                 receivers[i].OnKeyEvent(context.action.name);
             }
         }

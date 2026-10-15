@@ -22,6 +22,11 @@ public class PickupItemBehaviour : MonoBehaviour
         return null;
     }  
 
+    public bool HasWeapon()
+    {
+        return true;
+    }
+
     public bool Has(string itemName)
     {
         if (itemName == "") return false;

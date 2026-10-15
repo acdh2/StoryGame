@@ -10,7 +10,7 @@ public class EditorCameraController : MonoBehaviour, IKeyEventReceiver
     public void NotifyDragEnd() { isDragging = false; }
 
     [SerializeField] private ObjectSelector objectSelector = null;
-    [SerializeField] private InputSystem_Actions inputActions;
+    private InputSystem_Actions inputActions;
 
     [Header("Settings")]
     public float lookSensitivity = 0.5f;
@@ -28,15 +28,13 @@ public class EditorCameraController : MonoBehaviour, IKeyEventReceiver
     private void Awake()
     {
         transform.GetPositionAndRotation(out originalPosition, out originalRotation);
-        if (inputActions == null)
-        {
-            inputActions = new InputSystem_Actions();
-        }
     }
 
     private void OnEnable()
     {
-        inputActions.Editor.Enable();
+        inputActions = InputManager.Instance.Actions;
+        InputManager.Instance.EnableMap("Editor");
+
         inputActions.Editor.MousePress.performed += OnMousePress;
         inputActions.Editor.Look.performed += OnLookPerformed;
         inputActions.Editor.Zoom.performed += OnZoomPerformed;
@@ -52,25 +50,24 @@ public class EditorCameraController : MonoBehaviour, IKeyEventReceiver
 
     private void OnDisable()
     {
-        inputActions.Editor.MousePress.performed -= OnMousePress;
-        inputActions.Editor.Look.performed -= OnLookPerformed;
-        inputActions.Editor.Zoom.performed -= OnZoomPerformed;
-        inputActions.Editor.Move.performed -= OnMovePerformed;
-        inputActions.Editor.Move.canceled -= OnMoveCanceled;
-        inputActions.Editor.Lift.performed -= OnLiftPerformed;
-        inputActions.Editor.Lift.canceled -= OnLiftCanceled;
-        inputActions.Editor.Turn.performed -= OnTurnPerformed;
-        inputActions.Editor.Turn.canceled -= OnTurnCanceled;
+        if (inputActions != null)
+        {
+            inputActions.Editor.MousePress.performed -= OnMousePress;
+            inputActions.Editor.Look.performed -= OnLookPerformed;
+            inputActions.Editor.Zoom.performed -= OnZoomPerformed;
+            inputActions.Editor.Move.performed -= OnMovePerformed;
+            inputActions.Editor.Move.canceled -= OnMoveCanceled;
+            inputActions.Editor.Lift.performed -= OnLiftPerformed;
+            inputActions.Editor.Lift.canceled -= OnLiftCanceled;
+            inputActions.Editor.Turn.performed -= OnTurnPerformed;
+            inputActions.Editor.Turn.canceled -= OnTurnCanceled;
+            InputManager.Instance?.DisableMap("Editor");
+        }
         if (objectSelector != null) objectSelector.OnSelectObject -= OnSelectObject;
-        inputActions.Editor.Disable();
     }
 
     private void OnApplicationFocus(bool hasFocus)
     {
-        //if (!hasFocus)
-        //{
-            ResetAllInputs();
-        //}
     }
 
     private void OnApplicationPause(bool pauseStatus)
@@ -107,7 +104,7 @@ public class EditorCameraController : MonoBehaviour, IKeyEventReceiver
 
     private void OnLiftCanceled(InputAction.CallbackContext context)
     {
-        Vector2 moveInput = Vector2.zero;// context.ReadValue<Vector2>();
+        Vector2 moveInput = Vector2.zero;
         velocity = new Vector3(velocity.x, moveInput.y, velocity.z);
     }
 
@@ -119,7 +116,7 @@ public class EditorCameraController : MonoBehaviour, IKeyEventReceiver
 
     private void OnMoveCanceled(InputAction.CallbackContext context)
     {
-        Vector2 moveInput = Vector2.zero;//context.ReadValue<Vector2>();
+        Vector2 moveInput = Vector2.zero;
         velocity = new Vector3(moveInput.x, velocity.y, moveInput.y);
     }
 

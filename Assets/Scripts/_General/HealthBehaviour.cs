@@ -11,7 +11,11 @@ public partial class RespawnBehaviour : MonoBehaviour
     private RespawnBehaviour respawnBehaviour;
     // private GameObject forceField = null;
 
+    private float cooldown = 0f;
+
     private bool isActive = true;
+
+    private float flashTimeout = 0f;
 
     // void EnableForceField()
     // {
@@ -25,10 +29,9 @@ public partial class RespawnBehaviour : MonoBehaviour
     //     }
     // }
 
-    float cooldown = 0f;
-
     private void FixedUpdate()
     {
+        if (flashTimeout > 0f) flashTimeout -= Time.deltaTime;
         if (cooldown > 0f) cooldown -= Time.deltaTime;
         if (isActive) {
             if (health <= 0f)
@@ -38,6 +41,15 @@ public partial class RespawnBehaviour : MonoBehaviour
                 if (health < 100) health += 0.05f;
                 if (health > 100) health = 100;
             }
+        }
+    }
+
+    public void NotifyPlayerDied()
+    {
+        ZombieBehaviour[] zombies = Object.FindObjectsByType<ZombieBehaviour>(FindObjectsSortMode.None);
+        foreach (var zombie in zombies)
+        {
+            zombie.OnPlayerDied();
         }
     }
 
@@ -52,7 +64,8 @@ public partial class RespawnBehaviour : MonoBehaviour
         }
         Animator animator = GetComponent<Animator>();
         animator.SetBool("Dead", true);
-        yield return new WaitForSeconds(1);
+        NotifyPlayerDied();
+        yield return new WaitForSeconds(3);
         health = 100f;
         Respawn();
 
@@ -63,38 +76,15 @@ public partial class RespawnBehaviour : MonoBehaviour
 
     public void DoDamage(float damage)
     {
-        if (cooldown <= 0f) {
-            cooldown = 1.5f;
-            StartCoroutine(FlashRoutine(Camera.main));
-            health = health - damage;
-        }
-    }
-
-    private IEnumerator FlashRoutine(Camera targetCamera, float duration = 0.05f)
-    {
-        if (targetCamera != null) {
-
-            // Bewaar oude instellingen
-            int originalMask = targetCamera.cullingMask;
-            CameraClearFlags originalFlags = targetCamera.clearFlags;
-            Color originalColor = targetCamera.backgroundColor;
-
-            // Zet scherm op rood
-            targetCamera.cullingMask = 0;
-            targetCamera.clearFlags = CameraClearFlags.SolidColor;
-            targetCamera.backgroundColor = Color.red;
-
-            yield return new WaitForSeconds(duration);
-
-            // Herstel instellingen
-            targetCamera.cullingMask = originalMask;
-            targetCamera.clearFlags = originalFlags;
-            targetCamera.backgroundColor = originalColor;
-        }
+        flashTimeout = 0.05f;
+        health = health - damage;
     }
 
     private void HandleHit(ControllerColliderHit hit)
     {
+        if (cooldown > 0f) return;
+        cooldown = 1f;
+
         Renderer rend = hit.collider.GetComponent<Renderer>();
         if (rend != null && rend.sharedMaterial != null)
         {
@@ -122,6 +112,13 @@ public partial class RespawnBehaviour : MonoBehaviour
 
     void OnGUI()
     {
+        if (flashTimeout > 0f)
+        {
+            GUI.color = Color.red;
+            GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.height), Texture2D.whiteTexture);
+            return;
+        }
+
         float scale = Screen.width / 1280.0f;
         GUI.matrix = Matrix4x4.TRS(Vector3.zero, Quaternion.identity, new Vector3(scale, scale, 1f));
 

@@ -200,6 +200,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 974238578668270704, guid: c708a3b79cd542b42bbfedb17e213bc1, type: 3}
       insertIndex: -1
       addedObject: {fileID: 5164199028739224056}
+    - targetCorrespondingSourceObject: {fileID: 974238578668270704, guid: c708a3b79cd542b42bbfedb17e213bc1, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8166195129675145190}
   m_SourcePrefab: {fileID: 100100000, guid: c708a3b79cd542b42bbfedb17e213bc1, type: 3}
 --- !u!1 &4831881815639854308 stripped
 GameObject:
@@ -273,6 +276,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e58af063550c4e4a8af502b9dd63d28, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PickupItemBehaviour
+  inventory: []
+--- !u!114 &8166195129675145190
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4831881815639854308}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f276b411456294967b7ed400f71bb72e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerAttack
 --- !u!114 &4831881815639854312 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 974238578668270716, guid: c708a3b79cd542b42bbfedb17e213bc1, type: 3}
