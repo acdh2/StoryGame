@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &3034131312096282683
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2639274988931927424}
+  m_Layer: 0
+  m_Name: Right_Hand
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2639274988931927424
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3034131312096282683}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5471867339265808561}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &5659751748024334484
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -148,6 +179,7 @@ PrefabInstance:
     m_RemovedGameObjects:
     - {fileID: 4708105552671890492, guid: c708a3b79cd542b42bbfedb17e213bc1, type: 3}
     - {fileID: 399479471021781064, guid: c708a3b79cd542b42bbfedb17e213bc1, type: 3}
+    - {fileID: 7099091395395405236, guid: c708a3b79cd542b42bbfedb17e213bc1, type: 3}
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 490576248761790154, guid: c708a3b79cd542b42bbfedb17e213bc1, type: 3}
       insertIndex: -1
@@ -165,6 +197,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 974238578668270704, guid: c708a3b79cd542b42bbfedb17e213bc1, type: 3}
       insertIndex: -1
       addedObject: {fileID: 5805637306043059000}
+    - targetCorrespondingSourceObject: {fileID: 974238578668270704, guid: c708a3b79cd542b42bbfedb17e213bc1, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4535581445793851910}
   m_SourcePrefab: {fileID: 100100000, guid: c708a3b79cd542b42bbfedb17e213bc1, type: 3}
 --- !u!1 &4831881815639854308 stripped
 GameObject:
@@ -222,8 +257,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 44b06fbe56ea14791b30b57def1e2286, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RespawnBehaviour
+  health: 100
+  maxHealth: 100
   spawnPoint: {fileID: 0}
   fallThreshold: -10
+--- !u!114 &4535581445793851910
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4831881815639854308}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e58af063550c4e4a8af502b9dd63d28, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PickupItemBehaviour
 --- !u!114 &4831881815639854312 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 974238578668270716, guid: c708a3b79cd542b42bbfedb17e213bc1, type: 3}
@@ -298,9 +347,17 @@ PrefabInstance:
       objectReference: {fileID: -2254073774553662122, guid: fc8e1f11ae6ad4a4bacf67e2a7295832, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: -7794145995985840027, guid: c6aab7ce786b840409c04827f8e1c78c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2639274988931927424}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c6aab7ce786b840409c04827f8e1c78c, type: 3}
+--- !u!4 &5471867339265808561 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -7794145995985840027, guid: c6aab7ce786b840409c04827f8e1c78c, type: 3}
+  m_PrefabInstance: {fileID: 6357494814014636244}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &6895260227466585919 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: c6aab7ce786b840409c04827f8e1c78c, type: 3}

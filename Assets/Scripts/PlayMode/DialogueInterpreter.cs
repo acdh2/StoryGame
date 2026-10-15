@@ -7,6 +7,9 @@ using UnityEngine.UIElements;
 
 using Lua;
 using Lua.Standard;
+using UnityEngine.InputSystem;
+using Unity.VisualScripting;
+using StarterAssets;
 
 public class DialogueInterpreter : MonoBehaviour
 {
@@ -557,6 +560,8 @@ public class DialogueInterpreter : MonoBehaviour
 
                         while (timer < duration && !advanceRequested)
                         {
+                            if (Keyboard.current.spaceKey.isPressed ||
+                                Keyboard.current.enterKey.isPressed) break;
                             timer += Time.deltaTime;
                             yield return null;
                         }

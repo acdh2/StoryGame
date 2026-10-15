@@ -16,6 +16,7 @@ public class ZombieBehavior : MonoBehaviour
 
     private NavMeshAgent agent;
     private Animator animator;
+    private RespawnBehaviour respawnBehaviour;
 
     private float searchCooldown = 0f;
 
@@ -37,6 +38,7 @@ public class ZombieBehavior : MonoBehaviour
             ThirdPersonController controller = FindAnyObjectByType<ThirdPersonController>();
             if (controller) {
                 player = controller.transform;
+                respawnBehaviour = player.GetComponent<RespawnBehaviour>();
             }
         } else
         {
@@ -46,6 +48,8 @@ public class ZombieBehavior : MonoBehaviour
 
     void Update()
     {
+        if (!gameObject.activeSelf) return;
+        
         if (player == null) {
             HandleFindPlayer();
             return;
@@ -57,7 +61,10 @@ public class ZombieBehavior : MonoBehaviour
         {
             agent.isStopped = true;
             animator.SetFloat("Speed", 0f);
-            animator.SetTrigger("Attack");
+            animator.SetTrigger("Attack");   
+            if (respawnBehaviour != null) respawnBehaviour.DoDamage(20);
+            if (distance > 0.01f)
+                transform.forward = new Vector3(player.position.x - transform.position.x, 0f, player.position.z - transform.position.z).normalized;
         }
         else if (distance <= detectionRadius)
         {

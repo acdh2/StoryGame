@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1826014109159352886
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8464483599057318411}
+  m_Layer: 0
+  m_Name: Right_Hand
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8464483599057318411
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1826014109159352886}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7943676330550838217}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &560118845909689448
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -52,14 +83,23 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 4888842886114027651, guid: cab265c9f8731714290ec0a1569e469d, type: 3}
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 7635970362552592289, guid: cab265c9f8731714290ec0a1569e469d, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8464483599057318411}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cab265c9f8731714290ec0a1569e469d, type: 3}
 --- !u!4 &4223702139661929121 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4420401406480592585, guid: cab265c9f8731714290ec0a1569e469d, type: 3}
+  m_PrefabInstance: {fileID: 560118845909689448}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &7943676330550838217 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7635970362552592289, guid: cab265c9f8731714290ec0a1569e469d, type: 3}
   m_PrefabInstance: {fileID: 560118845909689448}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &5659751748024334484
@@ -210,6 +250,7 @@ PrefabInstance:
     m_RemovedGameObjects:
     - {fileID: 4708105552671890492, guid: c708a3b79cd542b42bbfedb17e213bc1, type: 3}
     - {fileID: 399479471021781064, guid: c708a3b79cd542b42bbfedb17e213bc1, type: 3}
+    - {fileID: 7099091395395405236, guid: c708a3b79cd542b42bbfedb17e213bc1, type: 3}
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 490576248761790154, guid: c708a3b79cd542b42bbfedb17e213bc1, type: 3}
       insertIndex: -1
@@ -227,6 +268,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 974238578668270704, guid: c708a3b79cd542b42bbfedb17e213bc1, type: 3}
       insertIndex: -1
       addedObject: {fileID: 6753517068797431413}
+    - targetCorrespondingSourceObject: {fileID: 974238578668270704, guid: c708a3b79cd542b42bbfedb17e213bc1, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6376542011564936262}
   m_SourcePrefab: {fileID: 100100000, guid: c708a3b79cd542b42bbfedb17e213bc1, type: 3}
 --- !u!1 &4831881815639854308 stripped
 GameObject:
@@ -284,8 +328,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 44b06fbe56ea14791b30b57def1e2286, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RespawnBehaviour
+  health: 100
+  maxHealth: 100
   spawnPoint: {fileID: 0}
   fallThreshold: -10
+--- !u!114 &6376542011564936262
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4831881815639854308}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e58af063550c4e4a8af502b9dd63d28, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PickupItemBehaviour
 --- !u!114 &4831881815639854312 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 974238578668270716, guid: c708a3b79cd542b42bbfedb17e213bc1, type: 3}

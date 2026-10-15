@@ -18,7 +18,6 @@ public class NavmeshUpdater : MonoBehaviour
         {
             sceneManager.OnInvalidateScene += () =>
             {
-                Debug.Log("rebuild");
                 navMeshSurface.BuildNavMesh();
             };
         }
