@@ -1,23 +1,14 @@
 using UnityEngine;
 using StarterAssets;
 using System.Collections;
+using System.Collections.Generic;
+using System;
+using UnityEditor;
 
 public class PickupItemBehaviour : MonoBehaviour
 {
+    public List<string> inventory = new List<string>();
     GameObject currentItem = null;
-
-    void Start()
-    {
-        
-    }
-
-    void OnControllerColliderHit(ControllerColliderHit hit)
-    {
-        if (hit.collider.CompareTag("Pickup")) {
-            HandlePlayerPickup(hit.collider.gameObject);
-        }
-    }
-
 
     private Transform FindDescendant(Transform parent, string childName)
     {
@@ -29,57 +20,33 @@ public class PickupItemBehaviour : MonoBehaviour
             if (result != null) return result;
         }
         return null;
-    }    
+    }  
 
-    public void DropItem()
+    public bool Has(string itemName)
     {
-        GameObject item = currentItem;
-        if (item == null) return;
-        
-        Transform playerTransform = transform;
-        Collider playerCollider = GetComponent<Collider>();
+        if (itemName == "") return false;
+        return inventory.Contains(itemName);
+    }  
 
-        // 1. Ontkoppel van de speler
-        item.transform.SetParent(null);
-
-        // 2. Activeer Rigidbody en reset krachten
-        Rigidbody rb = item.GetComponent<Rigidbody>();
-        if (rb != null)
+    public void Drop(string itemName)
+    {
+        if (itemName == "") return;
+        if (itemName != null)
         {
-            rb.isKinematic = false;
-            rb.linearVelocity = Vector3.zero;
-            rb.angularVelocity = Vector3.zero;
+            while (inventory.Contains(itemName)) {
+                inventory.Remove(itemName);
+            };
         }
-
-        // 3. Negeer tijdelijk de botsing met de speler
-        Collider itemCollider = item.GetComponent<Collider>();
-        if (itemCollider != null && itemCollider is MeshCollider) (itemCollider as MeshCollider).convex = true;
-        if (itemCollider != null && playerCollider != null)
-        {
-            Physics.IgnoreCollision(itemCollider, playerCollider, true);
-            StartCoroutine(ResetCollision(itemCollider, playerCollider, 0.5f));            
-        }
-        Rigidbody itemBody = currentItem.GetComponent<Rigidbody>();
-        if (itemBody == null) itemBody = currentItem.AddComponent<Rigidbody>();
-        itemBody.isKinematic = false;
-
-        // 4. Plaats net voor de speler
-        item.transform.position = playerTransform.position + playerTransform.forward * 1.5f + Vector3.up * 0.5f;
     }
 
-    private IEnumerator ResetCollision(Collider itemCol, Collider playerCol, float delay)
+    public void Pickup(string itemName)
     {
-        yield return new WaitForSeconds(delay);
-        if (itemCol != null && playerCol != null)
-        {
-            Physics.IgnoreCollision(itemCol, playerCol, false);
-        }
-    }    
+        if (itemName == "") return;
+        if (!inventory.Contains(itemName)) inventory.Add(itemName);
 
-    private void HandlePlayerPickup(GameObject target)
-    {
+        GameObject target = GameObject.Find(itemName);
+
         ThirdPersonController[] playerControllers = FindObjectsByType<ThirdPersonController>(FindObjectsSortMode.None);
-
         foreach (var playerController in playerControllers)
         {
             if (playerController != null && target != null)
@@ -87,7 +54,11 @@ public class PickupItemBehaviour : MonoBehaviour
                 Transform hand = FindDescendant(playerController.transform, "Right_Hand");
                 if (hand)
                 {
-                    if (currentItem) DropItem();
+                    if (currentItem) {
+                        Destroy(currentItem);
+                        currentItem = null;
+                    }
+
                     if (target.TryGetComponent(out Rigidbody rb))
                     {
                         rb.isKinematic = true;
@@ -98,9 +69,11 @@ public class PickupItemBehaviour : MonoBehaviour
                     currentItem = target;
                 }
 
-                break;    
+                return;    
             }
         }
+
+        if (target != null) Destroy(target);
     }
 
 }

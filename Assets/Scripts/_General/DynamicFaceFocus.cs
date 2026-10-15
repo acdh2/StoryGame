@@ -20,8 +20,6 @@ public class DynamicFaceFocus : MonoBehaviour
         if (isApplied) return;
         isApplied = true;
 
-        print($"speaker requested {speaker}");
-
         foreach (Transform t in transform.root.GetComponentsInChildren<Transform>())
         {
             if (t.name.Equals("Head", System.StringComparison.OrdinalIgnoreCase) || t.name.Equals("Hfd", System.StringComparison.OrdinalIgnoreCase))

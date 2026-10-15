@@ -77,12 +77,16 @@ public class CommandListController : UIControllerBase
             case "GOTO":
             case "CHAPTER": return new Color(0.6f, 0.4f, 0.2f);
             case "TELEPORT":
+            case "PICKUP":
+            case "DROP":
             case "CREATE_VAR":
             case "SET_VAR":
             case "UNSET_VAR": return new Color(0.5f, 0.2f, 0.6f);
+            case "HAS":
+            case "DONT HAVE":
             case "VAR_IS_SET":
             case "VAR_IS_NOT_SET": return new Color(0.6f, 0.2f, 0.4f);
-            case "CODE": return new Color(0.3f, 0.3f, 0.3f);
+            //case "CODE": return new Color(0.3f, 0.3f, 0.3f);
             default: return new Color(0.45f, 0.45f, 0.45f);
         }
     }
@@ -96,7 +100,9 @@ public class CommandListController : UIControllerBase
     private bool NeedsObjectParameter(string commandType)
     {
         string type = commandType?.Trim().ToUpperInvariant() ?? "";
-        return type == "TOUCHED" || type == "SHOW" || type == "HIDE" || type == "TELEPORT" || type == "BLOCK" || type == "UNBLOCK";
+        return type == "TOUCHED" || type == "SHOW" || type == "HIDE" || type == "TELEPORT" || 
+                type == "BLOCK" || type == "UNBLOCK" || type == "PICKUP" || type == "DROP" ||
+                type == "HAS";
     }
 
     private bool NeedsLabelParameter(string commandType)

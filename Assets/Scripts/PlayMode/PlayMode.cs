@@ -24,6 +24,7 @@ public class PlayMode : UIControllerBase
 
     protected override void OnUIEnabled(VisualElement root)
     {
+        sceneManager?.LockState();
         DisableEditorCamera();
         CreatePlayer();
         StartStory(root);
@@ -31,6 +32,7 @@ public class PlayMode : UIControllerBase
 
     protected override void OnUIDisabled()
     {
+        sceneManager?.UnlockState();
         EndStory();
         EnableEditorCamera();
         DestroyPlayer();

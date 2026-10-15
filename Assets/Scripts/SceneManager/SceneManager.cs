@@ -22,6 +22,8 @@ public class SceneManager : MonoBehaviour
     public bool CanUndo => undoStack.Count > 1;
     public bool CanRedo => redoStack.Count > 0;
 
+    private bool isStateLocked = false;
+
     private void Awake()
     {
         saveSystem = GetComponent<SceneSaveSystem>();
@@ -31,13 +33,41 @@ public class SceneManager : MonoBehaviour
         }
     }
 
-    private void Start()
+    private void SavePersistentState()
     {
-#if !UNITY_WEBGL || UNITY_EDITOR
+        if (!isStateLocked) {
+            if (saveSystem != null) 
+            {
+                saveSystem.SaveSceneToFile(saveFileName);
+            } 
+        }
+    }
+
+    private void LoadPersistentState()
+    {
         if (saveSystem != null)
         {
             saveSystem.LoadSceneFromFile(saveFileName);
-        }
+        }        
+    }
+
+    public void LockState()
+    {
+        if (isStateLocked) return;
+        SavePersistentState();
+        isStateLocked = true;
+    }
+
+    public void UnlockState()
+    {
+        if (!isStateLocked) return;
+        isStateLocked = false;
+    }
+
+    private void Start()
+    {
+#if !UNITY_WEBGL || UNITY_EDITOR
+        LoadPersistentState();
 #endif
         RecordState();
         HasChanged = false;
@@ -46,10 +76,7 @@ public class SceneManager : MonoBehaviour
     private void OnApplicationQuit()
     {
 #if !UNITY_WEBGL || UNITY_EDITOR
-        if (saveSystem != null)
-        {
-            saveSystem.SaveSceneToFile(saveFileName);
-        }
+        SavePersistentState();
 #endif
     }
 
@@ -123,7 +150,7 @@ public class SceneManager : MonoBehaviour
 
         GameObject newObject = Instantiate(itemData.prefab, spawnPosition, Quaternion.identity);
         newObject.transform.parent = transform;
-        newObject.name = "default";
+        newObject.name = "";
         SetLayerRecursively(newObject, LayerMask.NameToLayer("SelectableObjects"));
 
         ObjectIdentifier identifier = newObject.GetComponent<ObjectIdentifier>();
@@ -205,10 +232,7 @@ public class SceneManager : MonoBehaviour
 
     private void SaveSceneInternal() 
     {
-        if (saveSystem != null)
-        {
-            saveSystem.SaveSceneToFile(saveFileName);
-        }
+        SavePersistentState();
         OnInvalidateScene?.Invoke();
     }
 
@@ -272,7 +296,7 @@ public class SceneManager : MonoBehaviour
         string previousState = undoStack.Peek();
         saveSystem.LoadSceneFromJson(previousState);
 
-        saveSystem.SaveSceneToFile(saveFileName);
+        SavePersistentState();
         HasChanged = true;
         OnInvalidateScene?.Invoke();
     }
@@ -291,7 +315,7 @@ public class SceneManager : MonoBehaviour
 
         saveSystem.LoadSceneFromJson(nextState);
 
-        saveSystem.SaveSceneToFile(saveFileName);
+        SavePersistentState();
         HasChanged = true;
         OnInvalidateScene?.Invoke();
     }
