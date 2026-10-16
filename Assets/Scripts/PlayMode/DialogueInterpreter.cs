@@ -581,6 +581,7 @@ public class DialogueInterpreter : MonoBehaviour
             case "DROP":
             case "SHOW":
             case "HIDE":
+            case "WAIT":
             case "TELEPORT":
             case "SET_VAR":
             case "UNSET_VAR":
@@ -677,6 +678,23 @@ public class DialogueInterpreter : MonoBehaviour
                     pc++;
                     break;
                 }
+
+                case "WAIT":
+
+                    float waitDuration = 2f;
+                    if (float.TryParse(instr.Argument, out float result))
+                    {
+                        waitDuration = result;
+                    }
+
+                    HideScreen();
+
+                    yield return new WaitForSeconds(waitDuration);
+
+                    ShowScreen();
+
+                    pc++;
+                    break;
 
                 // ---- menu ----
 
