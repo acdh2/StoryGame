@@ -50,6 +50,8 @@ public class ZombieBehaviour : MonoBehaviour
 
     public void ApplyDamage()
     {
+        //if (!hasWeapon && Random.value < 0.8f) return;
+
         velocity = -transform.forward * 0.1f;
         shouldMove = true;
 

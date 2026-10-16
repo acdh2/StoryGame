@@ -82,8 +82,9 @@ public partial class RespawnBehaviour : MonoBehaviour
 
     private void HandleHit(ControllerColliderHit hit)
     {
+        if (health <= 0f) return;
+
         if (cooldown > 0f) return;
-        cooldown = 1f;
 
         Renderer rend = hit.collider.GetComponent<Renderer>();
         if (rend != null && rend.sharedMaterial != null)
@@ -95,6 +96,7 @@ public partial class RespawnBehaviour : MonoBehaviour
             if (rend.sharedMaterial.name.Contains("water"))
             {
                 DoDamage(52);
+                cooldown = 1f;
             }
         }
         

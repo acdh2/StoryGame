@@ -111,6 +111,12 @@ public class CommandListController : UIControllerBase
         return type == "GOTO";
     }
 
+    private bool NeedsNoParameter(string commandType)
+    {
+        string type = commandType?.Trim().ToUpperInvariant() ?? "";
+        return false;//type == "DROP";
+    }
+
     private List<string> GetAvailableChapters()
     {
         var chapters = new List<string>();
@@ -175,7 +181,7 @@ public class CommandListController : UIControllerBase
         {
             if (varDropdown != null) varDropdown.style.display = DisplayStyle.Flex;
         }
-        else
+        else if (!NeedsNoParameter(command))
         {
             if (inputField != null) inputField.style.display = DisplayStyle.Flex;
         }

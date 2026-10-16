@@ -7,11 +7,10 @@ public class PlayerAttack : MonoBehaviour
 {
     private InputSystem_Actions inputActions;
 
-    private float attackDelay = 0.5f;
     private float attackRadius = 2.0f;    
 
     private Animator animator;
-    private bool playerDied = false;
+    //private bool playerDied = false;
 
     void Awake()
     {
@@ -34,6 +33,14 @@ public class PlayerAttack : MonoBehaviour
     private void OnAttackPerformed(InputAction.CallbackContext context)
     {
         if (animator) animator.SetTrigger("Attack");
+
+        bool hasWeapon = false;
+        PickupItemBehaviour pickupItemBehaviour = GetComponent<PickupItemBehaviour>();
+        if (pickupItemBehaviour != null)
+        {
+            hasWeapon = pickupItemBehaviour.HasWeapon();
+        }
+        if (!hasWeapon) return;
 
         Collider[] hitColliders = Physics.OverlapSphere(transform.position, attackRadius);
         System.Collections.Generic.List<ZombieBehaviour> zombies = new System.Collections.Generic.List<ZombieBehaviour>();

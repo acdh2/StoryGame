@@ -1,13 +1,8 @@
 using UnityEngine;
 using StarterAssets;
-using System.Collections;
-using System.Collections.Generic;
-using System;
-using UnityEditor;
 
 public class PickupItemBehaviour : MonoBehaviour
 {
-    public List<string> inventory = new List<string>();
     GameObject currentItem = null;
 
     private Transform FindDescendant(Transform parent, string childName)
@@ -24,61 +19,59 @@ public class PickupItemBehaviour : MonoBehaviour
 
     public bool HasWeapon()
     {
-        return true;
+        return currentItem != null;
     }
 
     public bool Has(string itemName)
     {
         if (itemName == "") return false;
-        return inventory.Contains(itemName);
+        return currentItem != null && currentItem.name == itemName;
     }  
 
     public void Drop(string itemName)
     {
         if (itemName == "") return;
-        if (itemName != null)
+        if (currentItem != null && currentItem.name == itemName)
         {
-            while (inventory.Contains(itemName)) {
-                inventory.Remove(itemName);
-            };
+            Destroy(currentItem);
+            currentItem = null;
         }
     }
 
     public void Pickup(string itemName)
     {
         if (itemName == "") return;
-        if (!inventory.Contains(itemName)) inventory.Add(itemName);
-
-        GameObject target = GameObject.Find(itemName);
-
-        ThirdPersonController[] playerControllers = FindObjectsByType<ThirdPersonController>(FindObjectsSortMode.None);
-        foreach (var playerController in playerControllers)
-        {
-            if (playerController != null && target != null)
-            {
-                Transform hand = FindDescendant(playerController.transform, "Right_Hand");
-                if (hand)
-                {
-                    if (currentItem) {
-                        Destroy(currentItem);
-                        currentItem = null;
-                    }
-
-                    if (target.TryGetComponent(out Rigidbody rb))
-                    {
-                        rb.isKinematic = true;
-                    }
-                    target.transform.SetParent(hand, false);
-                    target.transform.localPosition = Vector3.zero;
-                    target.transform.localRotation = Quaternion.identity;
-                    currentItem = target;
-                }
-
-                return;    
-            }
+        if (currentItem != null) {
+            Destroy(currentItem);
+            currentItem = null;
         }
 
-        if (target != null) Destroy(target);
+        GameObject target = GameObject.Find(itemName);
+        if (target != null) {
+
+            ThirdPersonController[] playerControllers = FindObjectsByType<ThirdPersonController>(FindObjectsSortMode.None);
+            foreach (var playerController in playerControllers)
+            {
+                if (playerController != null)
+                {
+                    Transform hand = FindDescendant(playerController.transform, "Right_Hand");
+                    if (hand)
+                    {
+                        if (target.TryGetComponent(out Rigidbody rb))
+                        {
+                            rb.isKinematic = true;
+                        }
+                        target.transform.SetParent(hand, false);
+                        target.transform.localPosition = Vector3.zero;
+                        target.transform.localRotation = Quaternion.identity;
+                        currentItem = target;
+                    }
+
+                    return;    
+                }
+
+            }            
+        }
     }
 
 }
