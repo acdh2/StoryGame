@@ -18,7 +18,7 @@ public class StoryDataStore : MonoBehaviour
 
     private static readonly List<string> availableCommands = new List<string>
     {
-        "text", "choice", "wait", "touched", "teleport", "show", "hide", "pickup", "drop", "has", "dont have", "say", "unblock", "chapter", "goto", "countdown", "stop countdown"//, "create_var", "code", "set_var", "var_is_set", "var_is_not_set", "unset", "block", 
+        "text", "choice", "wait", "touched", "teleport", "show", "hide", "pickup", "drop", "has", "dont have", "say", "unblock", "chapter", "goto", "countdown", "stop countdown", "spawn", "collect"//, "create_var", "code", "set_var", "var_is_set", "var_is_not_set", "unset", "block", 
     };
 
     public IEnumerable<string> AvailableCommandTypes => availableCommands;

@@ -70,8 +70,6 @@ namespace StarterAssets
                 _originalUpdateMode = _animator.updateMode;
                 _animator.updateMode = AnimatorUpdateMode.Fixed;
             }
-
-            SetCursorState(true);
         }
 
         public void EnableControls()
@@ -86,8 +84,6 @@ namespace StarterAssets
             {
                 _animator.updateMode = _originalUpdateMode;
             }
-
-            SetCursorState(false);
         }
 
         void SetCursorState(bool shouldBeEnabled)
@@ -106,6 +102,7 @@ namespace StarterAssets
         {
             if (active) EnableControls();
             else DisableControls();
+            SetCursorState(!active);
         }
 
 #if UNITY_WEBGL && !UNITY_EDITOR

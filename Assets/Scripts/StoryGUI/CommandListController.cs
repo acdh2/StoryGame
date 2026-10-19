@@ -73,11 +73,14 @@ private Color GetColorForCommand(string commandType)
             return new Color32(65, 135, 225, 255); // Blue (Communicatie en dialoog)
         case "GOTO": 
             return new Color32(140, 85, 55, 255); // Brown (Fysieke object manipulatie)
+        case "COUNTDOWN":
+        case "STOP COUNTDOWN":
+            return new Color32(235, 130, 60, 255); // Orange (Tijd en pauzes)
         case "WAIT": 
         case "CHOICE": 
         case "TOUCHED": 
+        case "COLLECT":
             return new Color32(75, 175, 110, 255); // Green (Vertakkingen en paden)
-            //return new Color32(235, 130, 60, 255); // Orange (Tijd en pauzes)
         case "TELEPORT":
             return new Color32(245, 195, 65, 255); // Yellow / Okergeel (Event interactie)
         case "HAS":
@@ -85,6 +88,7 @@ private Color GetColorForCommand(string commandType)
         case "VAR_IS_SET":
         case "VAR_IS_NOT_SET": 
             return new Color32(34, 37, 42, 255); // Black (Inventory en conditiechecks)
+        case "SPAWN":
         case "SHOW":
         case "HIDE":
         case "BLOCK":
@@ -115,7 +119,7 @@ private Color GetColorForCommand(string commandType)
         string type = commandType?.Trim().ToUpperInvariant() ?? "";
         return type == "TOUCHED" || type == "SHOW" || type == "HIDE" || type == "TELEPORT" || 
                 type == "BLOCK" || type == "UNBLOCK" || type == "PICKUP" || type == "DROP" ||
-                type == "HAS";
+                type == "HAS" || type == "SPAWN" || type == "COLLECT";
     }
 
     private bool NeedsLabelParameter(string commandType)
@@ -124,10 +128,10 @@ private Color GetColorForCommand(string commandType)
         return type == "GOTO";
     }
 
-    private bool NeedsSliderParameter(string commandType)
+    private bool NeedsFloatParameter(string commandType)
     {
         string type = commandType?.Trim().ToUpperInvariant() ?? "";
-        return type == "WAIT";
+        return type == "WAIT" || type == "COUNTDOWN";
     }
 
     private bool NeedsNoParameter(string commandType)
@@ -180,7 +184,7 @@ private Color GetColorForCommand(string commandType)
         DropdownField objectDropdown = itemRoot.Q<DropdownField>("item-dropdown");
         DropdownField labelDropdown = itemRoot.Q<DropdownField>("label-dropdown") ?? itemRoot.Q<DropdownField>("chapter-dropdown");
         DropdownField varDropdown = itemRoot.Q<DropdownField>("var-dropdown");
-        Slider sliderField = itemRoot.Q<Slider>("wait-slider");
+        FloatStepperField floatField = itemRoot.Q<FloatStepperField>("float-input");
 
         itemRoot.style.backgroundColor = GetColorForCommand(command);
         if ((command?.Trim().ToUpperInvariant() ?? "") == "CHAPTER") itemRoot.style.marginTop = 15f;
@@ -189,7 +193,7 @@ private Color GetColorForCommand(string commandType)
         if (objectDropdown != null) objectDropdown.style.display = DisplayStyle.None;
         if (labelDropdown != null) labelDropdown.style.display = DisplayStyle.None;
         if (varDropdown != null) varDropdown.style.display = DisplayStyle.None;
-        if (sliderField != null) sliderField.style.display = DisplayStyle.None;
+        if (floatField != null) floatField.style.display = DisplayStyle.None;
 
         if (NeedsObjectParameter(command))
         {
@@ -203,9 +207,9 @@ private Color GetColorForCommand(string commandType)
         {
             if (varDropdown != null) varDropdown.style.display = DisplayStyle.Flex;
         }
-        else if (NeedsSliderParameter(command))
+        else if (NeedsFloatParameter(command))
         {
-            if (sliderField != null) sliderField.style.display = DisplayStyle.Flex;
+            if (floatField != null) floatField.style.display = DisplayStyle.Flex;
         }
         else if (!NeedsNoParameter(command))
         {
@@ -243,7 +247,7 @@ private Color GetColorForCommand(string commandType)
             DropdownField objectDropdown = itemRoot.Q<DropdownField>("item-dropdown");
             DropdownField labelDropdown = itemRoot.Q<DropdownField>("label-dropdown") ?? itemRoot.Q<DropdownField>("chapter-dropdown");
             DropdownField varDropdown = itemRoot.Q<DropdownField>("var-dropdown");
-            Slider sliderField = itemRoot.Q<Slider>("wait-slider");
+            FloatStepperField floatField = itemRoot.Q<FloatStepperField>("float-input");
 
             string currentType = string.IsNullOrEmpty(data.CommandType) ? commandOptions[0] : data.CommandType;
 
@@ -364,34 +368,30 @@ private Color GetColorForCommand(string commandType)
                     });
                 }
             }            
-            else if (NeedsSliderParameter(currentType))
+            else if (NeedsFloatParameter(currentType))
             {
-                if (sliderField != null)
+                if (floatField != null)
                 {
-                    sliderField.lowValue = 0f;
-                    sliderField.highValue = 10f;
-                    sliderField.pageSize = 0.25f;
-
-                    float parsedValue = 1f;
+                    float parsedValue = 2f;
                     if (float.TryParse(data.Argument, System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out float result))
                     {
-                        parsedValue = Mathf.Clamp(result, 0f, 10f);
+                        parsedValue = (result > 0)?result:0f;
                     }
                     else
                     {
-                        dataStore.UpdateCommand(index, currentType, "1", true);
+                        dataStore.UpdateCommand(index, currentType, "2", true);
                     }
 
-                    sliderField.value = parsedValue;
+                    floatField.value = parsedValue;
 
-                    sliderField.RegisterValueChangedCallback(evt =>
+                    floatField.RegisterValueChangedCallback(evt =>
                     {
                         if (isRebuilding) return;
 
                         float snappedValue = Mathf.Round(evt.newValue / 0.25f) * 0.25f;
                         if (!Mathf.Approximately(evt.newValue, snappedValue))
                         {
-                            sliderField.SetValueWithoutNotify(snappedValue);
+                            floatField.SetValueWithoutNotify(snappedValue);
                         }
 
                         string type = typeDropdown != null ? typeDropdown.value : currentType;
@@ -401,12 +401,12 @@ private Color GetColorForCommand(string commandType)
                     });
 
                     // Pas committen als de gebruiker loslaat
-                    sliderField.RegisterCallback<PointerCaptureOutEvent>(evt =>
+                    floatField.RegisterCallback<PointerCaptureOutEvent>(evt =>
                     {
                         if (isRebuilding) return;
                         string type = typeDropdown != null ? typeDropdown.value : currentType;
                         dataStore.UpdateCommand(index, type,
-                            sliderField.value.ToString(System.Globalization.CultureInfo.InvariantCulture), true);
+                            floatField.value.ToString(System.Globalization.CultureInfo.InvariantCulture), true);
                     });
 
                 }                

@@ -34,7 +34,18 @@ public class DialogueInterpreter : MonoBehaviour
     private UnityEngine.Coroutine activeDialogueCoroutine = null;
     private SceneManager sceneManager = null;
     private UnityEngine.Coroutine activeCountdownCoroutine = null;
-    private Label countdownLabel;    
+    private Label countdownLabel;
+
+    // Gecombineerd statuslabel voor COLLECT en COUNTDOWN
+    private string statusBaseText = "";
+
+    private bool collectActive = false;
+    private string collectName = "";
+    private int collectDone = 0;
+    private int collectTotal = 0;
+
+    private bool countdownActive = false;
+    private int countdownRemaining = 0;
 
     // ------------------------------------------------------------------
     //  Instructies
@@ -354,6 +365,20 @@ public class DialogueInterpreter : MonoBehaviour
         }
 
         ResolveLabels();
+        ResolveSpawns();
+    }
+
+    private void ResolveSpawns()
+    {
+        foreach (Instruction ins in instructions)
+        {
+            if (ins.Type == "SPAWN")
+            {
+                ToggleSceneObjectVisibility(
+                    ins.Argument,
+                    false);
+            }
+        }
     }
 
     // ------------------------------------------------------------------
@@ -504,6 +529,12 @@ public class DialogueInterpreter : MonoBehaviour
         selectedIndex = -1;
         touchedRequested = false;
 
+        // lopende collect afbreken
+        collectActive = false;
+        collectDone = 0;
+        collectTotal = 0;
+        UpdateStatusLabel();
+
         ClearOptionsUI();
     }
 
@@ -562,9 +593,22 @@ public class DialogueInterpreter : MonoBehaviour
         advanceRequested = true;
     }
 
-    public void OnObjectTouched(string itemName)
+    public void OnObjectTouched(GameObject touchedObject)
     {
+        if (touchedObject == null) return;
+
+        string itemName = touchedObject.name;
         if (itemName == "") return;
+
+        if (collectActive &&
+            string.Equals(
+                collectName,
+                itemName,
+                StringComparison.OrdinalIgnoreCase))
+        {
+            CollectItem(touchedObject);
+        }
+
         if (touchedRequested &&
             string.Equals(
                 lastTouchedItem,
@@ -596,11 +640,13 @@ public class DialogueInterpreter : MonoBehaviour
             case "DROP":
             case "SHOW":
             case "HIDE":
+            case "SPAWN":
             case "WAIT":
             case "TELEPORT":
             case "SET_VAR":
             case "UNSET_VAR":
             case "COUNTDOWN":
+            case "COLLECT":
                 return true;
             default:
                 return false;
@@ -778,6 +824,45 @@ public class DialogueInterpreter : MonoBehaviour
                     pc++;
                     break;
 
+                // Wacht tot alle items met deze naam verzameld zijn.
+                case "COLLECT":
+                {
+                    int total = FindActiveSceneObjects(instr.Argument).Count;
+
+                    if (total == 0)
+                    {
+                        Debug.LogWarning(
+                            $"Dialogue: COLLECT vond geen actieve objecten met de naam \"{instr.Argument}\".");
+                        pc++;
+                        break;
+                    }
+
+                    collectName = instr.Argument;
+                    collectTotal = total;
+                    collectDone = 0;
+
+                    // Basistekst alleen vastleggen als niet al een ander commando dat deed.
+                    if (!countdownActive)
+                        statusBaseText = dialogueTextLabel != null ? dialogueTextLabel.text : "";
+
+                    collectActive = true;
+
+                    // Het dialoogscherm gaat weg zodat de speler kan lopen; het label blijft zichtbaar.
+                    HideScreen();
+                    UpdateStatusLabel();
+
+                    yield return new WaitUntil(
+                        () => collectDone >= collectTotal);
+
+                    collectActive = false;
+                    UpdateStatusLabel();
+
+                    ShowScreen();
+
+                    pc++;
+                    break;
+                }
+
                 case "BLOCK":
                     ToggleSceneObjectIsTrigger(
                         instr.Argument,
@@ -806,6 +891,7 @@ public class DialogueInterpreter : MonoBehaviour
                     pc++;
                     break;
 
+                case "SPAWN":
                 case "SHOW":
                     ToggleSceneObjectVisibility(
                         instr.Argument,
@@ -861,11 +947,16 @@ public class DialogueInterpreter : MonoBehaviour
 
                     break;
 
-                // Toevoegen aan RunDialogueRoutine switch:
                 case "COUNTDOWN":
                 {
-                    if (activeCountdownCoroutine == null && int.TryParse(instr.Argument, out int seconds))
+                    if (!countdownActive && int.TryParse(instr.Argument, out int seconds))
                     {
+                        // Basistekst alleen vastleggen als niet al een ander commando dat deed.
+                        if (!collectActive)
+                            statusBaseText = dialogueTextLabel != null ? dialogueTextLabel.text : "";
+
+                        countdownActive = true;
+                        countdownRemaining = seconds;
                         activeCountdownCoroutine = StartCoroutine(StartCountdown(seconds));
                     }
                     pc++;
@@ -877,7 +968,7 @@ public class DialogueInterpreter : MonoBehaviour
                     StopCountdown();
                     pc++;
                     break;
-                }                    
+                }
 
                 case "NOP":
                     pc++;
@@ -897,6 +988,10 @@ public class DialogueInterpreter : MonoBehaviour
         OnDialogueEnded?.Invoke();
     }
 
+    // ------------------------------------------------------------------
+    //  Countdown
+    // ------------------------------------------------------------------
+
     private void StopCountdown()
     {
         if (activeCountdownCoroutine != null)
@@ -904,45 +999,113 @@ public class DialogueInterpreter : MonoBehaviour
             StopCoroutine(activeCountdownCoroutine);
             activeCountdownCoroutine = null;
         }
-        if (countdownLabel != null)
-        {
-            countdownLabel.style.visibility = Visibility.Hidden;
-        }
+
+        countdownActive = false;
+        UpdateStatusLabel();
     }
 
     private IEnumerator StartCountdown(int totalSeconds)
-    {   
-        if (activeCountdownCoroutine == null) {     
-            if (countdownLabel != null)
+    {
+        countdownRemaining = totalSeconds;
+
+        while (countdownRemaining > 0)
+        {
+            UpdateStatusLabel();
+            yield return new WaitForSeconds(1f);
+            countdownRemaining--;
+        }
+
+        // Tijd is om
+        countdownRemaining = 0;
+        countdownActive = false;
+        activeCountdownCoroutine = null;
+        UpdateStatusLabel();
+
+        RespawnAllPlayers();
+    }
+
+    // ------------------------------------------------------------------
+    //  Collect-helpers
+    // ------------------------------------------------------------------
+
+    // Alle actieve objecten in de scene met deze naam.
+    private List<GameObject> FindActiveSceneObjects(string objectName)
+    {
+        List<GameObject> found = new List<GameObject>();
+
+        if (sceneManager == null)
+            return found;
+
+        GameObject sceneRoot = sceneManager.gameObject;
+
+        if (sceneRoot == null)
+            return found;
+
+        Transform[] transforms =
+            sceneRoot.GetComponentsInChildren<Transform>(true);
+
+        foreach (Transform child in transforms)
+        {
+            if (child == sceneRoot.transform)
+                continue;
+
+            if (child.gameObject.activeSelf &&
+                child.name.Equals(
+                    objectName,
+                    StringComparison.OrdinalIgnoreCase))
             {
-                countdownLabel.style.visibility = Visibility.Visible;
-            }
-            int remaining = totalSeconds;
-
-            while (remaining >= 0)
-            {
-                if (countdownLabel != null)
-                {
-                    countdownLabel.text = remaining.ToString();
-                }
-
-                if (remaining == 0)
-                {
-                    if (countdownLabel != null)
-                    {
-                        countdownLabel.style.visibility = Visibility.Hidden;
-                    }
-                    activeCountdownCoroutine = null;
-                    RespawnAllPlayers();
-                    yield break;
-                }
-
-                yield return new WaitForSeconds(1f);
-                remaining--;
+                found.Add(child.gameObject);
             }
         }
 
-        StopCountdown();
+        return found;
+    }
+
+    private void CollectItem(GameObject touchedObject)
+    {
+        GameObject target = touchedObject;
+
+        if (target == null)
+        {
+            List<GameObject> remaining = FindActiveSceneObjects(collectName);
+            if (remaining.Count == 0)
+                return;
+
+            target = remaining[0];
+        }
+
+        // Al verzameld (bijv. twee aanrakingen in hetzelfde frame): niet dubbel tellen.
+        if (!target.activeSelf)
+            return;
+
+        target.SetActive(false);
+        collectDone++;
+
+        UpdateStatusLabel();
+    }
+
+    // Bouwt het label op uit alle commando's die nu actief zijn.
+    private void UpdateStatusLabel()
+    {
+        if (countdownLabel == null)
+            return;
+
+        List<string> parts = new List<string>();
+
+        if (collectActive)
+            parts.Add($"({collectDone}/{collectTotal})");
+
+        if (countdownActive)
+            parts.Add($"({countdownRemaining} sec)");
+
+        if (parts.Count == 0)
+        {
+            countdownLabel.style.visibility = Visibility.Hidden;
+            return;
+        }
+
+        countdownLabel.style.visibility = Visibility.Visible;
+        countdownLabel.text = $"{statusBaseText} {string.Join(" ", parts)}".Trim();
     }
 
     // ------------------------------------------------------------------
@@ -1124,7 +1287,6 @@ public class DialogueInterpreter : MonoBehaviour
         }
     }
 
-
     private void RespawnAllPlayers()
     {
         RespawnBehaviour[] respawnBehaviours = FindObjectsByType<RespawnBehaviour>(FindObjectsSortMode.None);
@@ -1137,7 +1299,6 @@ public class DialogueInterpreter : MonoBehaviour
             }
         }
     }
-
 
     private string NormalizeType(
         string value)

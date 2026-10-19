@@ -2,12 +2,14 @@
     <ui:VisualElement name="dialogue-root" style="position: absolute; bottom: 0; left: 0; right: 0; width: 100%; flex-direction: column;">
         <ui:VisualElement style="background-color: rgba(220, 220, 220, 0.95); border-top-left-radius: 16px; border-top-right-radius: 16px; padding: 12px; border-top-width: 1px; border-top-color: rgb(200, 200, 200);">
             <ui:Label name="character-name-label" text="Name" style="-unity-font-style: bold; color: rgb(30, 30, 30); font-size: 14px; margin-bottom: 4px;"/>
-            <ui:Label name="dialogue-text-label" text="Dialogue line goes here..." style="color: rgb(20, 20, 20); font-size: 16px; margin-bottom: 12px; white-space: normal;"/>
+            <ui:Label name="dialogue-text-label" text="&#10;" style="color: rgb(20, 20, 20); font-size: 16px; margin-bottom: 12px; white-space: normal;"/>
             <ui:VisualElement name="options-container" style="flex-direction: column; margin-top: 4px;">
                 <ui:Button name="option-button-template" text="Option Template" style="height: 40px; min-width: 80px; margin-left: 4px; margin-right: 4px; border-top-left-radius: 6px; border-top-right-radius: 6px; border-bottom-left-radius: 6px; border-bottom-right-radius: 6px; font-size: 12px; -unity-font-style: bold; border-top-width: 1px; border-bottom-width: 1px; border-left-width: 1px; border-right-width: 1px; border-top-color: rgb(200, 200, 200); border-bottom-color: rgb(200, 200, 200); border-left-color: rgb(200, 200, 200); border-right-color: rgb(200, 200, 200); display: none;"/>
             </ui:VisualElement>
             <ui:Button name="continue-button" text="Ok" style="height: 36px; align-self: flex-end; width: 80px; background-color: rgb(235, 235, 235); border-radius: 8px; border-width: 1px; border-color: rgb(200, 200, 200); color: rgb(20, 20, 20); -unity-font-style: bold; margin-top: 4px; display: none;"/>
         </ui:VisualElement>
     </ui:VisualElement>
-    <ui:Label name="countdown" text="&#10;&#10;" style="position: absolute; left: 50%; top: 25%; translate: -50% -50%; -unity-text-align: middle-center; font-size: 24px; color: rgb(255, 255, 255); pickable: false; display: flex;"/>
+<ui:VisualElement name="countdown-container" picking-mode="Ignore" style="position: absolute; left: 0; right: 0; top: 25%; align-items: center;">
+    <ui:Label name="countdown" text="" picking-mode="Ignore" style="-unity-text-align: middle-center; font-size: 24px; color: rgb(255, 255, 255);"/>
+</ui:VisualElement>
 </ui:UXML>

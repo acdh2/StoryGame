@@ -113,7 +113,48 @@ public partial class RespawnBehaviour : MonoBehaviour
             else playerControlBlocker.DisableControls();
     }
 
-    void OnGUI()
+void OnGUI()
+{
+    if (flashTimeout > 0f)
+    {
+        GUI.color = new Color32(224, 90, 71, 255);
+        GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.height), Texture2D.whiteTexture);
+        return;
+    }
+
+    float virtualWidth = 1280.0f;
+    float scale = Screen.width / virtualWidth;
+    GUI.matrix = Matrix4x4.TRS(Vector3.zero, Quaternion.identity, new Vector3(scale, scale, 1f));
+
+    float barWidth = 200f;
+    float barHeight = 20f;
+    float padding = 10f;
+
+    float barX = virtualWidth - barWidth - padding;
+    float barY = padding;
+
+    // Achtergrond
+    GUI.color = new Color32(90, 98, 107, 255);
+    GUI.DrawTexture(new Rect(barX, barY, barWidth, barHeight), Texture2D.whiteTexture);
+
+    float healthPercent = Mathf.Clamp01(health / maxHealth);
+
+    Color healthColor;
+    if (healthPercent > 0.5f)
+        healthColor = new Color32(75, 175, 110, 255);
+    else if (healthPercent > 0.25f)
+        healthColor = new Color32(245, 195, 65, 255);
+    else
+        healthColor = new Color32(224, 90, 71, 255);
+
+    // Health-balk
+    GUI.color = healthColor;
+    GUI.DrawTexture(new Rect(barX, barY, barWidth * healthPercent, barHeight), Texture2D.whiteTexture);
+
+    GUI.color = Color.white;
+}  
+
+    void OnGUIOld()
     {
         if (flashTimeout > 0f)
         {

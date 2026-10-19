@@ -29,18 +29,14 @@ public class PlayMode : UIControllerBase
     {
         sceneManager?.LockState();
         DisableEditorCamera();
-        CreatePlayer();
-        HandleScreenShown();//state starts in unlocked mode
-
         StartStory(root);
     }
 
     protected override void OnUIDisabled()
     {
-        sceneManager?.UnlockState();
         EndStory();
         EnableEditorCamera();
-        DestroyPlayer();
+        sceneManager?.UnlockState();
 
         isActive = false;
     }
@@ -54,6 +50,8 @@ public class PlayMode : UIControllerBase
 
     private void StartStory(VisualElement root)
     {   
+        CreatePlayer();
+        HandleScreenShown();//state starts in unlocked mode
         if (dialogueInterpreter != null) {
             dialogueInterpreter.StartDialogue(root, sceneManager);
         }        
@@ -61,6 +59,7 @@ public class PlayMode : UIControllerBase
 
     private void EndStory() {
         dialogueInterpreter.StopDialogue();
+        DestroyPlayer();
     }
 
     private void DisableEditorCamera() 

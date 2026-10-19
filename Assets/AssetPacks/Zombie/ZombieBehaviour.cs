@@ -23,7 +23,6 @@ public class ZombieBehaviour : MonoBehaviour
     private bool shouldMove = false;
 
     private float cooldown = 0f;
-    // private float playerDiedCooldown = 0f;
 
     private Vector3 spawn = Vector3.zero;
 
@@ -38,6 +37,7 @@ public class ZombieBehaviour : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (!gameObject.activeSelf) return;
         if (shouldMove) { //pushback
             transform.position += velocity;
             velocity *= 0.9f;
@@ -47,6 +47,7 @@ public class ZombieBehaviour : MonoBehaviour
 
     public void GetDamage()
     {
+        if (!gameObject.activeSelf) return;
         //if (!hasWeapon && Random.value < 0.8f) return;
 
         velocity = -transform.forward * 0.1f;
@@ -76,7 +77,7 @@ public class ZombieBehaviour : MonoBehaviour
         }
     }
 
-    void DoPlayerDamage()
+    void HandleDamagePlayer()
     {
         if (cooldown > 0f) return;
         cooldown = 1f;
@@ -87,8 +88,6 @@ public class ZombieBehaviour : MonoBehaviour
             if (respawnBehaviour != null) 
                 if (respawnBehaviour.isAlive)
                     respawnBehaviour.DoDamage(40);
-                // else
-                //     playerDiedCooldown = 10f;
         }
     }
 
@@ -110,12 +109,6 @@ public class ZombieBehaviour : MonoBehaviour
         if (!gameObject.activeSelf) return;
 
         if (cooldown > 0f) cooldown -= Time.deltaTime; //attack cooldown
-
-        // if (playerDiedCooldown > 0f) {
-        //     playerDiedCooldown -= Time.deltaTime;
-        //     NavigateTo(spawn);
-        //     return;
-        // }
         
         if (player == null) {
             NavigateTo(spawn);
@@ -142,7 +135,7 @@ public class ZombieBehaviour : MonoBehaviour
             agent.isStopped = true;
             animator.SetFloat("Speed", 0f);
             animator.SetTrigger("Attack");   
-            DoPlayerDamage();
+            HandleDamagePlayer();
             if (distance > 0.01f)
                 transform.forward = new Vector3(player.position.x - transform.position.x, 0f, player.position.z - transform.position.z).normalized;
         }

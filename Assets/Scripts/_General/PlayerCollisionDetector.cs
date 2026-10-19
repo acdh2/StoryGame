@@ -14,7 +14,7 @@ public class PlayerCollisionDetector : MonoBehaviour
             {
                 if (dialogueInterpreter != null)
                 {
-                    dialogueInterpreter.OnObjectTouched(target.name);
+                    dialogueInterpreter.OnObjectTouched(target);
                 }
             }
         }        
