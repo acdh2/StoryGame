@@ -20,6 +20,7 @@ public class DialogueInterpreter : MonoBehaviour
     public StoryDataStore storyDataStore;
 
     private VisualElement rootElement;
+    private VisualElement dialogueRoot;
     private Label characterNameLabel;
     private Label dialogueTextLabel;
     private VisualElement optionsContainer;
@@ -31,6 +32,9 @@ public class DialogueInterpreter : MonoBehaviour
     private bool touchedRequested = false;
     private string lastTouchedItem = "";
     private UnityEngine.Coroutine activeDialogueCoroutine = null;
+    private SceneManager sceneManager = null;
+    private UnityEngine.Coroutine activeCountdownCoroutine = null;
+    private Label countdownLabel;    
 
     // ------------------------------------------------------------------
     //  Instructies
@@ -437,26 +441,34 @@ public class DialogueInterpreter : MonoBehaviour
 
     private void ShowScreen()
     {
-        if (rootElement != null &&
-            rootElement.style.display != DisplayStyle.Flex)
+        if (dialogueRoot != null &&
+            dialogueRoot.style.display != DisplayStyle.Flex)
         {
-            rootElement.style.display = DisplayStyle.Flex;
+            dialogueRoot.style.display = DisplayStyle.Flex;
             OnScreenShown?.Invoke();
         }
     }
 
     private void HideScreen()
     {
-        if (rootElement != null &&
-            rootElement.style.display != DisplayStyle.None)
+        if (dialogueRoot != null &&
+            dialogueRoot.style.display != DisplayStyle.None)
         {
-            rootElement.style.display = DisplayStyle.None;
+            dialogueRoot.style.display = DisplayStyle.None;
             OnScreenHidden?.Invoke();
         }
     }
 
-    public void StartDialogue(VisualElement root)
+    public void RestartDialogue()
     {
+        StopDialogue();
+        StartDialogue(rootElement, sceneManager);
+    }
+
+    public void StartDialogue(VisualElement root, SceneManager sceneManager)
+    {
+        this.sceneManager = sceneManager;
+        if (sceneManager) sceneManager.PushSceneState();
         rootElement = root;
 
         if (root == null)
@@ -481,6 +493,7 @@ public class DialogueInterpreter : MonoBehaviour
     // Ruimt een lopende dialoog op, zonder events af te vuren.
     private void ResetDialogueState()
     {
+        StopCountdown();
         if (activeDialogueCoroutine != null)
         {
             StopCoroutine(activeDialogueCoroutine);
@@ -497,17 +510,17 @@ public class DialogueInterpreter : MonoBehaviour
     public void StopDialogue()
     {
         //StopLua();
-
         ResetDialogueState();
         HideScreen();
+
+        if (sceneManager) sceneManager.PopSceneState();
 
         OnDialogueEnded?.Invoke();
     }
 
     private void BindUIElements(VisualElement root)
     {
-        VisualElement dialogueRoot =
-            root.Q<VisualElement>("dialogue-root");
+        dialogueRoot = root.Q<VisualElement>("dialogue-root");
 
         if (dialogueRoot == null)
             dialogueRoot = root;
@@ -540,6 +553,8 @@ public class DialogueInterpreter : MonoBehaviour
             optionButtonTemplate.style.display =
                 DisplayStyle.None;
         }
+
+        countdownLabel = root.Q<Label>("countdown");
     }
 
     private void OnContinueClicked()
@@ -585,6 +600,7 @@ public class DialogueInterpreter : MonoBehaviour
             case "TELEPORT":
             case "SET_VAR":
             case "UNSET_VAR":
+            case "COUNTDOWN":
                 return true;
             default:
                 return false;
@@ -845,6 +861,24 @@ public class DialogueInterpreter : MonoBehaviour
 
                     break;
 
+                // Toevoegen aan RunDialogueRoutine switch:
+                case "COUNTDOWN":
+                {
+                    if (activeCountdownCoroutine == null && int.TryParse(instr.Argument, out int seconds))
+                    {
+                        activeCountdownCoroutine = StartCoroutine(StartCountdown(seconds));
+                    }
+                    pc++;
+                    break;
+                }
+
+                case "STOP COUNTDOWN":
+                {
+                    StopCountdown();
+                    pc++;
+                    break;
+                }                    
+
                 case "NOP":
                     pc++;
                     break;
@@ -863,6 +897,54 @@ public class DialogueInterpreter : MonoBehaviour
         OnDialogueEnded?.Invoke();
     }
 
+    private void StopCountdown()
+    {
+        if (activeCountdownCoroutine != null)
+        {
+            StopCoroutine(activeCountdownCoroutine);
+            activeCountdownCoroutine = null;
+        }
+        if (countdownLabel != null)
+        {
+            countdownLabel.style.visibility = Visibility.Hidden;
+        }
+    }
+
+    private IEnumerator StartCountdown(int totalSeconds)
+    {   
+        if (activeCountdownCoroutine == null) {     
+            if (countdownLabel != null)
+            {
+                countdownLabel.style.visibility = Visibility.Visible;
+            }
+            int remaining = totalSeconds;
+
+            while (remaining >= 0)
+            {
+                if (countdownLabel != null)
+                {
+                    countdownLabel.text = remaining.ToString();
+                }
+
+                if (remaining == 0)
+                {
+                    if (countdownLabel != null)
+                    {
+                        countdownLabel.style.visibility = Visibility.Hidden;
+                    }
+                    activeCountdownCoroutine = null;
+                    RespawnAllPlayers();
+                    yield break;
+                }
+
+                yield return new WaitForSeconds(1f);
+                remaining--;
+            }
+        }
+
+        StopCountdown();
+    }
+
     // ------------------------------------------------------------------
     //  Scene-helpers
     // ------------------------------------------------------------------
@@ -871,8 +953,7 @@ public class DialogueInterpreter : MonoBehaviour
         string objectName,
         bool isTrigger)
     {
-        GameObject sceneRoot =
-            GameObject.Find("SceneManager");
+        GameObject sceneRoot = sceneManager.gameObject;
 
         if (sceneRoot == null)
             return;
@@ -907,8 +988,7 @@ public class DialogueInterpreter : MonoBehaviour
         string objectName,
         bool show)
     {
-        GameObject sceneRoot =
-            GameObject.Find("SceneManager");
+        GameObject sceneRoot = sceneManager.gameObject;
 
         if (sceneRoot == null)
             return;
@@ -1044,6 +1124,21 @@ public class DialogueInterpreter : MonoBehaviour
         }
     }
 
+
+    private void RespawnAllPlayers()
+    {
+        RespawnBehaviour[] respawnBehaviours = FindObjectsByType<RespawnBehaviour>(FindObjectsSortMode.None);
+
+        foreach (RespawnBehaviour rb in respawnBehaviours)
+        {
+            if (rb != null)
+            {
+                rb.DoDamage(1000);
+            }
+        }
+    }
+
+
     private string NormalizeType(
         string value)
     {
@@ -1071,1027 +1166,3 @@ public class DialogueInterpreter : MonoBehaviour
         return result;
     }
 }
-
-// using System;
-// using System.Collections;
-// using System.Collections.Generic;
-// using System.Text.RegularExpressions;
-// using UnityEngine;
-// using UnityEngine.UIElements;
-
-// using Lua;
-// using Lua.Standard;
-// using UnityEngine.InputSystem;
-// using Unity.VisualScripting;
-// using StarterAssets;
-
-// public class DialogueInterpreter : MonoBehaviour
-// {
-//     public event Action OnDialogueStarted;
-//     public event Action OnDialogueEnded;
-//     public event Action OnScreenShown;
-//     public event Action OnScreenHidden;
-//     public event Action<bool, string> OnCameraChangeRequested;
-
-//     [Header("Script Input Source")]
-//     public StoryDataStore storyDataStore;
-
-//     private VisualElement rootElement;
-//     private Label characterNameLabel;
-//     private Label dialogueTextLabel;
-//     private VisualElement optionsContainer;
-//     private Button optionButtonTemplate;
-//     private Button continueButton;
-
-//     private bool advanceRequested = false;
-//     private string selectedOptionText = "";
-//     private bool touchedRequested = false;
-//     private string lastTouchedItem = "";
-//     private UnityEngine.Coroutine activeDialogueCoroutine = null;
-
-//     public class Instruction
-//     {
-//         public string Type;
-//         public string Argument;
-//     }
-
-//     private class ParsedLine
-//     {
-//         public int Indentation;
-//         public CommandData Command;
-//     }
-
-//     private List<Instruction> instructions = new List<Instruction>();
-
-//     private Dictionary<string, int> labels =
-//         new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
-
-//     private int autoLabelCounter = 0;
-
-//     private LuaState state;
-
-
-//     private void InvokeMatchingMethod(Type type, object instance, LuaFunctionExecutionContext context, string methodName)
-//     {
-//         var bindingFlags = System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic |
-//                         (instance == null ? System.Reflection.BindingFlags.Static : System.Reflection.BindingFlags.Instance);
-
-//         var methods = type.GetMethods(bindingFlags);
-//         foreach (var method in methods)
-//         {
-//             if (method.Name == methodName)
-//             {
-//                 var parameters = method.GetParameters();
-//                 var args = new object[parameters.Length];
-//                 for (int i = 0; i < parameters.Length; i++)
-//                 {
-//                     args[i] = context.GetArgument<object>(i + 3);
-//                 }
-//                 method.Invoke(instance, args);
-//                 break;
-//             }
-//         }
-//     }
-//     // void Awake()
-//     // {
-//     //     var state = LuaState.Create();
-//     //     state.Environment["call_unity"] = new LuaFunction((context, ct) =>
-//     //     {
-//     //         string objectName = context.GetArgument<string>(0);
-//     //         string componentName = context.GetArgument<string>(1);
-//     //         string methodName = context.GetArgument<string>(2);
-
-//     //         var go = GameObject.Find(objectName);
-//     //         if (go != null)
-//     //         {
-//     //             var comp = go.GetComponent(componentName);
-//     //             if (comp != null)
-//     //             {
-//     //                 var method = comp.GetType().GetMethod(methodName);
-//     //                 if (method != null)
-//     //                 {
-//     //                     var parameters = method.GetParameters();
-//     //                     var args = new object[parameters.Length];
-//     //                     for (int i = 0; i < parameters.Length; i++)
-//     //                     {
-//     //                         args[i] = context.GetArgument<object>(i + 3);
-//     //                     }
-//     //                     method.Invoke(comp, args);
-//     //                 }
-//     //             }
-//     //         }
-//     //         return new(context.Return());
-//     //     });
-//     //     state.OpenStandardLibraries();
-//     //     state.DoStringAsync("call_unity('TestObject', 'TestComponent', 'TestMethod')");
-//     // }
-
-//     private void ShowScreen()
-//     {
-//         if (rootElement != null &&
-//             rootElement.style.display != DisplayStyle.Flex)
-//         {
-//             rootElement.style.display = DisplayStyle.Flex;
-//             OnScreenShown?.Invoke();
-//         }
-//     }
-
-//     private void HideScreen()
-//     {
-//         if (rootElement != null &&
-//             rootElement.style.display != DisplayStyle.None)
-//         {
-//             rootElement.style.display = DisplayStyle.None;
-//             OnScreenHidden?.Invoke();
-//         }
-//     }
-
-//     public void StartDialogue(VisualElement root)
-//     {
-//         rootElement = root;
-
-//         if (root == null)
-//             return;
-
-//         //StartLua();
-
-//         BindUIElements(rootElement);
-
-//         StopDialogue();
-
-//         ShowScreen();
-
-//         ParseCommands();
-
-//         activeDialogueCoroutine =
-//             StartCoroutine(RunDialogueRoutine());
-
-//         OnDialogueStarted?.Invoke();
-//     }
-
-//     private void StartLua()
-//     {
-//         state = LuaState.Create();
-        
-//         state.Environment["unity"] = new LuaFunction((context, ct) => {
-//             string targetName = context.GetArgument<string>(0);
-//             string componentName = context.GetArgument<string>(1);
-//             string methodName = context.GetArgument<string>(2);
-
-//             // Zoek alle game-objecten (inclusief inactieve)
-//             var allObjects = FindObjectsByType<GameObject>(FindObjectsInactive.Include, FindObjectsSortMode.None);
-//             bool foundObject = false;
-
-//             foreach (var go in allObjects)
-//             {
-//                 if (go.name == targetName)
-//                 {
-//                     var comp = go.GetComponent(componentName);
-//                     if (comp != null)
-//                     {
-//                         InvokeMatchingMethod(comp.GetType(), comp, context, methodName);
-//                         foundObject = true;
-//                     }
-//                 }
-//             }
-
-//             // Fallback naar static/singleton klasse via Type
-//             if (!foundObject)
-//             {
-//                 Type type = Type.GetType(targetName) ?? Type.GetType($"{targetName}, Assembly-CSharp");
-//                 if (type != null)
-//                 {
-//                     InvokeMatchingMethod(type, null, context, methodName);
-//                 }
-//             }
-
-//             return new(context.Return());
-//         });
-
-//         state.OpenStandardLibraries();
-//     }
-
-//     private void StopLua()
-//     {
-//         if (state != null) {
-//             state.Dispose();
-//             state = null;
-//         }        
-//     }
-
-//     public void StopDialogue()
-//     {
-//         //StopLua();
-
-//         if (activeDialogueCoroutine != null)
-//         {
-//             StopCoroutine(activeDialogueCoroutine);
-//             activeDialogueCoroutine = null;
-//         }
-
-//         advanceRequested = false;
-//         selectedOptionText = "";
-//         touchedRequested = false;
-
-//         ClearOptionsUI();
-//         HideScreen();
-
-//         OnDialogueEnded?.Invoke();
-//     }
-
-//     private void BindUIElements(VisualElement root)
-//     {
-//         VisualElement dialogueRoot =
-//             root.Q<VisualElement>("dialogue-root");
-
-//         if (dialogueRoot == null)
-//             dialogueRoot = root;
-
-//         characterNameLabel =
-//             dialogueRoot.Q<Label>("character-name-label");
-
-//         dialogueTextLabel =
-//             dialogueRoot.Q<Label>("dialogue-text-label");
-
-//         optionsContainer =
-//             dialogueRoot.Q<VisualElement>("options-container");
-
-//         optionButtonTemplate =
-//             dialogueRoot.Q<Button>("option-button-template");
-
-//         continueButton =
-//             dialogueRoot.Q<Button>("continue-button");
-
-//         if (continueButton != null)
-//         {
-//             continueButton.clicked -= OnContinueClicked;
-//             continueButton.clicked += OnContinueClicked;
-//             continueButton.style.display =
-//                 DisplayStyle.None;
-//         }
-
-//         if (optionButtonTemplate != null)
-//         {
-//             optionButtonTemplate.style.display =
-//                 DisplayStyle.None;
-//         }
-//     }
-
-//     private void OnContinueClicked()
-//     {
-//         advanceRequested = true;
-//     }
-
-//     public void OnObjectTouched(string itemName)
-//     {
-//         if (itemName == "") return;
-//         if (touchedRequested &&
-//             string.Equals(
-//                 lastTouchedItem,
-//                 itemName,
-//                 StringComparison.OrdinalIgnoreCase))
-//         {
-//             touchedRequested = false;
-//         }
-//     }
-
-//     private void ParseCommands()
-//     {
-//         instructions.Clear();
-//         labels.Clear();
-//         autoLabelCounter = 0;
-
-//         if (storyDataStore == null ||
-//             storyDataStore.Commands == null)
-//             return;
-
-//         List<CommandData> raw =
-//             new List<CommandData>(storyDataStore.Commands);
-
-//         List<ParsedLine> phase1 = PreParsePhase1(raw);
-
-//         List<CommandData> phase2 = TransformPhase2(phase1);
-
-//         CompileInstructions(phase2);
-//     }
-
-//     private List<ParsedLine> PreParsePhase1(List<CommandData> raw)
-//     {
-//         List<ParsedLine> result = new List<ParsedLine>();
-//         int currentIndent = 0;
-//         int nextIndent = 0;
-
-//         foreach (var cmd in raw)
-//         {
-//             if (cmd == null) continue;
-
-//             nextIndent = currentIndent;
-
-//             switch (cmd.CommandType)
-//             {
-//                 case "choice":
-//                     currentIndent = 0;
-//                     nextIndent++;
-//                     break;
-
-//                 case "var_is_set":
-//                 case "var_is_not_set":
-//                     nextIndent++;
-//                     break;
-
-//                 default:
-//                     nextIndent = 0;
-//                     break;
-//             }
-
-//             result.Add(new ParsedLine
-//             {
-//                 Indentation = currentIndent,
-//                 Command = new CommandData
-//                 {
-//                     CommandType = cmd.CommandType,
-//                     Argument = NormalizeArgument(cmd.Argument)
-//                 }
-//             });
-
-//             currentIndent = nextIndent;
-//         }
-
-//         return result;
-//     }
-
-
-//     private List<CommandData> TransformPhase2(List<ParsedLine> phase1)
-//     {
-//         List<CommandData> result = new List<CommandData>();
-//         int i = 0;
-
-//         while (i < phase1.Count)
-//         {
-//             ParsedLine line = phase1[i];
-//             string type = NormalizeType(line.Command.CommandType);
-
-//             if (type != "CHOICE")
-//             {
-//                 result.Add(line.Command);
-//                 i++;
-//                 continue;
-//             }
-
-//             List<(string optionText, List<CommandData> body)> options = new List<(string, List<CommandData>)>();
-
-//             while (i < phase1.Count)
-//             {
-//                 ParsedLine currentLine = phase1[i];
-//                 if (NormalizeType(currentLine.Command.CommandType) == "CHOICE")
-//                 {
-//                     string optionText = currentLine.Command.Argument;
-//                     i++;
-
-//                     List<CommandData> body = new List<CommandData>();
-//                     while (i < phase1.Count)
-//                     {
-//                         ParsedLine nextLine = phase1[i];
-//                         if (NormalizeType(nextLine.Command.CommandType) == "CHOICE")
-//                         {
-//                             break;
-//                         }
-//                         if (nextLine.Indentation == 0)
-//                         {
-//                             break;
-//                         }
-
-//                         body.Add(nextLine.Command);
-//                         i++;
-//                     }
-//                     options.Add((optionText, body));
-//                 }
-//                 else
-//                 {
-//                     break;
-//                 }
-//             }
-
-//             foreach (var opt in options)
-//             {
-//                 result.Add(new CommandData
-//                 {
-//                     CommandType = "SHOWOPTION",
-//                     Argument = opt.optionText
-//                 });
-//             }
-
-//             result.Add(new CommandData
-//             {
-//                 CommandType = "WAITFORCHOICE"
-//             });
-
-//             string endChoiceLabel = $"&&__autolabel_endchoice_{autoLabelCounter++}";
-
-//             foreach (var opt in options)
-//             {
-//                 string skipLabel = $"&&__autolabel_skip_{autoLabelCounter++}";
-
-//                 result.Add(new CommandData
-//                 {
-//                     CommandType = "IF_NOT_CHOSEN",
-//                     Argument = opt.optionText
-//                 });
-//                 result.Add(new CommandData
-//                 {
-//                     CommandType = "GOTO",
-//                     Argument = skipLabel
-//                 });
-
-//                 foreach (var cmd in opt.body)
-//                 {
-//                     result.Add(cmd);
-//                 }
-
-//                 result.Add(new CommandData
-//                 {
-//                     CommandType = "GOTO",
-//                     Argument = endChoiceLabel
-//                 });
-
-//                 result.Add(new CommandData
-//                 {
-//                     CommandType = "CHAPTER",
-//                     Argument = skipLabel
-//                 });
-//             }
-
-//             result.Add(new CommandData
-//             {
-//                 CommandType = "CHAPTER",
-//                 Argument = endChoiceLabel
-//             });
-//         }
-
-//         return result;
-//     }
-
-//     private void CompileInstructions(List<CommandData> preparsed)
-//     {
-//         foreach (CommandData cmd in preparsed)
-//         {
-//             AddInstruction(cmd);
-//         }
-//     }
-
-//     private void AddInstruction(CommandData cmd)
-//     {
-//         if (cmd == null ||
-//             string.IsNullOrEmpty(cmd.CommandType))
-//             return;
-
-//         string type =
-//             NormalizeType(cmd.CommandType);
-
-//         string arg =
-//             (cmd.Argument ?? "").Trim();
-
-//         if (type == "CHAPTER")
-//         {
-//             labels[arg] = instructions.Count;
-//         }
-
-//         Instruction instruction =
-//             new Instruction
-//             {
-//                 Type = type,
-//                 Argument = arg
-//             };
-
-//         instructions.Add(instruction);
-//     }
-
-//     private string ProcessString(string input)
-//     {
-//         return System.Text.RegularExpressions.Regex.Unescape(input);
-//     }
-
-//     private IEnumerator RunDialogueRoutine()
-//     {
-//         int pc = 0;
-
-//         HashSet<string> variables =
-//             new HashSet<string>(
-//                 StringComparer.OrdinalIgnoreCase);
-
-//         List<string> optionsToDisplay = new List<string>();
-
-//         while (pc < instructions.Count)
-//         {
-//             Instruction instr =
-//                 instructions[pc];
-
-//             switch (instr.Type)
-//             {
-//                 case "SAY":
-//                 case "TEXT":
-//                 {
-//                     string text = ProcessString(instr.Argument);
-//                     MatchCollection matches = Regex.Matches(text, @"\[(.*?)\]([^\[]+)");
-
-//                     List<(string speaker, string dialogue)> dialogueList = new List<(string, string)>();
-
-//                     if (matches.Count > 0)
-//                     {
-//                         foreach (Match match in matches)
-//                         {
-//                             string speaker = match.Groups[1].Value.Trim();
-//                             string dialogue = match.Groups[2].Value.Trim();
-//                             dialogueList.Add((speaker, dialogue));
-//                         }
-//                     }
-//                     else
-//                     {
-//                         dialogueList.Add(("", text.Trim()));
-//                     }
-
-//                     foreach (var item in dialogueList)
-//                     {
-//                         string speaker = item.speaker;
-//                         string dialogue = item.dialogue;
-
-//                         if (characterNameLabel != null)
-//                         {
-//                             characterNameLabel.text = speaker;
-//                             characterNameLabel.style.display = string.IsNullOrEmpty(speaker) ? DisplayStyle.None : DisplayStyle.Flex;
-//                         }
-
-//                         if (dialogueTextLabel != null)
-//                             dialogueTextLabel.text = dialogue;
-
-//                         if (instr.Type == "SAY") OnCameraChangeRequested?.Invoke(true, speaker);
-
-//                         if (continueButton != null) continueButton.style.display = DisplayStyle.Flex;
-//                         advanceRequested = false;
-
-//                         float timer = 0f;
-//                         float duration = 2f;
-
-//                         while (timer < duration && !advanceRequested)
-//                         {
-//                             if (Keyboard.current.spaceKey.isPressed ||
-//                                 Keyboard.current.enterKey.isPressed) break;
-//                             timer += Time.deltaTime;
-//                             yield return null;
-//                         }
-
-//                         if (continueButton != null) continueButton.style.display = DisplayStyle.None;
-//                         if (instr.Type == "SAY") OnCameraChangeRequested?.Invoke(false, speaker);
-//                     }
-
-//                     pc++;
-//                     break;
-//                 }
-                
-//                 case "SHOWOPTION":
-//                     optionsToDisplay.Add(instr.Argument);
-//                     pc++;
-//                     break;
-
-//                 case "WAITFORCHOICE":
-
-//                     selectedOptionText = "";
-
-//                     ShowOptionsUI(optionsToDisplay);
-
-//                     yield return new WaitUntil(
-//                         () =>
-//                             !string.IsNullOrEmpty(
-//                                 selectedOptionText));
-
-//                     ClearOptionsUI();
-//                     optionsToDisplay.Clear();
-
-//                     pc++;
-//                     break;
-
-//                 case "IF_NOT_CHOSEN":
-
-//                     if (!string.Equals(
-//                         instr.Argument,
-//                         selectedOptionText,
-//                         StringComparison.OrdinalIgnoreCase))
-//                     {
-//                         pc++;
-//                     }
-//                     else
-//                     {
-//                         pc += 2;
-//                     }
-
-//                     break;
-
-//                 case "TOUCHED":
-
-//                     if (instr.Argument == "") break;
-
-//                     touchedRequested = true;
-//                     lastTouchedItem =
-//                         instr.Argument;
-                    
-//                     HideScreen();
-
-//                     yield return new WaitUntil(
-//                         () => !touchedRequested);
-
-//                     ShowScreen();
-
-//                     pc++;
-//                     break;
-
-//                 case "BLOCK":
-
-//                     if (instr.Argument == "") break;
-
-//                     ToggleSceneObjectIsTrigger(
-//                         instr.Argument,
-//                         false);
-
-//                     pc++;
-//                     break;
-
-//                 case "UNBLOCK":
-
-//                     if (instr.Argument == "") break;
-
-//                     ToggleSceneObjectIsTrigger(
-//                         instr.Argument,
-//                         true);
-
-//                     pc++;
-//                     break;
-
-//                 case "PICKUP":
-//                     if (instr.Argument == "") break;
-
-//                     PickupItem(instr.Argument);
-
-//                     pc++;
-//                     break;
-
-//                 case "DROP":
-//                     if (instr.Argument == "") break;
-
-//                     DropItem(instr.Argument);
-
-//                     pc++;
-//                     break;
-
-//                 case "DONT HAVE":
-//                     if (instr.Argument == "") break;
-
-//                     if (!HasItem(instr.Argument))
-//                     {
-//                         pc++;
-//                     }
-//                     else
-//                     {
-//                         pc += 2;
-//                     }
-
-//                     break;
-
-//                 case "HAS":
-//                     if (instr.Argument == "") break;
-
-//                     if (HasItem(instr.Argument))
-//                     {
-//                         pc++;
-//                     }
-//                     else
-//                     {
-//                         pc += 2;
-//                     }
-
-//                     break;
-
-//                 case "SHOW":
-//                     if (instr.Argument == "") break;
-
-//                     ToggleSceneObjectVisibility(
-//                         instr.Argument,
-//                         true);
-
-//                     pc++;
-//                     break;
-
-//                 case "HIDE":
-//                     if (instr.Argument == "") break;
-
-//                     ToggleSceneObjectVisibility(
-//                         instr.Argument,
-//                         false);
-
-//                     pc++;
-//                     break;
-
-//                 case "CREATE_VAR":
-//                     pc++;
-
-//                     break;
-
-//                 case "VAR_IS_SET":
-//                     if (variables.Contains(
-//                         instr.Argument))
-//                     {
-//                         pc++;
-//                     }
-//                     else
-//                     {
-//                         pc += 2;
-//                     }
-
-//                     break;
-
-//                 case "VAR_IS_NOT_SET":
-
-//                     if (!variables.Contains(
-//                         instr.Argument))
-//                     {
-//                         pc++;
-//                     }
-//                     else
-//                     {
-//                         pc += 2;
-//                     }
-
-//                     break;
-
-//                 case "SET_VAR":
-
-//                     variables.Add(
-//                         instr.Argument);
-
-//                     pc++;
-//                     break;
-
-//                 case "UNSET_VAR":
-
-//                     variables.Remove(
-//                         instr.Argument);
-
-//                     pc++;
-//                     break;
-
-//                 case "TELEPORT":
-//                     if (instr.Argument == "") break;
-
-//                     TeleportTo(instr.Argument);
-
-//                     pc++;
-//                     break;
-
-//                 case "CHAPTER":
-
-//                     pc++;
-//                     break;
-
-//                 case "GOTO":
-
-//                     if (labels.TryGetValue(
-//                         instr.Argument,
-//                         out int targetPc))
-//                     {
-//                         pc = targetPc;
-//                     }
-//                     else
-//                     {
-//                         Debug.LogWarning(
-//                             $"Dialogue jump target not found: {instr.Argument}");
-
-//                         pc++;
-//                     }
-
-//                     break;
-
-//                 case "NOP":
-
-//                     pc++;
-//                     break;
-
-//                 default:
-
-//                     print("?unknown command");
-//                     pc++;
-//                     break;
-//             }
-//         }
-
-//         HideScreen();
-
-//         activeDialogueCoroutine = null;
-
-//         OnDialogueEnded?.Invoke();
-//     }
-
-//     private void ToggleSceneObjectIsTrigger(
-//         string objectName,
-//         bool isTrigger)
-//     {
-//         GameObject sceneRoot =
-//             GameObject.Find("SceneManager");
-
-//         if (sceneRoot == null)
-//             return;
-
-//         Transform[] transforms =
-//             sceneRoot.GetComponentsInChildren<Transform>(
-//                 true);
-
-//         foreach (Transform child in transforms)
-//         {
-//             if (child == sceneRoot.transform)
-//                 continue;
-
-//             if (child.name.Equals(
-//                 objectName,
-//                 StringComparison.OrdinalIgnoreCase))
-//             {
-//                 Collider[] colliders = child.GetComponentsInChildren<Collider>(true);
-//                 foreach (Collider col in colliders)
-//                 {
-//                     if (col is MeshCollider meshCollider && isTrigger)
-//                     {
-//                         meshCollider.convex = true;
-//                     }
-//                     col.isTrigger = isTrigger;
-//                 }
-//             }
-//         }
-//     }
-
-
-//     private void ToggleSceneObjectVisibility(
-//         string objectName,
-//         bool show)
-//     {
-//         GameObject sceneRoot =
-//             GameObject.Find("SceneManager");
-
-//         if (sceneRoot == null)
-//             return;
-
-//         Transform[] transforms =
-//             sceneRoot.GetComponentsInChildren<Transform>(
-//                 true);
-
-//         foreach (Transform child in transforms)
-//         {
-//             if (child == sceneRoot.transform)
-//                 continue;
-
-//             if (child.name.Equals(
-//                 objectName,
-//                 StringComparison.OrdinalIgnoreCase))
-//             {
-//                 child.gameObject.SetActive(show);
-//             }
-//         }
-//     }
-
-//     private void ShowOptionsUI(
-//         List<string> options)
-//     {
-//         if (continueButton != null)
-//             continueButton.style.display =
-//                 DisplayStyle.None;
-
-//         foreach (string optText in options)
-//         {
-//             Button btn = new Button();
-
-//             btn.text = optText;
-
-//             if (optionButtonTemplate != null)
-//             {
-//                 btn.style.height =
-//                     optionButtonTemplate.style.height;
-
-//                 btn.style.backgroundColor =
-//                     optionButtonTemplate.style.backgroundColor;
-
-//                 btn.style.borderTopLeftRadius =
-//                     optionButtonTemplate.style.borderTopLeftRadius;
-
-//                 btn.style.borderTopRightRadius =
-//                     optionButtonTemplate.style.borderTopRightRadius;
-
-//                 btn.style.borderBottomLeftRadius =
-//                     optionButtonTemplate.style.borderBottomLeftRadius;
-
-//                 btn.style.borderBottomRightRadius =
-//                     optionButtonTemplate.style.borderBottomRightRadius;
-
-//                 btn.style.color =
-//                     optionButtonTemplate.style.color;
-//             }
-
-//             btn.style.marginTop = 2;
-//             btn.style.marginBottom = 4;
-
-//             string textToSelect =
-//                 optText;
-
-//             btn.clicked += () =>
-//             {
-//                 selectedOptionText =
-//                     textToSelect;
-//             };
-
-//             optionsContainer?.Add(btn);
-//         }
-//     }
-
-//     private void ClearOptionsUI()
-//     {
-//         if (optionsContainer == null)
-//             return;
-
-//         optionsContainer.Clear();
-
-//         if (optionButtonTemplate != null)
-//         {
-//             optionsContainer.Add(
-//                 optionButtonTemplate);
-
-//             optionButtonTemplate.style.display =
-//                 DisplayStyle.None;
-//         }
-//     }
-
-//     private void PickupItem(string item)
-//     {
-//         PickupItemBehaviour[] pickupItemBehaviours = FindObjectsByType<PickupItemBehaviour>(FindObjectsSortMode.None);
-
-//         foreach (PickupItemBehaviour pickupItemBehaviour in pickupItemBehaviours)
-//         {
-//             pickupItemBehaviour.Pickup(item);
-//         }
-//     }
-
-//     private void DropItem(string item)
-//     {
-//         PickupItemBehaviour[] pickupItemBehaviours = FindObjectsByType<PickupItemBehaviour>(FindObjectsSortMode.None);
-
-//         foreach (PickupItemBehaviour pickupItemBehaviour in pickupItemBehaviours)
-//         {
-//             pickupItemBehaviour.Drop(item);
-//         }
-//     }
-
-//     private bool HasItem(string item)
-//     {
-//         PickupItemBehaviour[] pickupItemBehaviours = FindObjectsByType<PickupItemBehaviour>(FindObjectsSortMode.None);
-
-//         foreach (PickupItemBehaviour pickupItemBehaviour in pickupItemBehaviours)
-//         {
-//             if (pickupItemBehaviour.Has(item)) return true;
-//         }
-//         return false;
-//     }
-
-//     private void TeleportTo(string target)
-//     {
-//         RespawnBehaviour[] respawnBehaviours = FindObjectsByType<RespawnBehaviour>(FindObjectsSortMode.None);
-
-//         foreach (RespawnBehaviour rb in respawnBehaviours)
-//         {
-//             if (rb != null)
-//             {
-//                 rb.TeleportByName(target);
-//             }
-//         }
-//     }
-
-//     private string NormalizeType(
-//         string value)
-//     {
-//         return (value ?? "")
-//             .Trim()
-//             .ToUpperInvariant();
-//     }
-
-//     private string NormalizeArgument(
-//         string value)
-//     {
-//         string result =
-//             (value ?? "").Trim();
-
-//         if (result.Length >= 2 &&
-//             result.StartsWith("\"") &&
-//             result.EndsWith("\""))
-//         {
-//             result =
-//                 result.Substring(
-//                     1,
-//                     result.Length - 2);
-//         }
-
-//         return result;
-//     }
-// }

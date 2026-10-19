@@ -24,15 +24,6 @@ public class Navigator : UIControllerBase, IKeyEventReceiver
         DisableKeyboardNavigationOnElement(root);
         CacheScreens();
         
-        var closeButton = root.Q<Button>("close");
-        if (closeButton != null)
-        {
-            closeButton.style.display = DisplayStyle.None;
-            System.Action closeAction = () => SetScreenVisibility(root, screens[0]);
-            closeButton.clicked += closeAction;
-            registeredListeners.Add((closeButton, closeAction));
-        }
-
         BuildDynamicButtons(root);
         InitializeDefaultScreen();
     }
@@ -115,14 +106,12 @@ public class Navigator : UIControllerBase, IKeyEventReceiver
         bool isEditScreen = (screenIndex < 3);
 
         var navGroupBox = root.Q<VisualElement>("NavigationBox");
-        var closeBtn = root.Q<Button>("close");
         var undoRedoBox = root.Q<VisualElement>("undo-redo-box");
         var leftSide = root.Q<VisualElement>("LeftSide");
         var rightSide = root.Q<VisualElement>("RightSide");
         var PropertiesWindow = root.Q<GroupBox>("PropertiesWindow");
 
         if (navGroupBox != null) navGroupBox.style.display = isLastScreen ? DisplayStyle.None : DisplayStyle.Flex;
-        if (closeBtn != null) closeBtn.style.display = isLastScreen ? DisplayStyle.Flex : DisplayStyle.None;
         if (undoRedoBox != null) undoRedoBox.style.display = isLastScreen ? DisplayStyle.None : DisplayStyle.Flex;
         if (leftSide != null) leftSide.style.display = isEditScreen ? DisplayStyle.Flex : DisplayStyle.None;
         if (rightSide != null) rightSide.style.display = isEditScreen ? DisplayStyle.Flex : DisplayStyle.None;
@@ -220,11 +209,7 @@ public class Navigator : UIControllerBase, IKeyEventReceiver
             UnityEngine.Cursor.lockState = CursorLockMode.None;
             UnityEngine.Cursor.visible = true;
             if (RootElement != null) {
-                var closeBtn = RootElement.Q<Button>("close");
-                if (closeBtn != null && closeBtn.style.display == DisplayStyle.Flex)
-                {
-                    SetScreenVisibility(RootElement, screens[0]);
-                }
+                SetScreenVisibility(RootElement, screens[0]);
             }
         }
     }

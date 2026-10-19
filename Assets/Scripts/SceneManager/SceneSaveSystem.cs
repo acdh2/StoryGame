@@ -206,7 +206,7 @@ public class SceneSaveSystem : MonoBehaviour
         if (storyDataStore != null)
         {
             storyDataStore.SetCommands(new List<CommandData>());
-            storyDataStore.AddCommand("text", "Welcome to the story!");
+            storyDataStore.AddCommand("chapter", "Begin");
         }
 
         if (gameConfiguration != null)

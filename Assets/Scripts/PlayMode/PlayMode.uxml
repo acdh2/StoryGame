@@ -9,4 +9,5 @@
             <ui:Button name="continue-button" text="Ok" style="height: 36px; align-self: flex-end; width: 80px; background-color: rgb(235, 235, 235); border-radius: 8px; border-width: 1px; border-color: rgb(200, 200, 200); color: rgb(20, 20, 20); -unity-font-style: bold; margin-top: 4px; display: none;"/>
         </ui:VisualElement>
     </ui:VisualElement>
+    <ui:Label name="countdown" text="&#10;&#10;" style="position: absolute; left: 50%; top: 25%; translate: -50% -50%; -unity-text-align: middle-center; font-size: 24px; color: rgb(255, 255, 255); pickable: false; display: flex;"/>
 </ui:UXML>

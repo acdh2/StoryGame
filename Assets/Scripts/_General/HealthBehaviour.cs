@@ -1,6 +1,5 @@
 using UnityEngine;
 using System.Collections;
-using NUnit.Framework.Constraints;
 using StarterAssets;
 
 public partial class RespawnBehaviour : MonoBehaviour
@@ -11,11 +10,15 @@ public partial class RespawnBehaviour : MonoBehaviour
     private RespawnBehaviour respawnBehaviour;
     // private GameObject forceField = null;
 
+    public event System.Action OnPlayerDied = null;
+
     private float cooldown = 0f;
 
     private bool isActive = true;
 
     private float flashTimeout = 0f;
+
+    public bool isAlive = true;
 
     // void EnableForceField()
     // {
@@ -46,14 +49,11 @@ public partial class RespawnBehaviour : MonoBehaviour
 
     public void NotifyPlayerDied()
     {
-        ZombieBehaviour[] zombies = Object.FindObjectsByType<ZombieBehaviour>(FindObjectsSortMode.None);
-        foreach (var zombie in zombies)
-        {
-            zombie.OnPlayerDied();
-        }
+        OnPlayerDied?.Invoke();
     }
 
     private IEnumerator Die() {
+        isAlive = false;
         SetScriptActive(false);
         AudioClip clip = Resources.Load<AudioClip>("resetsound");
 
@@ -64,14 +64,15 @@ public partial class RespawnBehaviour : MonoBehaviour
         }
         Animator animator = GetComponent<Animator>();
         animator.SetBool("Dead", true);
-        NotifyPlayerDied();
         yield return new WaitForSeconds(3);
+        NotifyPlayerDied();
         health = 100f;
         Respawn();
 
         animator.SetBool("Dead", false);
         animator.SetTrigger("Reset");
         SetScriptActive(true);
+        isAlive = true;
     }
 
     public void DoDamage(float damage)

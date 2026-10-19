@@ -15,7 +15,6 @@ public class ZombieBehaviour : MonoBehaviour
 
     private NavMeshAgent agent;
     private Animator animator;
-    private RespawnBehaviour respawnBehaviour;
 
     private float searchCooldown = 0f;
     private int hits = 0;
@@ -24,7 +23,7 @@ public class ZombieBehaviour : MonoBehaviour
     private bool shouldMove = false;
 
     private float cooldown = 0f;
-    private float playerDiedCooldown = 0f;
+    // private float playerDiedCooldown = 0f;
 
     private Vector3 spawn = Vector3.zero;
 
@@ -39,16 +38,14 @@ public class ZombieBehaviour : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (cooldown > 0f) cooldown -= Time.deltaTime;
-
-        if (shouldMove) {
+        if (shouldMove) { //pushback
             transform.position += velocity;
             velocity *= 0.9f;
             if (velocity.magnitude < 0.01f) shouldMove = false;
         }
     }
 
-    public void ApplyDamage()
+    public void GetDamage()
     {
         //if (!hasWeapon && Random.value < 0.8f) return;
 
@@ -74,7 +71,6 @@ public class ZombieBehaviour : MonoBehaviour
             ThirdPersonController controller = FindAnyObjectByType<ThirdPersonController>();
             if (controller) {
                 player = controller.transform;
-                respawnBehaviour = player.GetComponent<RespawnBehaviour>();
             }
             searchCooldown = 2f;
         }
@@ -85,7 +81,15 @@ public class ZombieBehaviour : MonoBehaviour
         if (cooldown > 0f) return;
         cooldown = 1f;
 
-        if (respawnBehaviour != null) respawnBehaviour.DoDamage(40);        
+        if (player != null)
+        {
+            RespawnBehaviour respawnBehaviour = player.GetComponent<RespawnBehaviour>();
+            if (respawnBehaviour != null) 
+                if (respawnBehaviour.isAlive)
+                    respawnBehaviour.DoDamage(40);
+                // else
+                //     playerDiedCooldown = 10f;
+        }
     }
 
     void NavigateTo(Vector3 target)
@@ -101,25 +105,34 @@ public class ZombieBehaviour : MonoBehaviour
         animator.ResetTrigger("Attack");        
     }
 
-    public void OnPlayerDied()
-    {
-        playerDiedCooldown = 7f;
-    }
-
     void Update()
     {
         if (!gameObject.activeSelf) return;
 
-        if (playerDiedCooldown > 0f) {
-            playerDiedCooldown -= Time.deltaTime;
-            NavigateTo(spawn);
-            return;
-        }
+        if (cooldown > 0f) cooldown -= Time.deltaTime; //attack cooldown
+
+        // if (playerDiedCooldown > 0f) {
+        //     playerDiedCooldown -= Time.deltaTime;
+        //     NavigateTo(spawn);
+        //     return;
+        // }
         
         if (player == null) {
             NavigateTo(spawn);
             HandleFindPlayer();
             return;
+        }
+
+        if (player != null)
+        {
+            RespawnBehaviour respawnBehaviour = player.GetComponent<RespawnBehaviour>();
+            if (respawnBehaviour != null) {
+                if (!respawnBehaviour.isAlive) {
+                    agent.isStopped = true;
+                    animator.SetFloat("Speed", 0f);
+                    return;
+                }
+            }
         }
 
         float distance = Vector3.Distance(transform.position, player.position);

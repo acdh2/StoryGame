@@ -62,7 +62,7 @@ public class PlayerAttack : MonoBehaviour
         if (zombies.Count > 0)
         {
             int randomIndex = UnityEngine.Random.Range(0, zombies.Count);
-            zombies[randomIndex].ApplyDamage();
+            zombies[randomIndex].GetDamage();
         }
     }
 

@@ -2,6 +2,7 @@ using System.Collections;
 using UnityEngine;
 using StarterAssets;
 using UnityEngine.UIElements;
+using System.Linq;
 
 [RequireComponent(typeof(DialogueInterpreter))]
 public class PlayMode : UIControllerBase
@@ -15,6 +16,8 @@ public class PlayMode : UIControllerBase
     private DialogueInterpreter dialogueInterpreter;
     private GameObject player;
     private DynamicFaceFocus dynamicFaceFocus;
+
+    private bool isActive = false;
     
     protected override void Awake()
     {
@@ -27,6 +30,8 @@ public class PlayMode : UIControllerBase
         sceneManager?.LockState();
         DisableEditorCamera();
         CreatePlayer();
+        HandleScreenShown();//state starts in unlocked mode
+
         StartStory(root);
     }
 
@@ -36,24 +41,26 @@ public class PlayMode : UIControllerBase
         EndStory();
         EnableEditorCamera();
         DestroyPlayer();
+
+        isActive = false;
+    }
+
+    private void RestartStory()
+    {
+        if (dialogueInterpreter != null) {
+            dialogueInterpreter.RestartDialogue();
+        }        
     }
 
     private void StartStory(VisualElement root)
     {   
-        if (sceneManager != null)
-        {
-            sceneManager.PushSceneState();
-        }
         if (dialogueInterpreter != null) {
-            dialogueInterpreter.StartDialogue(root);
+            dialogueInterpreter.StartDialogue(root, sceneManager);
         }        
     }
 
     private void EndStory() {
-        if (sceneManager != null)
-        {
-            sceneManager.PopSceneState();
-        }
+        dialogueInterpreter.StopDialogue();
     }
 
     private void DisableEditorCamera() 
@@ -80,6 +87,8 @@ public class PlayMode : UIControllerBase
             if (gameConfiguration != null) gameConfiguration.Apply();
             AddCollisionDetector(player);
             dynamicFaceFocus = player.AddComponent<DynamicFaceFocus>();
+            RespawnBehaviour respawnBehaviour = player.GetComponentInChildren<RespawnBehaviour>();
+            if (respawnBehaviour != null) respawnBehaviour.OnPlayerDied += RestartStory;
         }      
     }
 
@@ -95,17 +104,34 @@ public class PlayMode : UIControllerBase
     private void DestroyPlayer()
     {
         if (player != null) {
+            RespawnBehaviour respawnBehaviour = player.GetComponentInChildren<RespawnBehaviour>();
+            if (respawnBehaviour != null) respawnBehaviour.OnPlayerDied -= RestartStory;
             if (gameConfiguration != null) gameConfiguration.Unapply();
             Destroy(dynamicFaceFocus);
             dialogueInterpreter.OnCameraChangeRequested -= HandleCameraChange;
             dialogueInterpreter.OnScreenShown -= HandleScreenShown;
             dialogueInterpreter.OnScreenHidden -= HandleScreenHidden;
+            PlayerControlBlocker playerControlBlocker = player.GetComponentInChildren<PlayerControlBlocker>();
+            playerControlBlocker?.SetControlsActive(false);
             Destroy(player);
         }
     }
 
+    // void Update()
+    // {
+    //     if (UnityEngine.Cursor.visible && isActive)
+    //     {
+    //         isActive = false;
+    //         foreach (IKeyEventReceiver keyReceiver in Object.FindObjectsByType<MonoBehaviour>(FindObjectsSortMode.None).OfType<IKeyEventReceiver>().ToArray())
+    //         {
+    //             keyReceiver.OnKeyEvent("StopGame");
+    //         }
+    //     }
+    // }
+
     private void HandleScreenShown()
     {
+        isActive = false;
         if (player != null)
         {
             PlayerControlBlocker playerControlBlocker = player.GetComponentInChildren<PlayerControlBlocker>();
@@ -119,6 +145,7 @@ public class PlayMode : UIControllerBase
             PlayerControlBlocker playerControlBlocker = player.GetComponentInChildren<PlayerControlBlocker>();
             playerControlBlocker?.SetControlsActive(true);
         }
+        isActive = true;
     }
 
 
